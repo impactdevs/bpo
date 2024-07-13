@@ -49,7 +49,7 @@ class EntryController extends Controller
         $entry->user_id = auth()->id();
         $entry->save();
 
-        return back()->with('success', 'Entry submitted successfully!');
+        return back()->with('success', 'Entry submitted successfully! Thank you for your response.');
     }
 
     /**

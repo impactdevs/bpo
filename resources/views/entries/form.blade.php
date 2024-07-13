@@ -34,7 +34,7 @@
                                 <div class="mb-3 d-flex flex-column justify-content-between">
                                     <label for="{{ $field->id }}" class="form-label">{{ $key + 1 }}.
                                         {{ $field->label }}</label>
-                                    <input type="{{ $field->type }}" id="{{ $field->id }}" name="{{ $field->id }}">
+                                    <input type="{{ $field->type }}" id="{{ $field->id }}" name="{{ $field->id }}" required>
                                 </div>
                             @endif
 

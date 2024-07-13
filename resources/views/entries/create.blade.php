@@ -78,6 +78,33 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script>
+            $(document).ready(function() {
+
+
+            //show swal alert
+            @if (session('success'))
+                swal({
+                    title: "Success!",
+                    text: "{{ session('success') }}",
+                    icon: "success",
+                    button: "OK",
+                });
+            @elseif (session('error'))
+                swal({
+                    title: "Error!",
+                    text: "{{ session('error') }}",
+                    icon: "error",
+                    button: "OK",
+                });
+            @endif
+
+            });
+        </script>
 </body>
 
 </html>
