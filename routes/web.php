@@ -26,7 +26,7 @@ Route::get('/auth/redirect', function () {
     return Socialite::driver('google')->redirect();
 });
 
-Route::get('/auth/callback', [Authcontroller::class, 'login_by_google'])->name('auth.callback');
+Route::post('/auth/callback', [Authcontroller::class, 'login_by_google'])->name('auth.callback');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

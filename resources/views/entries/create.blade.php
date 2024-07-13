@@ -42,8 +42,21 @@
                                 the form. The data provided will be used for the purpose of research and will be kept
                                 confidential.
                                 <strong>Ensure to submit before closing your browser, else you risk loosing whatever you
-                                    will have submitted. this form will require your 25-30 minutes</strong>
+                                    will have filled in the form. This form will require your 25-30 minutes</strong>
                             </p>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        {{-- logo --}}
+                        <div class="text-center">
+                            @auth
+                                <p><strong>Logged in as {{ auth()->user()->name }}</strong></p>
+                            @endauth
+
+                            @guest
+                                <p><strong>Not logged in</strong></p>
+                            @endguest
                         </div>
                     </div>
                 </div>

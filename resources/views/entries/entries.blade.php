@@ -21,7 +21,7 @@
                                         <th scope="row">{{ $entry->id }}</th>
                                         <td>{{ $entry->title }}</td>
                                         <td>{{ $entry->subtitle }}</td>
-                                        <td>{{ $entry->user->name }}</td>
+                                        <td>{{ $entry->user->name??'Un Known User' }}</td>
                                         <td>{{ $entry->created_at->format('M d, Y') }}</td>
                                         <td>
                                             <a href="{{ url('entries', $entry->id) }}" class="">
