@@ -18,7 +18,7 @@ Route::resource('fields', FormFieldController::class);
 Route::resource('entries', EntryController::class);
 Route::resource('reports', ReportController::class);
 Route::resource('forms', FormController::class);
-Route::get('/forms/{form}', [FormController::class, 'display_questionnaire'])->name('forms.show')->middleware('auth');
+Route::get('/forms/{form}', [FormController::class, 'display_questionnaire'])->name('forms.show');
 Route::get('/forms/{form}/entries', [EntryController::class, 'entries'])->name('forms.entries');
 Route::get('/forms/{form}/settings', [FormSettingController::class, 'index'])->name('forms.settings');
 Route::put('/update-settings', [FormSettingController::class, 'update'])->name('form-settings.update');
