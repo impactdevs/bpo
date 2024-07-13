@@ -44,6 +44,22 @@
                                             class="ml-2">{{ $option }}</label>
                                     </div>
                                 @endforeach
+                            @elseif ($field->type === 'textarea')
+                                <div class="mb-3 d-flex flex-column justify-content-between">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <label for="{{ $field->id }}" class="form-label">{{ $key + 1 }}.
+                                            {{ $field->label }}</label>
+                                        <div class="d-flex">
+                                            <button type="button" class="btn btn-primary btn-sm ms-2">Edit</button>
+                                            <button type="button" class="btn btn-primary btn-sm ms-2">Delete</button>
+                                            <button type="button" class="btn-sm ms-2"><i
+                                                    class="bi bi-three-dots-vertical"></i></button>
+                                        </div>
+                                    </div>
+
+                                    <textarea id="{{ $field->id }}" name="{{ $field->id }}"></textarea>
+
+                                </div>
                             @else
                                 <div class="mb-3 d-flex flex-row justify-content-between">
                                     <label for="{{ $field->id }}" class="form-label">{{ $key + 1 }}.

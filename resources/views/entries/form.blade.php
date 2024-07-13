@@ -27,6 +27,12 @@
                                             class="ml-2">{{ $option }}</label>
                                     </div>
                                 @endforeach
+                            @elseif ($field->type === 'textarea')
+                                <div class="mb-3 d-flex flex-column justify-content-between">
+                                    <label for="{{ $field->id }}" class="form-label">{{ $key + 1 }}.
+                                        {{ $field->label }}</label>
+                                    <textarea id="{{ $field->id }}" name="{{ $field->id }}"></textarea>
+                                </div>
                             @else
                                 <div class="mb-3 d-flex flex-column justify-content-between">
                                     <label for="{{ $field->id }}" class="form-label">{{ $key + 1 }}.
@@ -41,6 +47,13 @@
                     </div>
                 </div>
             @endforeach
+            <div class="form-check pt-3">
+                <input class="form-check-input" type="checkbox" value="consent" id="flexCheckChecked"
+                    required>
+                <label class="form-check-label" for="flexCheckChecked">
+                    I agree that the information provided is accurate and Impact Outsourcing can use it for research purposes.
+                </label>
+            </div>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-3">
                 <div class="form-group">
                     <input class="btn btn-primary" type="submit" value="{{ $formMode === 'edit' ? 'Update' : 'Submit' }}">
