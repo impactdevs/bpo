@@ -22,11 +22,7 @@ Route::get('/forms/{form}', [FormController::class, 'display_questionnaire'])->n
 Route::get('/forms/{form}/entries', [EntryController::class, 'entries'])->name('forms.entries');
 Route::get('/forms/{form}/settings', [FormSettingController::class, 'index'])->name('forms.settings');
 Route::put('/update-settings', [FormSettingController::class, 'update'])->name('form-settings.update');
-Route::get('/auth/redirect', function () {
-    return Socialite::driver('google')->redirect();
-});
 
-Route::post('/auth/callback', [Authcontroller::class, 'login_by_google'])->name('auth.callback');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

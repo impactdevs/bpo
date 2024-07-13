@@ -15,9 +15,6 @@
                                 <div class="mb-3 d-flex flex-row justify-content-between">
                                     <label for="{{ $field->id }}" class="form-label">{{ $key + 1 }}.
                                         {{ $field->label }}</label>
-                                        {{-- input --}}
-                                        <input type="{{ $field->type }}" id="{{ $field->id }}" name="{{ $field->id }}"
-                                            value="{{ $field->id }}">
                                 </div>
                                 @foreach (explode(',', $field->options) as $option)
                                     <div class="m-4">
