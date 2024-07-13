@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-Route::resource('form-builder', FormController::class)->middleware('auth');
+Route::resource('form-builder', FormController::class);
 Route::resource('fields', FormFieldController::class);
-Route::resource('entries', EntryController::class)->middleware('auth');
+Route::resource('entries', EntryController::class);
 Route::resource('reports', ReportController::class);
 Route::resource('forms', FormController::class);
 Route::get('/forms/{form}', [FormController::class, 'display_questionnaire'])->name('forms.show')->middleware('auth');
