@@ -14,7 +14,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <table class="table table-striped">
+                     {{-- <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -57,7 +57,8 @@
                                 @endforeach
                             @endif
                         </tbody>
-                    </table>
+                    </table> --}}
+                    @livewire('list-forms')
 
                     <div class="offcanvas offcanvas-end border" tabindex="-1" id="offcanvasBottom"
                         aria-labelledby="offcanvasBottomLabel">
@@ -106,4 +107,10 @@
             alert("Copied to clipboard: " + text);
         }
     </script>
+
+
+
 @endpush
+
+
+

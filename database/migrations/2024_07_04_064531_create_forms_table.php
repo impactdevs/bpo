@@ -9,7 +9,8 @@ class CreateFormsTable extends Migration
     public function up()
     {
         Schema::create('forms', function (Blueprint $table) {
-            $table->uuid()->primary();
+            $table->id();
+            $table->uuid();
             $table->string('name');
             $table->boolean('status')->default(1); // 1: Active, 0: Inactive
             $table->timestamps();

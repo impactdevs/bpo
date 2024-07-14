@@ -49,24 +49,36 @@ class FormFieldController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $field = FormField::findOrFail($id);
+        return view('fields.edit', compact('field'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $field = FormField::findOrFail($id);
+        $field->label = $request->input('label');
+        $field->type = $request->input('type');
+        $field->options = $request->input('options');
+        $field->save();
+
+        return redirect()->route('form-builder.show', $field->form_id)->with('success', 'Field updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    
+    public function destroy($id)
     {
-        //
+        $field = FormField::findOrFail($id);
+        $field->delete();
+
+        return redirect()->route('form-builder.show', $field->form_id)->with('success', 'Field deleted successfully');
     }
 }

@@ -10,8 +10,9 @@ class CreateFormFieldsTable extends Migration
     {
         Schema::create('form_fields', function (Blueprint $table) {
             $table->id();
-            $table->uuid('form_id');
-            $table->foreign('form_id')->references('uuid')->on('forms')->onDelete('cascade');
+            //$table->uuid('form_id');
+            // $table->foreign('form_id')->references('id')->on('forms')->onDelete('cascade');
+            $table->foreignId('form_id')->constrained();
             $table->string('label');
             $table->string('type'); // Example: text, textarea, checkbox, radio, select, etc.
             $table->text('options')->nullable(); // JSON or text to store additional options (e.g., for select options)

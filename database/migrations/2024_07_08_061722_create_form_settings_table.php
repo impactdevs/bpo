@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('form_settings', function (Blueprint $table) {
             $table->id();
-            $table->uuid('form_id');
-            $table->foreign('form_id')->references('uuid')->on('forms')->onDelete('cascade');
+            //$table->uuid('form_id');
+            //$table->foreign('form_id')->references('id')->on('forms')->onDelete('cascade');
+            $table->foreignId('form_id')->constrained();
             $table->unsignedBigInteger('title')->nullable();
             $table->foreign('title')->references('id')->on('form_fields')->onDelete('cascade');
             $table->unsignedBigInteger('subtitle')->nullable();
