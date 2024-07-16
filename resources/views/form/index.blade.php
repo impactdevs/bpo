@@ -25,13 +25,9 @@
             display: none !important;
         }
     </style>
-    @livewire('notifications')
-    @filamentStyles
-    @vite('resources/css/app.css')
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
 
 </head>
 
@@ -150,6 +146,42 @@
                                         'no' => 'Yes',
                                     ]" />
 
+                                <div id="organization-fields" class="hidden">
+                                    <div id="uganda-organizations">
+                                        <label class="block text-sm font-medium text-gray-600">Uganda
+                                            Organizations:</label>
+                                        <div class="organization-list mb-3">
+                                            <div class="mb-2">
+                                                <input type="text" name="uganda_organizations[]"
+                                                    class="form-input w-full border rounded-md shadow-sm"
+                                                    placeholder="Organization Name" required>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <button type="button" id="add-uganda-organization"
+                                                class="btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">Add
+                                                Uganda Organization</button>
+                                        </div>
+                                    </div>
+
+                                    <div id="international-organizations">
+                                        <label class="block text-sm font-medium text-gray-600">International
+                                            Organizations:</label>
+                                        <div class="organization-list mb-3">
+                                            <div class="mb-2">
+                                                <input type="text" name="international_organizations[]"
+                                                    class="form-input w-full border rounded-md shadow-sm"
+                                                    placeholder="Organization Name" required>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <button type="button" id="add-international-organization"
+                                                class="btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">Add
+                                                International Organization</button>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <x-forms.radio question="Do you have a valid certificate?" name="valid_certificate"
                                     id="valid_certificate" :options="[
                                         'yes, seen' => 'Yes, seen',
@@ -165,6 +197,26 @@
                                         'Access to Funding and Grants' => 'Access to Funding and Grants',
                                         'None of these' => 'None of these',
                                     ]" />
+
+                                <div id="support-requirements">
+                                    <!-- Initial support requirement field -->
+                                    <div class="support-requirement grid grid-cols-1 md:grid-cols-2 gap-6 mb-3">
+                                        <div class="mb-4">
+                                            <label for="support_description"
+                                                class="block text-sm font-medium text-gray-600">What support would you
+                                                require? (please specify)</label>
+                                            <input type="text" name="support_description[]"
+                                                class="form-input w-full border rounded-md shadow-sm"
+                                                placeholder="Specify Support" required>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <button type="button"
+                                                class="btn bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm remove-support-requirement hidden">
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <p><strong>IT Enabled Services Checker</strong></p>
                                 <p><strong>Use of digitization of services</strong></p>
@@ -256,11 +308,87 @@
                                         'Wifi' => 'Wifi',
                                     ]" />
 
+                                <!-- Internet Service Challenges -->
+                                <div id="internet-challenges">
+                                    <!-- Initial challenge field -->
+                                    <div class="internet-challenge grid grid-cols-1 md:grid-cols-2 gap-6 mb-3">
+                                        <div class="mb-4">
+                                            <label for="challenge_description"
+                                                class="block text-sm font-medium text-gray-600">What challenges have
+                                                you experienced in the last 12 months relating to the internet services
+                                                you use?</label>
+                                            <input type="text" name="challenge_description[]"
+                                                class="form-input w-full border rounded-md shadow-sm"
+                                                placeholder="Specify Challenge" required>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <button type="button"
+                                                class="btn bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm remove-internet-challenge hidden">
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end mb-4">
+                                    <button type="button" id="add-internet-challenge"
+                                        class="btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">Add</button>
+                                </div>
+
                                 <x-forms.radio question="Do you have backup power supply?" name="backup_power_supply"
                                     id="backup_power_supply" :options="[
                                         'Yes' => 'Yes',
                                         'no' => 'Yes',
                                     ]" />
+
+                                <!-- Power Sources -->
+                                <div id="power-sources"> <!-- Power Sources -->
+                                    <div id="power-sources">
+                                        <!-- Initial power source field -->
+                                        <div class="power-source grid grid-cols-1 md:grid-cols-2 gap-6 mb-3">
+                                            <div class="mb-4">
+                                                <label for="power_source"
+                                                    class="block text-sm font-medium text-gray-600">What is your
+                                                    primary source(s) of power in the order of importance? (e.g.,
+                                                    National Grid, Solar)</label>
+                                                <input type="text" name="power_source[]"
+                                                    class="form-input w-full border rounded-md shadow-sm"
+                                                    placeholder="Specify Power Source" required>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <button type="button"
+                                                    class="btn bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm remove-power-source hidden">
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-end mb-4">
+                                        <button type="button" id="add-power-source"
+                                            class="btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">Add</button>
+                                    </div>
+                                    <!-- Initial power source field -->
+                                    <div class="power-source grid grid-cols-1 md:grid-cols-2 gap-6 mb-3">
+                                        <div class="mb-4">
+                                            <label for="power_source"
+                                                class="block text-sm font-medium text-gray-600">What is your primary
+                                                source(s) of power in the order of importance? (e.g., National Grid,
+                                                Solar)</label>
+                                            <input type="text" name="power_source[]"
+                                                class="form-input w-full border rounded-md shadow-sm"
+                                                placeholder="Specify Power Source" required>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <button type="button"
+                                                class="btn bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm remove-power-source hidden">
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end mb-4">
+                                    <button type="button" id="add-power-source"
+                                        class="btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">Add</button>
+                                </div>
 
                                 <p>
                                     <strong>If YES, what is the capacity of your backup power supply (in KVAs)?
@@ -301,96 +429,6 @@
                                         'no' => 'Yes',
                                     ]" />
 
-                                <x-forms.radio question="How would you rank the effectiveness of those trainings?"
-                                    name="atraining_effectiveness" id="atraining_effectiveness" :options="[
-                                        '1 = Very effective' => '1 = Very effective',
-                                        '2 = Extremely helpful' => '2 = Extremely helpful',
-                                        '3 = Slightly helpful' => '3 = Slightly helpful',
-                                        '4 = Not helpful' => '4 = Not helpful',
-                                    ]" />
-
-                                <p>
-                                    <strong>Enterprise Training Needs</strong>
-
-
-                                </p>
-
-                                <x-forms.radio
-                                    question="Are there specific enterprise training needs you would require?"
-                                    name="training_needs" id="training_needs" :options="[
-                                        'Yes' => 'Yes',
-                                        'no' => 'Yes',
-                                    ]" />
-
-                                <p>
-                                    What is the age group of your employees? Group them according to employable ages(as
-                                    per employment ages in Uganda)
-                                </p>
-
-                                <x-forms.input label="18-24" type="number" name=" 18-24" id="18-24" />
-
-                                <x-forms.input label="25 - 34" type="number" name="25 - 34" id="25 - 34" />
-
-                                <x-forms.input label="34 - 54" type="number" name="34 - 54" id="34 - 54" />
-
-                                <x-forms.input label="55 - 64" type="number" name="55 - 64" id="55 - 64" />
-
-                                <x-forms.radio
-                                    question="Are there any incentives that you know of being given to companies within the outsourcing sector (to realize growth of the sector)?"
-                                    name="known_incentives" id="known_incentives" :options="[
-                                        'Yes' => 'Yes',
-                                        'no' => 'Yes',
-                                    ]" />
-                                <!-- Support Requirements -->
-                                <div id="support-requirements">
-                                    <!-- Initial support requirement field -->
-                                    <div class="support-requirement grid grid-cols-1 md:grid-cols-2 gap-6 mb-3">
-                                        <div class="mb-4">
-                                            <label for="support_description"
-                                                class="block text-sm font-medium text-gray-600">What support would you
-                                                require? (please specify)</label>
-                                            <input type="text" name="support_description[]"
-                                                class="form-input w-full border rounded-md shadow-sm"
-                                                placeholder="Specify Support" required>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <button type="button"
-                                                class="btn bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm remove-support-requirement hidden">
-                                                Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex justify-end mb-4">
-                                    <button type="button" id="add-support-requirement"
-                                        class="btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">Add</button>
-                                </div>
-
-                                <!-- Internet Service Challenges -->
-                                <div id="internet-challenges">
-                                    <!-- Initial challenge field -->
-                                    <div class="internet-challenge grid grid-cols-1 md:grid-cols-2 gap-6 mb-3">
-                                        <div class="mb-4">
-                                            <label for="challenge_description"
-                                                class="block text-sm font-medium text-gray-600">What challenges have
-                                                you experienced in the last 12 months relating to the internet services
-                                                you use?</label>
-                                            <input type="text" name="challenge_description[]"
-                                                class="form-input w-full border rounded-md shadow-sm"
-                                                placeholder="Specify Challenge" required>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <button type="button"
-                                                class="btn bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm remove-internet-challenge hidden">
-                                                Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex justify-end mb-4">
-                                    <button type="button" id="add-internet-challenge"
-                                        class="btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">Add</button>
-                                </div>
 
                                 <!-- Training Institutions -->
                                 <div id="training-institutions">
@@ -417,49 +455,26 @@
                                         class="btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">Add</button>
                                 </div>
 
-                                <!-- Power Sources -->
-                                <div id="power-sources">
-                                    <!-- Initial power source field -->
-                                    <div class="power-source grid grid-cols-1 md:grid-cols-2 gap-6 mb-3">
-                                        <div class="mb-4">
-                                            <label for="power_source"
-                                                class="block text-sm font-medium text-gray-600">What is your primary
-                                                source(s) of power in the order of importance? (e.g., National Grid,
-                                                Solar)</label>
-                                            <input type="text" name="power_source[]"
-                                                class="form-input w-full border rounded-md shadow-sm"
-                                                placeholder="Specify Power Source" required>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <button type="button"
-                                                class="btn bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm remove-power-source hidden">
-                                                Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex justify-end mb-4">
-                                    <button type="button" id="add-power-source"
-                                        class="btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">Add</button>
-                                </div>
+                                <x-forms.radio question="How would you rank the effectiveness of those trainings?"
+                                    name="atraining_effectiveness" id="atraining_effectiveness" :options="[
+                                        '1 = Very effective' => '1 = Very effective',
+                                        '2 = Extremely helpful' => '2 = Extremely helpful',
+                                        '3 = Slightly helpful' => '3 = Slightly helpful',
+                                        '4 = Not helpful' => '4 = Not helpful',
+                                    ]" />
 
-                                <!-- Enterprise Training Needs -->
-                                <div id="enterprise-training-needs">
-                                    <div class="grid grid-cols-2 gap-6 mb-3">
-                                        <div class="mb-4">
-                                            <label class="block text-sm font-medium text-gray-600">Are there specific
-                                                enterprise training needs you would require?</label>
-                                            <div class="flex items-center">
-                                                <input type="radio" id="enterprise_training_yes"
-                                                    name="enterprise_training_needs" value="yes">
-                                                <label for="enterprise_training_yes" class="ml-2">YES</label>
-                                                <input type="radio" id="enterprise_training_no"
-                                                    name="enterprise_training_needs" value="no">
-                                                <label for="enterprise_training_no" class="ml-2">NO</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <p>
+                                    <strong>Enterprise Training Needs</strong>
+
+
+                                </p>
+
+                                <x-forms.radio
+                                    question="Are there specific enterprise training needs you would require?"
+                                    name="training_needs" id="training_needs" :options="[
+                                        'Yes' => 'Yes',
+                                        'no' => 'Yes',
+                                    ]" />
 
                                 <!-- Dynamic Fields for Enterprise Training Needs -->
                                 <div id="enterprise-training-needs-fields">
@@ -486,24 +501,25 @@
                                         Training Need</button>
                                 </div>
 
-                                <!-- Incentives and Support -->
-                                <div id="incentives-support">
-                                    <div class="grid grid-cols-2 gap-6 mb-3">
-                                        <div class="mb-4">
-                                            <label class="block text-sm font-medium text-gray-600">Are there any
-                                                incentives that you know of being given to companies within the
-                                                outsourcing sector (to realize growth of the sector)?</label>
-                                            <div class="flex items-center">
-                                                <input type="radio" id="incentives_yes" name="incentives_support"
-                                                    value="yes">
-                                                <label for="incentives_yes" class="ml-2">YES</label>
-                                                <input type="radio" id="incentives_no" name="incentives_support"
-                                                    value="no">
-                                                <label for="incentives_no" class="ml-2">NO</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <p>
+                                    What is the age group of your employees? Group them according to employable ages(as
+                                    per employment ages in Uganda)
+                                </p>
+
+                                <x-forms.input label="18-24" type="number" name=" 18-24" id="18-24" />
+
+                                <x-forms.input label="25 - 34" type="number" name="25 - 34" id="25 - 34" />
+
+                                <x-forms.input label="34 - 54" type="number" name="34 - 54" id="34 - 54" />
+
+                                <x-forms.input label="55 - 64" type="number" name="55 - 64" id="55 - 64" />
+
+                                <x-forms.radio
+                                    question="Are there any incentives that you know of being given to companies within the outsourcing sector (to realize growth of the sector)?"
+                                    name="known_incentives" id="known_incentives" :options="[
+                                        'Yes' => 'Yes',
+                                        'no' => 'Yes',
+                                    ]" />
 
                                 <!-- Dynamic Fields for Incentives -->
                                 <div id="incentives-fields">
@@ -528,79 +544,30 @@
                                         Incentive</button>
                                 </div>
 
-                                <!-- Submit Button -->
-                                <div class="mt-6 text-center">
-                                    <button type="submit"
-                                        class="btn bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-md shadow-sm">
-                                        Submit
-                                    </button>
-                                </div>
 
-                                <!-- 2.1 Is the entity/company registered with any professional or industry organization? -->
-                                <div class="mb-6">
-                                    <label class="block text-sm font-medium text-gray-600">Is the entity/company
-                                        registered with any professional or industry organization?</label>
-                                    <div class="mt-2 space-y-2">
-                                        <div class="flex items-center">
-                                            <input id="registered_yes" name="registered_organization" type="radio"
-                                                class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                                                value="yes">
-                                            <label for="registered_yes"
-                                                class="ml-3 block text-sm font-medium text-gray-700">YES</label>
+                                <!-- Training Institutions -->
+                                <div id="training-institutions">
+                                    <!-- Initial training institution field -->
+                                    <div class="training-institution grid grid-cols-1 md:grid-cols-2 gap-6 mb-3">
+                                        <div class="mb-4">
+                                            <label for="training_institution"
+                                                class="block text-sm font-medium text-gray-600">What institutions or
+                                                entities delivered the training?</label>
+                                            <input type="text" name="training_institution[]"
+                                                class="form-input w-full border rounded-md shadow-sm"
+                                                placeholder="Specify Training Institution" required>
                                         </div>
                                         <div class="flex items-center">
-                                            <input id="registered_no" name="registered_organization" type="radio"
-                                                class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
-                                                value="no">
-                                            <label for="registered_no"
-                                                class="ml-3 block text-sm font-medium text-gray-700">NO</label>
+                                            <button type="button"
+                                                class="btn bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm remove-training-institution hidden">
+                                                Remove
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- 2.2 If YES, name the organization(s): -->
-                                <div id="organization-fields" class="hidden">
-                                    <div id="uganda-organizations">
-                                        <label class="block text-sm font-medium text-gray-600">Uganda
-                                            Organizations:</label>
-                                        <div class="organization-list mb-3">
-                                            <div class="mb-2">
-                                                <input type="text" name="uganda_organizations[]"
-                                                    class="form-input w-full border rounded-md shadow-sm"
-                                                    placeholder="Organization Name" required>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-end">
-                                            <button type="button" id="add-uganda-organization"
-                                                class="btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">Add
-                                                Uganda Organization</button>
-                                        </div>
-                                    </div>
-
-                                    <div id="international-organizations">
-                                        <label class="block text-sm font-medium text-gray-600">International
-                                            Organizations:</label>
-                                        <div class="organization-list mb-3">
-                                            <div class="mb-2">
-                                                <input type="text" name="international_organizations[]"
-                                                    class="form-input w-full border rounded-md shadow-sm"
-                                                    placeholder="Organization Name" required>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-end">
-                                            <button type="button" id="add-international-organization"
-                                                class="btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">Add
-                                                International Organization</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Submit Button -->
-                                <div class="mt-6 text-center">
-                                    <button type="submit"
-                                        class="btn bg-green-500 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-md shadow-sm">
-                                        Submit
-                                    </button>
+                                <div class="flex justify-end mb-4">
+                                    <button type="button" id="add-training-institution"
+                                        class="btn bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm">Add</button>
                                 </div>
                             </ol>
 
