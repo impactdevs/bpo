@@ -20,19 +20,19 @@
     <!-- In your <head> tag -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-            <style>
-            [x-cloak] {
-                display: none !important;
-            }
-        </style>
-     @livewire('notifications')
-        @filamentStyles
-        @vite('resources/css/app.css')
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+    @livewire('notifications')
+    @filamentStyles
+    @vite('resources/css/app.css')
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/custom-js.js'])
-     @livewireStyles
-     
+    @livewireStyles
+
 </head>
 
 <body class="font-sans antialiased">
@@ -61,11 +61,11 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     @stack('script')
-            @livewire('notifications')
+    @livewire('notifications')
 
-        @filamentScripts
-        @vite('resources/js/app.js')
-     @livewireScripts
+    @filamentScripts
+    @vite('resources/js/app.js')
+    @livewireScripts
 </body>
 
 </html>

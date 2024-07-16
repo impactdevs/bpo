@@ -23,6 +23,11 @@ Route::get('/forms/{form}/entries', [EntryController::class, 'entries'])->name('
 Route::get('/forms/{form}/settings', [FormSettingController::class, 'index'])->name('forms.settings');
 Route::put('/update-settings', [FormSettingController::class, 'update'])->name('form-settings.update');
 
+Route::get('/form', function(){
+    return view('form.index');
+
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
