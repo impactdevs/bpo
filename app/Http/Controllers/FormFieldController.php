@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\FormField;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FormFieldController extends Controller
 {
@@ -29,21 +30,21 @@ class FormFieldController extends Controller
     public function store(Request $request)
     {
         $field = new FormField();
-        $field->form_id = $request->input('form_id');
+        $field->section_id = $request->input('section_id');
         $field->label = $request->input('label');
         $field->type = $request->input('type');
         $field->options = $request->input('options');
         $field->save();
 
-        return redirect()->route('form-builder.show', $field->form_id);
+        return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        return response()->json(['success' => true, 'data' => FormField::find($id)]);
     }
 
     /**
@@ -59,7 +60,10 @@ class FormFieldController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // use update method except _token and _method
+        FormField::where('id', $id)->update($request->except(['_token', '_method']));
+
+        return redirect()->back();
     }
 
     /**
@@ -67,6 +71,23 @@ class FormFieldController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $field = FormField::find($id);
+        $form_id = $field->form_id;
+        $field->delete();
+
+        return redirect()->back();
+    }
+
+    // add conditional visibility field
+    public function addConditionalVisibilityField(Request $request)
+    {
+        //save condition
+        $save = DB::table('field_properties')->insert([
+            'field_id' => $request->input('field_id'),
+            'conditional_visibility_field_id' => $request->input('conditional_visibility_field_id'),
+            'conditional_visibility_operator' => $request->input('conditional_visibility_operator'),
+        ]);
+
+        return redirect()->back();
     }
 }

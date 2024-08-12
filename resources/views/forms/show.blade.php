@@ -12,120 +12,241 @@
     </x-slot>
 
     <div class="py-12">
-        @if ($form->fields->isEmpty())
+        @if ($form->sections->isEmpty())
             <h1>This form has no form fields</h1>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-3">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFieldModal">
-                    <i class="bi bi-plus"></i> Add a Field
+
+
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSectionModal">
+                    <i class="bi bi-plus"></i> Add section
                 </button>
+
             </div>
         @else
-            @foreach ($form->fields as $key => $field)
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-3">
-                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-6 text-gray-900 dark:text-gray-100">
-                            @if ($field->type === 'radio' || $field->type === 'checkbox')
-                                <div class="mb-3 d-flex flex-row justify-content-between">
-                                    <label for="{{ $field->id }}" class="form-label">{{ $key + 1 }}.
-                                        {{ $field->label }}</label>
-                                    <div class="d-flex">
-                                        <button type="button" class="btn btn-primary btn-sm ms-2">Edit</button>
-                                        <button type="button" class="btn btn-primary btn-sm ms-2">Delete</button>
-                                        <button type="button" class="btn-sm ms-2"><i
-                                                class="bi bi-three-dots-vertical"></i></button>
-                                    </div>
+            {{-- iterate through sections and create an accordion --}}
+            @for ($i = 0; $i < count($form->sections); $i++)
+                {{-- create an accordion for each section --}}
+                <div class="border border-5 border-primary">
+                    {{-- section title --}}
+                    <div class="m-2">
+                        <p class="h6">
+                            <a class="btn btn-primary" data-bs-toggle="collapse" href="#section{{ $i }}"
+                                role="button" aria-expanded="false" aria-controls="section{{ $i }}">
+                                {{ $i + 1 }}.{{ $form->sections[$i]->section_name }}
+                            </a>
+                        </p>
+                    </div>
 
-                                </div>
-                                @foreach (explode(',', $field->options) as $option)
-                                    <div class="m-4">
-                                        <input type="{{ $field->type }}" id="{{ $field->id }}_{{ $loop->index }}"
-                                            name="{{ $option }}" value="{{ $option }}">
-                                        <label for="{{ $field->id }}_{{ $loop->index }}"
-                                            class="ml-2">{{ $option }}</label>
-                                    </div>
-                                @endforeach
-                            @elseif ($field->type === 'textarea')
-                                <div class="mb-3 d-flex flex-column justify-content-between">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <label for="{{ $field->id }}" class="form-label">{{ $key + 1 }}.
-                                            {{ $field->label }}</label>
-                                        <div class="d-flex">
-                                            <button type="button" class="btn btn-primary btn-sm ms-2">Edit</button>
-                                            <button type="button" class="btn btn-primary btn-sm ms-2">Delete</button>
-                                            <button type="button" class="btn-sm ms-2"><i
-                                                    class="bi bi-three-dots-vertical"></i></button>
-                                        </div>
-                                    </div>
+                    {{-- if there are no fields --}}
+                    @if ($form->sections[$i]->fields->isEmpty())
+                        <div class="m-2">
+                            <p>This section has no form fields</p>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#addFieldModal" data-section-id="{{ $form->sections[$i]->id }}">
+                                <i class="bi bi-plus"></i> Add a Field
+                            </button>
 
-                                    <textarea id="{{ $field->id }}" name="{{ $field->id }}"></textarea>
-
-                                </div>
-                            @else
-                                <div class="mb-3 d-flex flex-row justify-content-between">
-                                    <label for="{{ $field->id }}" class="form-label">{{ $key + 1 }}.
-                                        {{ $field->label }}</label>
-                                    <div class="d-flex">
-                                        <button type="button" class="btn btn-primary btn-sm ms-2">Edit</button>
-                                        <button type="button" class="btn btn-primary btn-sm ms-2">Delete</button>
-                                        <button type="button" class="btn-sm ms-2"><i
-                                                class="bi bi-three-dots-vertical"></i></button>
-                                    </div>
-                                </div>
-                            @endif
                         </div>
-                    </div>
+                    @else
+                        @foreach ($form->sections[$i]->fields as $key => $field)
+                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-3">
+                                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                                        @if ($field->type === 'radio' || $field->type === 'checkbox')
+                                            <div class="mb-3 d-flex flex-row justify-content-between">
+                                                <label for="{{ $field->id }}"
+                                                    class="form-label">{{ $i + 1 }}.{{ $key + 1 }}.
+                                                    {{ $field->label }}</label>
+                                                <div class="d-flex">
+                                                    <button type="button" class="btn btn-primary btn-sm ms-2"
+                                                        data-bs-toggle="modal" data-bs-target="#editFieldModal"
+                                                        data-mode="edit" data-id="{{ $field->id }}"
+                                                        data-label="{{ $field->label }}"
+                                                        data-type="{{ $field->type }}"
+                                                        data-options="{{ $field->options }}">
+                                                        <i class="bi bi-pencil"></i> Edit
+                                                    </button>
+                                                    <form
+                                                        action="{{ route('fields.destroy', ['form' => $form->id, 'field' => $field->id]) }}"
+                                                        method="POST" class="d-inline"
+                                                        id="delete-form-{{ $field->id }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="btn btn-primary btn-sm ms-2 btn-delete"
+                                                            data-id="{{ $field->id }}">
+                                                            <i class="bi bi-trash"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                    <button class="btn btn-primary btn-sm ms-2" type="button"
+                                                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
+                                                        data-field-id="{{ $field->id }}"
+                                                        aria-controls="offcanvasBottom">Properties</button>
+                                                </div>
+
+                                            </div>
+                                            @foreach (explode(',', $field->options) as $option)
+                                                <div class="m-4">
+                                                    <input type="{{ $field->type }}"
+                                                        id="{{ $field->id }}_{{ $loop->index }}"
+                                                        name="{{ $option }}" value="{{ $option }}">
+                                                    <label for="{{ $field->id }}_{{ $loop->index }}"
+                                                        class="ml-2">{{ $option }}</label>
+                                                </div>
+                                            @endforeach
+                                        @elseif ($field->type === 'textarea')
+                                            <div class="mb-3 d-flex flex-column justify-content-between">
+                                                <div class="d-flex justify-content-between mb-2">
+                                                    <label for="{{ $field->id }}"
+                                                        class="form-label">{{ $i + 1 }}.{{ $key + 1 }}.
+                                                        {{ $field->label }}</label>
+                                                    <div class="d-flex">
+                                                        <button type="button" class="btn btn-primary btn-sm ms-2"
+                                                            data-bs-toggle="modal" data-bs-target="#editFieldModal"
+                                                            data-mode="edit" data-id="{{ $field->id }}"
+                                                            data-label="{{ $field->label }}"
+                                                            data-type="{{ $field->type }}"
+                                                            data-options="{{ $field->options }}">
+                                                            <i class="bi bi-pencil"></i> Edit
+                                                        </button>
+                                                        <form
+                                                            action="{{ route('fields.destroy', ['form' => $form->id, 'field' => $field->id]) }}"
+                                                            method="POST" class="d-inline"
+                                                            id="delete-form-{{ $field->id }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn btn-primary btn-sm ms-2 btn-delete"
+                                                                data-id="{{ $field->id }}">
+                                                                <i class="bi bi-trash"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                        <button class="btn btn-primary btn-sm ms-2" type="button"
+                                                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
+                                                            data-field-id="{{ $field->id }}"
+                                                            aria-controls="offcanvasBottom">Properties</button>
+                                                    </div>
+                                                </div>
+
+                                                <textarea id="{{ $field->id }}" name="{{ $field->id }}"></textarea>
+
+                                            </div>
+                                        @else
+                                            <div class="mb-3 d-flex flex-row justify-content-between">
+                                                <label for="{{ $field->id }}"
+                                                    class="form-label">{{ $i + 1 }}.{{ $key + 1 }}.
+                                                    {{ $field->label }}</label>
+                                                <div class="d-flex">
+                                                    <button type="button" class="btn btn-primary btn-sm ms-2"
+                                                        data-bs-toggle="modal" data-bs-target="#editFieldModal"
+                                                        data-mode="edit" data-id="{{ $field->id }}"
+                                                        data-label="{{ $field->label }}"
+                                                        data-type="{{ $field->type }}"
+                                                        data-options="{{ $field->options }}">
+                                                        <i class="bi bi-pencil"></i> Edit
+                                                    </button>
+
+                                                    <form
+                                                        action="{{ route('fields.destroy', ['form' => $form->id, 'field' => $field->id]) }}"
+                                                        method="POST" class="d-inline"
+                                                        id="delete-form-{{ $field->id }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="btn btn-primary btn-sm ms-2 btn-delete"
+                                                            data-id="{{ $field->id }}">
+                                                            <i class="bi bi-trash"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                    <button class="btn btn-primary btn-sm ms-2" type="button"
+                                                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
+                                                        data-field-id="{{ $field->id }}"
+                                                        aria-controls="offcanvasBottom">Properties</button>
+
+                                                </div>
+                                            </div>
+                                        @endif
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-3">
+                            <div class="overflow-hidden shadow-sm sm:rounded-lg">
+                                <div class="p-6 text-gray-900 dark:text-gray-100">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#addFieldModal"
+                                        data-section-id="{{ $form->sections[$i]->id }}">
+                                        <i class="bi bi-plus"></i> Add a Field
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
-            @endforeach
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-3">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFieldModal">
-                    <i class="bi bi-plus"></i> Add a Field
-                </button>
-            </div>
-        @endif
     </div>
-</x-app-layout>
-
-
-<!-- Modal -->
-<div class="modal fade" id="addFieldModal" tabindex="-1" aria-labelledby="addFieldModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addFieldModalLabel">Add a Field</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('fields.store') }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="field_name" class="form-label">Field Label</label>
-                        <input type="text" class="form-control" id="field_name" name="label" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="field_type" class="form-label">Field Type</label>
-                        <select class="form-select" id="field_type" name="type" required>
-                            <option value="text">Text</option>
-                            <option value="number">Number</option>
-                            <option value="textarea">Textarea</option>
-                            <option value="checkbox">Checkbox</option>
-                            <option value="radio">Radio</option>
-                        </select>
-                    </div>
-                    <input type="hidden" name="form_id" value="{{ $form->uuid }}">
-                    <div class="mb-4" id="options_container" style="display: none;">
-                        <label for="field_options"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Options</label>
-                        <input type="text" name="options" id="field_options"
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <p class="text-xs text-gray-500 mt-1 dark:text-gray-400">Enter options separated by commas
-                            (e.g., Option 1, Option 2)</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save Field</button>
-                    </div>
-                </form>
+    @endfor
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-3">
+        <div class="overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6 text-gray-900 dark:text-gray-100">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#addSectionModal">
+                    <i class="bi bi-plus"></i> Add section
+                </button>
             </div>
         </div>
     </div>
+    @endif
+
+    </div>
+</x-app-layout>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasBottomLabel">Question Properties</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body small">
+        <form action="{{ route('fields.add-condition') }}" method="POST">
+            @csrf
+            <input type="hidden" name="field_id" id="field_id" value="">
+            <div class="mb-3">
+                <label for="conditional_field">Show this question if the answer to:</label>
+                <select name="conditional_visibility_field_id" id="conditional_field" class="form-select">
+                    <option value="">-- Select Field --</option>
+                    @for ($i = 0; $i < count($form->sections); $i++)
+                        @foreach ($form->sections[$i]->fields as $key => $field)
+                            @if ($field->type === 'radio')
+                                <option value="{{ $field->id }}">{{ $i + 1 }}.{{ $key + 1 }}.
+                                    {{ $field->label }}</option>
+                            @endif
+                        @endforeach
+                    @endfor
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="conditional_value">Is equal to:</label>
+                <select name="conditional_visibility_operator" id="conditional_value" class="form-select" required>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
 </div>
+
+
+
+{{-- modal component --}}
+<x-section-modal :form="$form" mode="create" />
+{{-- set the x-field-modal mode attribute dynamically --}}
+<x-section-modal :form="$form" mode="edit" />
+
+
+{{-- modal component --}}
+<x-field-modal :section="1" mode="create" />
+{{-- set the x-field-modal mode attribute dynamically --}}
+<x-field-modal :section="1" mode="edit" />
+
+<script></script>

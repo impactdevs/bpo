@@ -11,8 +11,7 @@ class FormController extends Controller
 {
     public function index()
     {
-        $forms = Form::all();
-        $forms->load('setting');
+        $forms = Form::with('sections.fields', 'setting')->get();
         return view('forms.index', compact('forms'));
     }
 
@@ -46,18 +45,20 @@ class FormController extends Controller
         return redirect()->route('form-builder.show', $form->uuid);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($uuid)
-    {
-        //check where uuid is equal to the form id
-        $form = Form::where('uuid', $uuid)->first();
+/**
+ * Display the specified resource.
+ */
+public function show($uuid)
+{
+    // Check where uuid is equal to the form id
+    $form = Form::where('uuid', $uuid)->first();
 
-        //load the form with its fields
-        $form->load('fields');
-        return view('forms.show', compact('form'));
-    }
+    // Load sections with their related fields
+    $form->load(['sections.fields']);
+
+    return view('forms.show', compact('form'));
+}
+
 
     /**
      * Show the form for editing the specified resource.
