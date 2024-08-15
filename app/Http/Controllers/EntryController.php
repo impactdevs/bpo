@@ -133,7 +133,7 @@ class EntryController extends Controller
 
     public function entries($uuid)
     {
-        if (auth()->user()->email == "test@example.com") {
+        if (auth()->user()->email == "admin@bpo.com") {
             // Retrieve entries for the given form_id
             $entries = Entry::where('form_id', $uuid)->get();
         } else {
