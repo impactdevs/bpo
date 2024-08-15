@@ -2,7 +2,7 @@ $(document).ready(function () {
     console.log("ready!");
     $("#field_type").change(function () {
         var selectedType = $(this).val();
-        if (selectedType === "radio" || selectedType === "checkbox") {
+        if (selectedType === "radio" || selectedType === "checkbox" || selectedType === "select") {
             $("#options_container").show();
         } else {
             $("#options_container").hide();
@@ -79,7 +79,7 @@ $(document).ready(function () {
         modal.find("#field_name").val(label);
         modal.find("#field_type").val(type);
 
-        if (type === "checkbox" || type === "radio") {
+        if (type === "checkbox" || type === "radio" || type === "select") {
             console.log("showing options");
             //change display of #options_container to block
             modal.find("#options_container").show();
@@ -93,7 +93,7 @@ $(document).ready(function () {
         modal.find("#field_type").change(function () {
             console.log("change event");
             var selectedType = $(this).val();
-            if (selectedType === "radio" || selectedType === "checkbox") {
+            if (selectedType === "radio" || selectedType === "checkbox" || selectedType === "select") {
                 modal.find("#options_container").show();
             } else {
                 modal.find("#options_container").hide();

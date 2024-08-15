@@ -5,7 +5,8 @@
          {{-- iterate through sections and create an accordion --}}
          @for ($i = 0; $i < count($form->sections); $i++)
              {{-- create an accordion for each section --}}
-             <div class="border border-5 border-primary">
+             <div class="row">
+             <div class="border border-5 border-primary col-12">
                  {{-- section title --}}
                  <div class="m-2 d-flex flex-row justify-between">
                      <p class="h6">
@@ -75,6 +76,21 @@
                                                          class="ml-2">{{ $option }}</label>
                                                  </div>
                                              @endforeach
+                                             @elseif ($field->type === 'select')
+                                             <div class="mb-3 d-flex flex-column justify-content-between">
+                                                 <label for="{{ $field->id }}"
+                                                     class="form-label">{{ $i + 1 }}.{{ $key + 1 }}.
+                                                     {{ $field->label }}</label>
+
+                                                      {{-- select --}}
+                                                      <select name="{{ $field->id }}" id="{{ $field->id }}"
+                                                         class="form-select">
+                                                         <option value="">-- Select --</option>
+                                                         @foreach (explode(',', $field->options) as $option)
+                                                             <option value="{{ $option }}">{{ $option }}</option>
+                                                         @endforeach
+                                                     </select>
+                                             </div>
                                          @elseif ($field->type === 'textarea')
                                              <div class="mb-3 d-flex flex-column justify-content-between">
                                                  <div class="d-flex justify-content-between mb-2">
@@ -83,7 +99,7 @@
                                                          {{ $field->label }}</label>
                                                  </div>
 
-                                                 <textarea id="{{ $field->id }}" name="{{ $field->id }}"></textarea>
+                                                 <textarea id="{{ $field->id }}" name="{{ $field->id }}" rows="15"></textarea>
 
                                              </div>
                                          @else
@@ -103,6 +119,7 @@
                          </div>
                      @endforeach
                  @endif
+             </div>
              </div>
  </div>
  @endfor

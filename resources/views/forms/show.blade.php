@@ -130,6 +130,52 @@
                                                             class="ml-2">{{ $option }}</label>
                                                     </div>
                                                 @endforeach
+                                                @elseif ($field->type === 'select')
+                                                <div class="mb-3 d-flex flex-column justify-content-between">
+                                                    <div class="d-flex flex-row">
+
+
+                                                    <label for="{{ $field->id }}"
+                                                        class="form-label">{{ $i + 1 }}.{{ $key + 1 }}.
+                                                        {{ $field->label }}</label>
+                                                    <div class="d-flex">
+                                                        <button type="button" class="btn btn-primary btn-sm ms-2"
+                                                            data-bs-toggle="modal" data-bs-target="#editFieldModal"
+                                                            data-mode="edit" data-id="{{ $field->id }}"
+                                                            data-label="{{ $field->label }}"
+                                                            data-type="{{ $field->type }}"
+                                                            data-options="{{ $field->options }}">
+                                                            <i class="bi bi-pencil"></i> Edit
+                                                        </button>
+                                                        <form
+                                                            action="{{ route('fields.destroy', ['form' => $form->id, 'field' => $field->id]) }}"
+                                                            method="POST" class="d-inline"
+                                                            id="delete-form-{{ $field->id }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn btn-primary btn-sm ms-2 btn-delete"
+                                                                data-id="{{ $field->id }}">
+                                                                <i class="bi bi-trash"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                        <button class="btn btn-primary btn-sm ms-2" type="button"
+                                                            data-bs-toggle="offcanvas"
+                                                            data-bs-target="#offcanvasBottom"
+                                                            data-field-id="{{ $field->id }}"
+                                                            aria-controls="offcanvasBottom">Properties</button>
+                                                    </div>
+                                                </div>
+                                                         {{-- select --}}
+                                                         <select name="{{ $field->id }}" id="{{ $field->id }}"
+                                                            class="form-select">
+                                                            <option value="">-- Select --</option>
+                                                            @foreach (explode(',', $field->options) as $option)
+                                                                <option value="{{ $option }}">{{ $option }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                </div>
+
                                             @elseif ($field->type === 'checkbox')
                                                 <div class="mb-3 d-flex flex-row justify-content-between">
                                                     <label for="{{ $field->id }}"
