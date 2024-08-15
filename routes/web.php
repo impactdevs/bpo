@@ -29,6 +29,7 @@ Route::put('/update-settings', [FormSettingController::class, 'update'])->name('
 Route::post('entry-update/{id}', [EntryController::class, 'entry_update'])->name('entry.update-up');
 Route::resource('sections', SectionController::class);
 Route::get('/get-condition/{field_id}', [FormFieldController::class, 'getConditionalVisibilityField'])->name('fields.get-condition');
+Route::post('/save-draft', [EntryController::class, 'store'])->middleware('auth')->name('save-draft');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
