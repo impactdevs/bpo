@@ -12,13 +12,14 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    @if (auth()->user()->email=="test@example.com")
+
+
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries')">
-                        {{ __('Entries') }}
-                    </x-nav-link>
+
 
                     <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports')">
                         {{ __('Reports') }}
@@ -27,6 +28,16 @@
                     <x-nav-link :href="route('form-builder.index')" :active="request()->routeIs('form-builder')">
                         {{ __('Forms') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries')">
+                        {{ __('Entries') }}
+                    </x-nav-link>
+
+                    @else
+                        <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries')">
+                            {{ __('Entries') }}
+                        </x-nav-link>
+                    @endif
 
                 </div>
             </div>

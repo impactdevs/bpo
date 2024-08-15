@@ -24,6 +24,7 @@
                             <option value="textarea">Textarea</option>
                             <option value="checkbox">Checkbox</option>
                             <option value="radio">Radio</option>
+                            <option value="date">Date</option>
                         </select>
                     </div>
                     <input type="hidden" name="section_id" value="{{ $section }}" id="section_id">

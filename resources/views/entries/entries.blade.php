@@ -27,6 +27,18 @@
                                             <a href="{{ url('entries', $entry->id) }}" class="">
                                                 <i class="bi bi-eye"></i>
                                             </a>
+
+                                            {{-- edit entry with pencil icon --}}
+                                            <form action="{{ route('entries.edit', $entry->id) }}" method="GET"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('PUT')
+                                                {{-- hidden form_id field --}}
+                                                <input type="hidden" name="form_id" value="{{ $entry->form_id }}">
+                                                <button type="submit" class="btn btn-link">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

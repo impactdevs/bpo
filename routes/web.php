@@ -1,13 +1,11 @@
 <?php
 
-use App\Http\Controllers\Authcontroller;
 use App\Http\Controllers\EntryController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\FormFieldController;
 use App\Http\Controllers\FormSettingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SectionController;
 
@@ -24,7 +22,9 @@ Route::get('/forms/{form}', [FormController::class, 'display_questionnaire'])->n
 Route::get('/forms/{form}/entries', [EntryController::class, 'entries'])->name('forms.entries');
 Route::get('/forms/{form}/settings', [FormSettingController::class, 'index'])->name('forms.settings');
 Route::put('/update-settings', [FormSettingController::class, 'update'])->name('form-settings.update');
+Route::post('entry-update/{id}', [EntryController::class, 'entry_update'])->name('entry.update-up');
 Route::resource('sections', SectionController::class);
+Route::get('/get-condition/{field_id}', [FormFieldController::class, 'getConditionalVisibilityField'])->name('fields.get-condition');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

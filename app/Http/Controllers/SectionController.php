@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class SectionController extends Controller
@@ -30,6 +31,7 @@ class SectionController extends Controller
         $store = DB::table('sections')->insert([
             'form_id' => $request->form_id,
             'section_name' => $request->section_name,
+            'section_description' => $request->section_description,
         ]);
 
         if ($store) {
@@ -60,7 +62,8 @@ class SectionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        Section::where('id', $id)->update($request->except(['_token', '_method']));
+        return redirect()->back();
     }
 
     /**
@@ -68,6 +71,8 @@ class SectionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $section = Section::find($id);
+        $section->delete();
+        return redirect()->back();
     }
 }

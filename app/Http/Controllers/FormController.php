@@ -45,55 +45,31 @@ class FormController extends Controller
         return redirect()->route('form-builder.show', $form->uuid);
     }
 
-/**
- * Display the specified resource.
- */
-public function show($uuid)
-{
-    // Check where uuid is equal to the form id
-    $form = Form::where('uuid', $uuid)->first();
-
-    // Load sections with their related fields
-    $form->load(['sections.fields']);
-
-    return view('forms.show', compact('form'));
-}
-
-
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      */
-    public function edit(string $id)
+    public function show($uuid)
     {
-        //
+        // Check where uuid is equal to the form id
+        $form = Form::where('uuid', $uuid)->first();
+
+        // Load sections with their related fields and field properties
+        $form->load(['sections.fields.properties']);
+
+        // dd($form->sections[0]->fields[2]->properties[0]->conditional_visibility_field_id);
+        return view('forms.show', compact('form'));
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
-        /**
      * Display the specified resource.
      */
     public function display_questionnaire($uuid)
     {
-        //check where uuid is equal to the form id
+        // Check where uuid is equal to the form id
         $form = Form::where('uuid', $uuid)->first();
 
-        //load the form with its fields
-        $form->load('fields');
+        // Load sections with their related fields
+        $form->load(['sections.fields']);
         return view('entries.create', compact('form'));
     }
 }

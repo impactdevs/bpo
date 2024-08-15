@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('form_id');
             $table->foreign('form_id')->references('uuid')->on('forms')->onDelete('cascade');
             $table->string('section_name');
+            $table->longText('section_description')->nullable();
             $table->timestamps();
         });
     }

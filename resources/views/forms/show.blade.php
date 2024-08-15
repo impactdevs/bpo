@@ -28,14 +28,38 @@
                 {{-- create an accordion for each section --}}
                 <div class="border border-5 border-primary">
                     {{-- section title --}}
-                    <div class="m-2">
+                    <div class="m-2 d-flex flex-row justify-between">
                         <p class="h6">
                             <a class="btn btn-primary" data-bs-toggle="collapse" href="#section{{ $i }}"
                                 role="button" aria-expanded="false" aria-controls="section{{ $i }}">
                                 {{ $i + 1 }}.{{ $form->sections[$i]->section_name }}
                             </a>
                         </p>
+
+                        <div class="d-flex">
+                            <button type="button" class="btn btn-primary btn-sm ms-2" data-bs-toggle="modal"
+                                data-bs-target="#editSectionModal" data-id="{{ $form->sections[$i]->id }}"
+                                data-section-name="{{ $form->sections[$i]->section_name }}"
+                                data-section-description="{{ $form->sections[$i]->section_description }}">
+                                <i class="bi bi-pencil"></i> Edit
+                            </button>
+                            <form
+                                action="{{ route('sections.destroy', ['form' => $form->id, 'section' => $form->sections[$i]->id]) }}"
+                                method="POST" class="d-inline" id="delete-form-{{ $form->sections[$i]->id }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-primary btn-sm ms-2 btn-delete"
+                                    data-id="{{ $form->sections[$i]->id }}">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
                     </div>
+
+                    {{-- description --}}
+                    <p class="h6">
+                        {{ $form->sections[$i]->section_description ?? '' }}
+                    </p>
 
                     {{-- if there are no fields --}}
                     @if ($form->sections[$i]->fields->isEmpty())
@@ -49,54 +73,23 @@
                         </div>
                     @else
                         @foreach ($form->sections[$i]->fields as $key => $field)
-                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-3">
-                                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                                        @if ($field->type === 'radio' || $field->type === 'checkbox')
-                                            <div class="mb-3 d-flex flex-row justify-content-between">
-                                                <label for="{{ $field->id }}"
-                                                    class="form-label">{{ $i + 1 }}.{{ $key + 1 }}.
-                                                    {{ $field->label }}</label>
-                                                <div class="d-flex">
-                                                    <button type="button" class="btn btn-primary btn-sm ms-2"
-                                                        data-bs-toggle="modal" data-bs-target="#editFieldModal"
-                                                        data-mode="edit" data-id="{{ $field->id }}"
-                                                        data-label="{{ $field->label }}"
-                                                        data-type="{{ $field->type }}"
-                                                        data-options="{{ $field->options }}">
-                                                        <i class="bi bi-pencil"></i> Edit
-                                                    </button>
-                                                    <form
-                                                        action="{{ route('fields.destroy', ['form' => $form->id, 'field' => $field->id]) }}"
-                                                        method="POST" class="d-inline"
-                                                        id="delete-form-{{ $field->id }}">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="btn btn-primary btn-sm ms-2 btn-delete"
-                                                            data-id="{{ $field->id }}">
-                                                            <i class="bi bi-trash"></i> Delete
-                                                        </button>
-                                                    </form>
-                                                    <button class="btn btn-primary btn-sm ms-2" type="button"
-                                                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
-                                                        data-field-id="{{ $field->id }}"
-                                                        aria-controls="offcanvasBottom">Properties</button>
-                                                </div>
+                            @php
+                                $condional_id = null;
+                                $trigger_value = null;
+                                //condional file
+                                if ($field->properties && isset($field->properties[0])) {
+                                    $condional_id = $field->properties[0]->conditional_visibility_field_id;
 
-                                            </div>
-                                            @foreach (explode(',', $field->options) as $option)
-                                                <div class="m-4">
-                                                    <input type="{{ $field->type }}"
-                                                        id="{{ $field->id }}_{{ $loop->index }}"
-                                                        name="{{ $option }}" value="{{ $option }}">
-                                                    <label for="{{ $field->id }}_{{ $loop->index }}"
-                                                        class="ml-2">{{ $option }}</label>
-                                                </div>
-                                            @endforeach
-                                        @elseif ($field->type === 'textarea')
-                                            <div class="mb-3 d-flex flex-column justify-content-between">
-                                                <div class="d-flex justify-content-between mb-2">
+                                    $trigger_value = $field->properties[0]->conditional_visibility_operator;
+                                }
+                            @endphp
+                            <div class="form-group question" id="question_{{ $field->id }}"
+                                data-radio-field="{{ $condional_id }}" data-trigger-value="{{ $trigger_value }}" style="@if($condional_id!=null) display:none; @endif">
+                                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-3">
+                                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                        <div class="p-6 text-gray-900 dark:text-gray-100">
+                                            @if ($field->type === 'radio')
+                                                <div class="mb-3 d-flex flex-row justify-content-between">
                                                     <label for="{{ $field->id }}"
                                                         class="form-label">{{ $i + 1 }}.{{ $key + 1 }}.
                                                         {{ $field->label }}</label>
@@ -126,53 +119,144 @@
                                                             data-field-id="{{ $field->id }}"
                                                             aria-controls="offcanvasBottom">Properties</button>
                                                     </div>
+
                                                 </div>
-
-                                                <textarea id="{{ $field->id }}" name="{{ $field->id }}"></textarea>
-
-                                            </div>
-                                        @else
-                                            <div class="mb-3 d-flex flex-row justify-content-between">
-                                                <label for="{{ $field->id }}"
-                                                    class="form-label">{{ $i + 1 }}.{{ $key + 1 }}.
-                                                    {{ $field->label }}</label>
-                                                <div class="d-flex">
-                                                    <button type="button" class="btn btn-primary btn-sm ms-2"
-                                                        data-bs-toggle="modal" data-bs-target="#editFieldModal"
-                                                        data-mode="edit" data-id="{{ $field->id }}"
-                                                        data-label="{{ $field->label }}"
-                                                        data-type="{{ $field->type }}"
-                                                        data-options="{{ $field->options }}">
-                                                        <i class="bi bi-pencil"></i> Edit
-                                                    </button>
-
-                                                    <form
-                                                        action="{{ route('fields.destroy', ['form' => $form->id, 'field' => $field->id]) }}"
-                                                        method="POST" class="d-inline"
-                                                        id="delete-form-{{ $field->id }}">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="btn btn-primary btn-sm ms-2 btn-delete"
-                                                            data-id="{{ $field->id }}">
-                                                            <i class="bi bi-trash"></i> Delete
+                                                @foreach (explode(',', $field->options) as $option)
+                                                    <div class="m-4">
+                                                        <input type="{{ $field->type }}"
+                                                            id="{{ $field->id }}_{{ $loop->index }}"
+                                                            name="{{ $field->label }}" value="{{ $option }}">
+                                                        <label for="{{ $field->id }}_{{ $loop->index }}"
+                                                            class="ml-2">{{ $option }}</label>
+                                                    </div>
+                                                @endforeach
+                                            @elseif ($field->type === 'checkbox')
+                                                <div class="mb-3 d-flex flex-row justify-content-between">
+                                                    <label for="{{ $field->id }}"
+                                                        class="form-label">{{ $i + 1 }}.{{ $key + 1 }}.
+                                                        {{ $field->label }}</label>
+                                                    <div class="d-flex">
+                                                        <button type="button" class="btn btn-primary btn-sm ms-2"
+                                                            data-bs-toggle="modal" data-bs-target="#editFieldModal"
+                                                            data-mode="edit" data-id="{{ $field->id }}"
+                                                            data-label="{{ $field->label }}"
+                                                            data-type="{{ $field->type }}"
+                                                            data-options="{{ $field->options }}">
+                                                            <i class="bi bi-pencil"></i> Edit
                                                         </button>
-                                                    </form>
-                                                    <button class="btn btn-primary btn-sm ms-2" type="button"
-                                                        data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
-                                                        data-field-id="{{ $field->id }}"
-                                                        aria-controls="offcanvasBottom">Properties</button>
+                                                        <form
+                                                            action="{{ route('fields.destroy', ['form' => $form->id, 'field' => $field->id]) }}"
+                                                            method="POST" class="d-inline"
+                                                            id="delete-form-{{ $field->id }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn btn-primary btn-sm ms-2 btn-delete"
+                                                                data-id="{{ $field->id }}">
+                                                                <i class="bi bi-trash"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                        <button class="btn btn-primary btn-sm ms-2" type="button"
+                                                            data-bs-toggle="offcanvas"
+                                                            data-bs-target="#offcanvasBottom"
+                                                            data-field-id="{{ $field->id }}"
+                                                            aria-controls="offcanvasBottom">Properties</button>
+                                                    </div>
 
                                                 </div>
-                                            </div>
-                                        @endif
+                                                @foreach (explode(',', $field->options) as $option)
+                                                    <div class="m-4">
+                                                        <input type="{{ $field->type }}"
+                                                            id="{{ $field->id }}_{{ $loop->index }}"
+                                                            name="{{ $option }}" value="{{ $option }}">
+                                                        <label for="{{ $field->id }}_{{ $loop->index }}"
+                                                            class="ml-2">{{ $option }}</label>
+                                                    </div>
+                                                @endforeach
+                                            @elseif ($field->type === 'textarea')
+                                                <div class="mb-3 d-flex flex-column justify-content-between">
+                                                    <div class="d-flex justify-content-between mb-2">
+                                                        <label for="{{ $field->id }}"
+                                                            class="form-label">{{ $i + 1 }}.{{ $key + 1 }}.
+                                                            {{ $field->label }}</label>
+                                                        <div class="d-flex">
+                                                            <button type="button" class="btn btn-primary btn-sm ms-2"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editFieldModal" data-mode="edit"
+                                                                data-id="{{ $field->id }}"
+                                                                data-label="{{ $field->label }}"
+                                                                data-type="{{ $field->type }}"
+                                                                data-options="{{ $field->options }}">
+                                                                <i class="bi bi-pencil"></i> Edit
+                                                            </button>
+                                                            <form
+                                                                action="{{ route('fields.destroy', ['form' => $form->id, 'field' => $field->id]) }}"
+                                                                method="POST" class="d-inline"
+                                                                id="delete-form-{{ $field->id }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="btn btn-primary btn-sm ms-2 btn-delete"
+                                                                    data-id="{{ $field->id }}">
+                                                                    <i class="bi bi-trash"></i> Delete
+                                                                </button>
+                                                            </form>
+                                                            <button class="btn btn-primary btn-sm ms-2" type="button"
+                                                                data-bs-toggle="offcanvas"
+                                                                data-bs-target="#offcanvasBottom"
+                                                                data-field-id="{{ $field->id }}"
+                                                                aria-controls="offcanvasBottom">Properties</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <textarea id="{{ $field->id }}" name="{{ $field->id }}"></textarea>
+
+                                                </div>
+                                            @else
+                                                <div class="mb-3 d-flex flex-row justify-content-between">
+                                                    <label for="{{ $field->id }}"
+                                                        class="form-label">{{ $i + 1 }}.{{ $key + 1 }}.
+                                                        {{ $field->label }}</label>
+                                                    <div class="d-flex">
+                                                        <button type="button" class="btn btn-primary btn-sm ms-2"
+                                                            data-bs-toggle="modal" data-bs-target="#editFieldModal"
+                                                            data-mode="edit" data-id="{{ $field->id }}"
+                                                            data-label="{{ $field->label }}"
+                                                            data-type="{{ $field->type }}"
+                                                            data-options="{{ $field->options }}">
+                                                            <i class="bi bi-pencil"></i> Edit
+                                                        </button>
+
+                                                        <form
+                                                            action="{{ route('fields.destroy', ['form' => $form->id, 'field' => $field->id]) }}"
+                                                            method="POST" class="d-inline"
+                                                            id="delete-form-{{ $field->id }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn btn-primary btn-sm ms-2 btn-delete"
+                                                                data-id="{{ $field->id }}">
+                                                                <i class="bi bi-trash"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                        <button class="btn btn-primary btn-sm ms-2" type="button"
+                                                            data-bs-toggle="offcanvas"
+                                                            data-bs-target="#offcanvasBottom"
+                                                            data-field-id="{{ $field->id }}"
+                                                            aria-controls="offcanvasBottom">Properties</button>
+
+                                                    </div>
+                                                </div>
+                                            @endif
 
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
-                        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pt-3">
+                        <div class="max-w-7xl
+                                mx-auto sm:px-6 lg:px-8 pt-3">
                             <div class="overflow-hidden shadow-sm sm:rounded-lg">
                                 <div class="p-6 text-gray-900 dark:text-gray-100">
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -248,5 +332,3 @@
 <x-field-modal :section="1" mode="create" />
 {{-- set the x-field-modal mode attribute dynamically --}}
 <x-field-modal :section="1" mode="edit" />
-
-<script></script>

@@ -90,4 +90,17 @@ class FormFieldController extends Controller
 
         return redirect()->back();
     }
+
+    //retrieve conditional visibility field
+    public function getConditionalVisibilityField($field_id)
+    {
+        $conditional_visibility_field = DB::table('field_properties')
+            ->join('form_fields', 'field_properties.conditional_visibility_field_id', '=', 'form_fields.id')
+            ->select('field_properties.*', 'form_fields.label')
+            ->where('field_properties.field_id', $field_id)
+            ->get();
+
+        return response()->json(['success' => true, 'data' => $conditional_visibility_field]);
+    }
+
 }
