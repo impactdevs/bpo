@@ -10,7 +10,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SectionController;
 
 Route::get('/', function () {
-    return view('dashboard');
+    $email = auth()->user()->email;
+    if ($email =="admin@bpo.com") {
+        return view('dashboard');
+    }
+    return redirect()->route('entries.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::resource('form-builder', FormController::class);
 Route::resource('fields', FormFieldController::class);
