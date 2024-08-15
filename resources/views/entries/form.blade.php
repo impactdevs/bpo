@@ -4,6 +4,10 @@
      @else
          {{-- iterate through sections and create an accordion --}}
          @for ($i = 0; $i < count($form->sections); $i++)
+             {{-- hidden user_id field --}}
+             @if (isset($user))
+                 <input type="hidden" name="user_id" value="{{ $user }}">
+             @endif
              {{-- create an accordion for each section --}}
              <div class="row">
                  <div class="border border-5 border-primary col-12">
@@ -100,7 +104,8 @@
                                                              {{ $field->label }}</label>
                                                      </div>
 
-                                                     <textarea id="{{ $field->id }}" name="{{ $field->id }}" rows="15" placeholder="The responses here should be comma separated"></textarea>
+                                                     <textarea id="{{ $field->id }}" name="{{ $field->id }}" rows="15"
+                                                         placeholder="The responses here should be comma separated"></textarea>
 
                                                  </div>
                                              @else

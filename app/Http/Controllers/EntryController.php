@@ -46,7 +46,7 @@ class EntryController extends Controller
         $entry = new Entry();
         $entry->form_id = $form_id;
         $entry->responses = $responses;
-        $entry->user_id = auth()->id();
+        $entry->user_id = $request->input('user_id')??auth()->id();
         $entry->save();
 
         return back()->with('success', 'Entry submitted successfully! Thank you for your response.');
@@ -196,5 +196,16 @@ class EntryController extends Controller
 
         return back()->with('success', 'Entry updated successfully!');
 
+    }
+
+    public function survey(Request $request, $form, $user)
+    {
+        //get the form
+        $form = Form::where('uuid', $form)->firstOrFail();
+
+        // Load sections with their related fields
+        $form->load(['sections.fields']);
+
+        return view('entries.create', compact('form', 'user'));
     }
 }

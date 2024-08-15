@@ -33,6 +33,10 @@
                                             <a href="{{ route('forms.entries', $form->uuid) }}" class="">
                                                 <i class="bi bi-eye"></i>
                                             </a>
+
+                                            <a href="{{ url('forms/survey', [$form->uuid, auth()->user()->id]) }}" id="copyLink">
+                                                <i class="bi bi-link-45deg"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
