@@ -58,7 +58,7 @@
                                                         id="{{ $field->id }}_{{ $loop->index }}"
                                                         name="{{ $field->id }}"
                                                         value="{{ $option }}"
-                                                        @if (in_array($option, (array) old($field->id, $formattedResponses[$field->id] ?? []))) checked @endif>
+                                                        @if (in_array(trim($option), (array) old($field->id, $formattedResponses[$field->id] ?? []))) checked @endif>
                                                     <label for="{{ $field->id }}_{{ $loop->index }}" class="ml-2">{{ $option }}</label>
                                                 </div>
                                             @endforeach
