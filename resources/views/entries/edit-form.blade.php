@@ -53,31 +53,32 @@
                                                         {{ $field->label }}</label>
                                                 </div>
                                                 @foreach (explode(',', $field->options) as $option)
-                                                    <div class="m-4">
-                                                        <input type="{{ $field->type }}"
-                                                            id="{{ $field->id }}_{{ $loop->index }}"
-                                                            name="{{ $field->id }}" value="{{ $option }}"
-                                                            @if (old($field->id, $formattedResponses[$field->id] ?? [])) checked @endif>
-                                                        <label for="{{ $field->id }}_{{ $loop->index }}"
-                                                            class="ml-2">{{ $option }}</label>
-                                                    </div>
-                                                @endforeach
-                                            @elseif ($field->type === 'checkbox')
-                                                <div class="mb-3 d-flex flex-column justify-content-between">
-                                                    <label for="{{ $field->id }}"
-                                                        class="form-label">{{ $i + 1 }}.{{ $key + 1 }}.
-                                                        {{ $field->label }}</label>
+                                                <div class="m-4">
+                                                    <input type="{{ $field->type }}"
+                                                        id="{{ $field->id }}_{{ $loop->index }}"
+                                                        name="{{ $field->id }}"
+                                                        value="{{ $option }}"
+                                                        @if (in_array($option, (array) old($field->id, $formattedResponses[$field->id] ?? []))) checked @endif>
+                                                    <label for="{{ $field->id }}_{{ $loop->index }}" class="ml-2">{{ $option }}</label>
                                                 </div>
-                                                @foreach (explode(',', $field->options) as $option)
-                                                    <div class="m-4">
-                                                        <input type="{{ $field->type }}"
-                                                            id="{{ $field->id }}_{{ $loop->index }}"
-                                                            name="{{ $field->id }}[]" value="{{ $option }}"
-                                                            @if (in_array($option, old($field->id, $formattedResponses[$field->id] ?? []))) checked @endif>
-                                                        <label for="{{ $field->id }}_{{ $loop->index }}"
-                                                            class="ml-2">{{ $option }}</label>
-                                                    </div>
-                                                @endforeach
+                                            @endforeach
+
+
+                                            @elseif ($field->type === 'checkbox')
+                                            <div class="mb-3 d-flex flex-column justify-content-between">
+                                                <label for="{{ $field->id }}" class="form-label">{{ $i + 1 }}.{{ $key + 1 }}. {{ $field->label }}</label>
+                                            </div>
+                                            @foreach (explode(',', $field->options) as $option)
+                                                <div class="m-4">
+                                                    <input type="checkbox"
+                                                        id="{{ $field->id }}_{{ $loop->index }}"
+                                                        name="{{ $field->id }}[]"
+                                                        value="{{ $option }}"
+                                                        @if (in_array(trim($option), (array) old($field->id, $formattedResponses[$field->id] ?? []))) checked @endif>
+                                                    <label for="{{ $field->id }}_{{ $loop->index }}" class="ml-2">{{ $option }}</label>
+                                                </div>
+                                            @endforeach
+
                                             @elseif ($field->type === 'textarea')
                                                 <div class="mb-3 d-flex flex-column justify-content-between">
                                                     <div class="d-flex justify-content-between mb-2">
