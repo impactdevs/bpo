@@ -1,0 +1,6 @@
+body{
+    margin: 5px;
+    background-color: inherit; /* Maintain the background color */
+    -webkit-print-color-adjust: exact; /* Ensure colors are printed correctly */
+    color-adjust: exact; /* Firefox-specific property to maintain colors */
+}
