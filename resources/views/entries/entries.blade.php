@@ -4,13 +4,16 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('List of submitted entries') }}
             </h2>
+
+            {{-- settings button --}}
+
         </div>
     </x-slot>
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-10xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <table class="table table-striped">
+                    <table id="entriesTable" class="table table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -28,7 +31,7 @@
                                         <th scope="row">{{ $entry->id }}</th>
                                         <td>{{ $entry->title }}</td>
                                         <td>{{ $entry->subtitle }}</td>
-                                        <td>{{ $entry->user->name??'Un Known User' }}</td>
+                                        <td>{{ $entry->user->name ?? 'Unknown User' }}</td>
                                         <td>{{ $entry->created_at->format('M d, Y') }}</td>
                                         <td>
                                             <a href="{{ url('entries', $entry->id) }}" class="">
@@ -56,4 +59,47 @@
             </div>
         </div>
     </div>
+    @push('script')
+        <!-- Initialize DataTable -->
+        <script>
+            $(document).ready(function() {
+                $('#entriesTable').DataTable({
+                    "paging": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "lengthChange": true, // Ensure the length menu is shown
+                    "lengthMenu": [10, 20, 30, 40, 50, 60, 70], // Define options for number of entries to show
+                    // Export buttons
+                    dom: "Bflrtip",
+                    // Style the buttons
+                    buttons: [{
+                            extend: "csv",
+                            className: "btn btn-warning btn-small text-white",
+                            messageTop: "Comments about Arrears",
+                        },
+                        {
+                            extend: "excel",
+                            className: "btn btn-warning btn-small text-white",
+                            messageTop: "Comments about Arrears",
+                        },
+                        {
+                            extend: "pdf",
+                            className: "btn btn-warning btn-small text-white",
+                            messageTop: "Comments about Arrears",
+                            customize: function(doc) {
+                                doc.styles.tableHeader.fillColor = '#FFA500';
+                            }
+                        },
+                        {
+                            extend: "print",
+                            className: "btn btn-warning btn-small text-white",
+                            messageTop: "Comments about Arrears",
+                        },
+                    ],
+                });
+            });
+        </script>
+    @endpush
+
 </x-app-layout>

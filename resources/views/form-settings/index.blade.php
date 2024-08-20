@@ -18,20 +18,28 @@
                         <label for="title" class="form-label">Title</label>
                         <select class="form-select form-select-lg mb-3" aria-label="Title" name="title">
                             <option value="">Select title</option> {{-- Default option --}}
-                            @foreach ($form->fields as $field)
-                                <option value="{{ $field->id }}" @if (filled($form->setting) && $form->setting->title == $field->id) selected @endif>
-                                    {{ $field->label }}
-                                </option>
+                            @foreach ($form->sections as $section)
+                                {{-- iterate through all the fields in that section --}}
+                                @foreach ($section->fields as $field)
+                                    <option value="{{ $field->id }}"
+                                        @if (filled($form->setting) && $form->setting->title == $field->id) selected @endif>
+                                        {{ $field->label }}
+                                    </option>
+                                @endforeach
                             @endforeach
                         </select>
 
                         <label for="subtitle" class="form-label">Sub-Title</label>
                         <select class="form-select form-select-lg" aria-label="Sub title" name="subtitle">
                             <option value="">Select sub-title</option> {{-- Default option --}}
-                            @foreach ($form->fields as $field)
-                                <option value="{{ $field->id }}" @if (filled($form->setting) && $form->setting->subtitle == $field->id) selected @endif>
-                                    {{ $field->label }}
-                                </option>
+                            @foreach ($form->sections as $section)
+                                {{-- iterate through all the fields in that section --}}
+                                @foreach ($section->fields as $field)
+                                    <option value="{{ $field->id }}"
+                                        @if (filled($form->setting) && $form->setting->subtitle == $field->id) selected @endif>
+                                        {{ $field->label }}
+                                    </option>
+                                @endforeach
                             @endforeach
                         </select>
 

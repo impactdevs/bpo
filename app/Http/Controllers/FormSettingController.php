@@ -12,10 +12,7 @@ class FormSettingController extends Controller
     {
         //get the form fields
         $form = Form::where('uuid', $uuid)->first();
-        $form->load('fields');
-
-        //get the form settings
-        $form->load('setting');
+        $forms = Form::with('sections.fields', 'setting')->get();
         
         return view('form-settings.index', compact('form'));
     }

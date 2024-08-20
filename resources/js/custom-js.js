@@ -2,7 +2,11 @@ $(document).ready(function () {
     console.log("ready!");
     $("#field_type").change(function () {
         var selectedType = $(this).val();
-        if (selectedType === "radio" || selectedType === "checkbox" || selectedType === "select") {
+        if (
+            selectedType === "radio" ||
+            selectedType === "checkbox" ||
+            selectedType === "select"
+        ) {
             $("#options_container").show();
         } else {
             $("#options_container").hide();
@@ -78,6 +82,7 @@ $(document).ready(function () {
         }
         modal.find("#field_name").val(label);
         modal.find("#field_type").val(type);
+        modal.find("#section_id").val(id);
 
         if (type === "checkbox" || type === "radio" || type === "select") {
             console.log("showing options");
@@ -93,7 +98,11 @@ $(document).ready(function () {
         modal.find("#field_type").change(function () {
             console.log("change event");
             var selectedType = $(this).val();
-            if (selectedType === "radio" || selectedType === "checkbox" || selectedType === "select") {
+            if (
+                selectedType === "radio" ||
+                selectedType === "checkbox" ||
+                selectedType === "select"
+            ) {
                 modal.find("#options_container").show();
             } else {
                 modal.find("#options_container").hide();
@@ -203,10 +212,8 @@ $(document).ready(function () {
                 console.log("found controlling field");
                 if (selectedValue.trim() === triggerValue.trim()) {
                     $(this).show();
-
                 } else {
                     $(this).hide();
-
                 }
             }
         });
