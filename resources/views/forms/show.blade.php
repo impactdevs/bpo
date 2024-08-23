@@ -25,7 +25,7 @@
 
             </div>
         @else
-        
+
             {{-- iterate through sections and create an accordion --}}
             @for ($i = 0; $i < count($form->sections); $i++)
                 <div class="sec-sort">
@@ -384,7 +384,15 @@
     @push('script')
         <script>
             $(function() {
-                $(".sortable").sortable();
+                $(".sortable").sortable(
+                    {
+                        stop: function(){
+                            console.log("re-arranged.....")
+                        }
+                    }
+                );
+                //on dropping sortable item, make an update
+
                 $(".sec-sort").sortable();
             });
         </script>

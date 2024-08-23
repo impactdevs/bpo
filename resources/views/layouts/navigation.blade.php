@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 nav-section">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -12,27 +12,24 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    @if (auth()->user()->email=="admin@bpo.com")
-
-
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+                    @if (auth()->user()->email == 'admin@bpo.com')
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
 
 
 
-                    <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports')">
-                        {{ __('Reports') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports')">
+                            {{ __('Reports') }}
+                        </x-nav-link>
 
-                    <x-nav-link :href="route('form-builder.index')" :active="request()->routeIs('form-builder')">
-                        {{ __('Forms') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('form-builder.index')" :active="request()->routeIs('form-builder')">
+                            {{ __('Forms') }}
+                        </x-nav-link>
 
-                    <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries')">
-                        {{ __('Entries') }}
-                    </x-nav-link>
-
+                        <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries')">
+                            {{ __('Entries') }}
+                        </x-nav-link>
                     @else
                         <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries')">
                             {{ __('Entries') }}
@@ -116,6 +113,11 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
+                {{-- entries --}}
+                <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries')">
+                    {{ __('Entries') }}
+                </x-nav-link>
+
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -130,3 +132,28 @@
         </div>
     </div>
 </nav>
+
+<nav class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 nav-section-print" style="display: none;">
+    <!-- Primary Navigation Menu -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex">
+                <!-- Logo -->
+                <div class="shrink-0 flex items-center">
+                    <a href="{{ route('dashboard') }}">
+                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    {{-- Response Title --}}
+                    <h1>Response</h1>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+

@@ -22,6 +22,9 @@
 
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
 
+    <link href="{{ asset('assets/css/print.css') }}" media="print" rel="stylesheet" />
+
+
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/custom-js.js'])

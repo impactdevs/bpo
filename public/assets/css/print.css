@@ -4,3 +4,13 @@ body{
     -webkit-print-color-adjust: exact; /* Ensure colors are printed correctly */
     color-adjust: exact; /* Firefox-specific property to maintain colors */
 }
+
+.nav-section{
+    /* hide this section */
+    display: none;
+}
+
+.nav-section-print{
+    /* show this section */
+    display: block;
+}
