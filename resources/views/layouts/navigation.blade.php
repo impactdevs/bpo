@@ -30,6 +30,11 @@
                         <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries')">
                             {{ __('Entries') }}
                         </x-nav-link>
+
+                         <x-nav-link :href="route('documents.index')" :active="request()->routeIs('documents')">
+                            {{ __('Documents') }}
+                        </x-nav-link>
+
                     @else
                         <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries')">
                             {{ __('Entries') }}

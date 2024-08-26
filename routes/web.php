@@ -1,13 +1,15 @@
 <?php
 
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EntryController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\FormFieldController;
 use App\Http\Controllers\FormSettingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SectionController;
+use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     $email = auth()->user()->email;
@@ -31,6 +33,12 @@ Route::resource('sections', SectionController::class);
 Route::get('/get-condition/{field_id}', [FormFieldController::class, 'getConditionalVisibilityField'])->name('fields.get-condition');
 Route::post('/save-draft', [EntryController::class, 'store'])->middleware('auth')->name('save-draft');
 Route::get('/forms/survey/{form}/{user}', [EntryController::class, 'survey'])->name('form.survey');
+
+//document routes
+Route::resource('documents', DocumentController::class)->only(['index', 'store', 'destroy', 'show']);
+Route::get('documents/{id}/download', [DocumentController::class, 'download'])->name('documents.download');
+//document routes
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
