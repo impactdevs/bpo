@@ -49,6 +49,23 @@ class DocumentController extends Controller
         return Storage::download($document->file_path);
     }
 
+    public function show($id)
+{
+    $document = Document::findOrFail($id);
+
+    $filePath = storage_path('app/' . $document->file_path);
+
+    if (file_exists($filePath)) {
+        $fileType = mime_content_type($filePath);
+        return response()->file($filePath, [
+            'Content-Type' => $fileType,
+        ]);
+    } else {
+        return redirect()->back()->with('error', 'Document not found.');
+    }
+}
+
+
     public function destroy($id)
 {
     try {
