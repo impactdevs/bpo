@@ -121,6 +121,10 @@
                     searching: true,
                     ajax: {
                         url: '{{ route('reports.data', ['uuid' => $uuid]) }}',
+                        type: 'POST', // Change GET to POST
+                        data: {
+                            _token: '{{ csrf_token() }}' // Include CSRF token for POST requests in Laravel
+                        }
                     },
                     columns: columns,
                     dom: 'Bfrltip',
@@ -130,6 +134,7 @@
                     ],
                     pageLength: 15
                 });
+
             });
         </script>
     @endpush
