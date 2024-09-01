@@ -80,16 +80,18 @@
             $(document).ready(function() {
                 // Define columns based on headers
                 var headers = @json($headers);
-                console.log(headers);
                 var columns = [];
 
                 // Prepare columns
                 $.each(headers, function(key, header) {
                     if (header.sub_headers) {
+
                         $.each(header.sub_headers, function(index, sub_header) {
                             columns.push({
                                 data: header.label,
                                 render: function(data, type, row) {
+                                    console.log(data);
+                                    //  if sub_header is Male, console.log(data)
                                     // Check if data is an array (for checkboxes) or simply a value (for radio buttons)
                                     if (Array.isArray(data)) {
                                         // For checkboxes, check if the sub_header exists in the array
@@ -111,8 +113,6 @@
                         });
                     }
                 });
-                console.log(columns);
-
 
                 // Initialize DataTables
                 $('#example').DataTable({
