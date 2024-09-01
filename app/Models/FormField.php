@@ -16,4 +16,10 @@ class FormField extends Model
     {
         return $this->hasMany(condition::class, 'field_id');
     }
+
+    //each form form field belongs to a form section
+    public function section()
+    {
+        return $this->belongsTo(Section::class, 'section_id', 'id');
+    }
 }
