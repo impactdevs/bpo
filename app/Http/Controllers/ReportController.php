@@ -112,6 +112,62 @@ class ReportController extends Controller
         return view('reports.reports', compact('headers', 'uuid', 'entries'));
     }
 
+    public function getReportsData(Request $request, $uuid)
+    {
+        // Retrieve headers for the form
+        $headers = $this->headers($uuid);
+        
+        // Create a map of headers by their label for quick lookup
+        $headerLabels = [];
+        foreach ($headers as $headerId => $headerData) {
+            $headerLabels[$headerData['label']] = $headerData;
+        }
+
+        // Initialize query for entries
+        $query = Entry::query();
+
+        // Apply search filter if provided
+        if ($request->has('search')) {
+            $searchValue = $request->get('search')['value'];
+            $query->where(function ($query) use ($searchValue) {
+                $query->where('responses', 'LIKE', "%{$searchValue}%");
+            });
+        }
+
+        // Paginate results
+        $entries = $query->latest()->paginate($request->get('length', 10), ['*'], 'page', $request->get('start', 1) / $request->get('length', 10) + 1);
+
+        // Process entries for DataTables
+        $data = $entries->map(function ($entry) use ($headerLabels) {
+            $decodedResponses = json_decode($entry->responses, true);
+            $formattedResponses = [];
+
+            foreach ($decodedResponses as $key => $value) {
+                $formField = FormField::find($key);
+                if ($formField) {
+                    $formattedResponses[$formField->label] = $value;
+                }
+            }
+
+            foreach ($headerLabels as $label => $headerData) {
+                if (!array_key_exists($label, $formattedResponses)) {
+                    $formattedResponses[$label] = null;
+                }
+            }
+
+            return $formattedResponses;
+        });
+
+        // Return data in DataTables format
+        return response()->json([
+            'draw' => $request->get('draw'),
+            'recordsTotal' => Entry::count(),
+            'recordsFiltered' => $entries->total(),
+            'data' => $data
+        ]);
+    }
+
+
 
 
 

@@ -4,8 +4,7 @@
             <h2 class="text-2xl font-bold text-center mb-6">Report Overview</h2>
 
             <div class="table-wrapper shadow-lg border border-gray-300 rounded-lg overflow-x-auto">
-                <table id="example" class="display table table-striped table-bordered"
-                    style="width:max-content; min-width: 100%;">
+                <table id="example" class="display table table-striped table-bordered" style="width:100%;">
                     <thead class="bg-gray-200 text-gray-800 text-sm">
                         <tr>
                             @foreach ($headers as $header)
@@ -30,35 +29,8 @@
                             @endforeach
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($entries as $entry)
-                            <tr>
-                                @foreach ($headers as $header)
-                                    @if (Arr::exists($header, 'sub_headers'))
-                                        @foreach ($header['sub_headers'] as $sub_header)
-                                            @php
-                                                $response = $entry->formatted_responses[$header['label']] ?? null;
-                                                $processed_response = is_array($response) ? $response[0] : $response;
-                                                $cell_content =
-                                                    $processed_response == trim($sub_header) ? $processed_response : '';
-                                            @endphp
-                                            <td class="text-center">{{ $cell_content }}</td>
-                                        @endforeach
-                                    @else
-                                        @php
-                                            $response = $entry->formatted_responses[$header['label']] ?? null;
-                                            $cell_content = is_array($response) ? '' : $response;
-                                        @endphp
-                                        <td class="text-center">{{ $cell_content }}</td>
-                                    @endif
-                                @endforeach
-                            </tr>
-                        @endforeach
-                    </tbody>
+                    <tbody></tbody>
                 </table>
-                <div class="pagination-wrapper mt-4">
-                    {!! $entries->appends(['search' => Request::get('search')])->render() !!}
-                </div>
             </div>
         </div>
     </div>
@@ -71,8 +43,7 @@
             }
 
             table {
-                width: max-content;
-                min-width: 100%;
+                width: 100%;
                 border-collapse: collapse;
             }
 
@@ -103,12 +74,63 @@
             table tr:hover td {
                 background-color: #e5e7eb;
             }
-
-            .pagination-wrapper {
-                display: flex;
-                justify-content: center;
-                padding: 20px 0;
-            }
         </style>
+
+        <script>
+            $(document).ready(function() {
+                // Define columns based on headers
+                var headers = @json($headers);
+                console.log(headers);
+                var columns = [];
+
+                // Prepare columns
+                $.each(headers, function(key, header) {
+                    if (header.sub_headers) {
+                        $.each(header.sub_headers, function(index, sub_header) {
+                            columns.push({
+                                data: header.label,
+                                render: function(data, type, row) {
+                                    // Check if data is an array (for checkboxes) or simply a value (for radio buttons)
+                                    if (Array.isArray(data)) {
+                                        // For checkboxes, check if the sub_header exists in the array
+                                        return data.includes(sub_header) ? sub_header : '';
+                                    } else {
+                                        // For radio buttons or other simple fields, return the value directly
+                                        return data === sub_header ? sub_header : '';
+                                    }
+                                }
+                            });
+                        });
+                    } else {
+                        columns.push({
+                            data: header.label,
+                            render: function(data, type, row) {
+                                // Simply return the data if it's not a subheader-based field
+                                return data !== undefined ? data : ''; // Handle missing data
+                            }
+                        });
+                    }
+                });
+                console.log(columns);
+
+
+                // Initialize DataTables
+                $('#example').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    searching: true,
+                    ajax: {
+                        url: '{{ route('reports.data', ['uuid' => $uuid]) }}',
+                    },
+                    columns: columns,
+                    dom: 'Bfrltip',
+                    buttons: [
+                        'excel',
+                        'pdf'
+                    ],
+                    pageLength: 15
+                });
+            });
+        </script>
     @endpush
 </x-app-layout>

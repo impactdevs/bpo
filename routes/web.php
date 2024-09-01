@@ -35,6 +35,8 @@ Route::get('/get-condition/{field_id}', [FormFieldController::class, 'getConditi
 Route::post('/save-draft', [EntryController::class, 'store'])->middleware('auth')->name('save-draft');
 Route::get('/forms/survey/{form}/{user}', [EntryController::class, 'survey'])->name('form.survey');
 Route::get('get-entries/{uuid}', [ReportController::class, 'getEntries'])->name('get-entries');
+Route::get('/reports/data/{uuid}', [ReportController::class, 'getReportsData'])->name('reports.data');
+
 
 //document routes
 Route::resource('documents', DocumentController::class)->only(['index', 'store', 'destroy', 'show']);
