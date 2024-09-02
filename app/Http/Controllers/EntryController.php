@@ -50,7 +50,7 @@ class EntryController extends Controller
         $entry = new Entry();
         $entry->form_id = $form_id;
         $entry->responses = $responses;
-        $entry->user_id = $request->input('user_id')??auth()->id();
+        $entry->user_id = $request->input('user_id') ?? auth()->id();
         $entry->save();
 
         return back()->with('success', 'Entry submitted successfully! Thank you for your response.');
@@ -61,6 +61,10 @@ class EntryController extends Controller
      */
     public function show(Entry $entry)
     {
+        // if the user is not logged in, redirect  to login page
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
         $decodedResponses = json_decode($entry->responses, true); // Decode JSON to associative array
 
         $formattedResponses = [];
