@@ -45,7 +45,7 @@
                                         <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 text-left">
                                             {{ $form->created_at->format('M d, Y') }}</td>
                                         <td class="px-6 py-4 text-sm font-medium text-left">
-                                            <a href="{{ route('forms.show', $form->uuid) }}"
+                                            <a href="{{ route('form-builder.show', $form->uuid) }}"
                                                 class="text-blue-600 dark:text-blue-400 hover:underline">
                                                 <i class="bi bi-eye"></i>
                                             </a>
