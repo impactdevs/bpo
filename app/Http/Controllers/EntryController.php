@@ -14,6 +14,10 @@ class EntryController extends Controller
      */
     public function index()
     {
+        // if the user is not logged in, redirect  to login page
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
         $forms = Form::all();
         return view('entries.index', compact('forms'));
     }
