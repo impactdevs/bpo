@@ -32,7 +32,7 @@
     @vite(['resources/css/app.css', 'resources/css/custom-css.css', 'resources/js/app.js', 'resources/js/custom-js.js'])
 </head>
 
-<body class="font-sans antialiased">
+<body class="">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         @include('layouts.navigation')
 
