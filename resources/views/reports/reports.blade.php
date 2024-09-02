@@ -6,27 +6,25 @@
                 <div id="export-buttons"></div>
             </div>
             <div class="table-wrapper shadow-lg border border-gray-300 rounded-lg overflow-x-auto">
-                <table id="example" class="display table table-striped table-bordered" style="width:100%;">
+                <table id="example" class="display table table-striped table-bordered order-column" style="width:100%;">
                     <thead class="bg-gray-200 text-gray-800 text-sm">
                         <tr>
                             @foreach ($headers as $header)
-                                @if (Arr::exists($header, 'sub_headers'))
+                                @if (Arr::exists($header, 'sub_headers') && count($header['sub_headers']) > 0)
                                     <th colspan="{{ count($header['sub_headers']) }}" class="header-cell text-center">
                                         {{ $header['label'] }}
                                     </th>
                                 @else
-                                    <th class="header-cell text-center">{{ $header['label'] }}</th>
+                                    <th rowspan="2" class="header-cell text-center">{{ $header['label'] }}</th>
                                 @endif
                             @endforeach
                         </tr>
                         <tr class="bg-gray-100">
                             @foreach ($headers as $header)
-                                @if (Arr::exists($header, 'sub_headers'))
+                                @if (Arr::exists($header, 'sub_headers') && count($header['sub_headers']) > 0)
                                     @foreach ($header['sub_headers'] as $sub_header)
                                         <th class="text-center">{{ $sub_header }}</th>
                                     @endforeach
-                                @else
-                                    <th></th>
                                 @endif
                             @endforeach
                         </tr>
@@ -35,7 +33,6 @@
                 </table>
             </div>
         </div>
-
 
         @push('script')
             <script>
@@ -54,40 +51,43 @@
                                         return row[header.label];
                                     },
                                     render: function(data, type, row) {
-
                                         if (sub_header === 'Female' || sub_header === 'Male') {
-                                            // Check if data matches the sub_header (e.g., 'Male' or 'Female')
                                             return data === sub_header ? sub_header : '';
                                         }
 
-                                        // Check if data is an array (for checkboxes) or simply a value (for radio buttons)
                                         if (Array.isArray(data)) {
                                             return data.includes(sub_header) ? sub_header : '';
                                         } else {
                                             return data === sub_header ? sub_header : '';
                                         }
-                                    }
+                                    },
+                                    orderable: sub_header !==
+                                        '', // Disable sorting for empty subheaders
                                 });
                             });
                         } else {
                             columns.push({
                                 data: function(row) {
-                                    // Extract data for this single header column
                                     return row[header.label];
                                 },
                                 render: function(data, type, row) {
-                                    // Handle missing data gracefully
                                     return data !== undefined ? data : '';
-                                }
+                                },
+                                orderable: true, // Enable sorting for regular headers
                             });
                         }
                     });
 
                     // Initialize DataTables
                     var table = $('#example').DataTable({
+                        columnDefs: [{
+                            targets: -1,
+                            visible: false
+                        }],
                         processing: true,
                         serverSide: true,
                         searching: true,
+                        sorting: true,
                         ajax: {
                             url: '{{ route('reports.data', ['uuid' => $uuid]) }}',
                             type: 'POST',
@@ -99,6 +99,7 @@
                         lengthMenu: [50, 100, 150, 200, 300, 400, 500],
                     });
 
+                    // Export buttons
                     new $.fn.dataTable.Buttons(table, {
                         buttons: [{
                                 extend: 'csv',

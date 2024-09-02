@@ -127,12 +127,17 @@ class ReportController extends Controller
         $query = Entry::query();
 
         // Apply search filter if provided
-        if ($request->has('search')) {
+        if ($request->has('search') && $request->get('search')['value'] !== null) {
             $searchValue = $request->get('search')['value'];
+            \Log::info($searchValue);
+
             $query->where(function ($query) use ($searchValue) {
-                $query->where('responses', 'LIKE', "%{$searchValue}%");
+                // Convert both the responses and search value to lowercase to ignore case
+                $query->whereRaw('LOWER(responses) LIKE ?', ['%' . strtolower($searchValue) . '%']);
             });
         }
+
+
 
         // Paginate results
         $entries = $query->latest()->paginate($request->get('length', 10), ['*'], 'page', $request->get('start', 1) / $request->get('length', 10) + 1);
