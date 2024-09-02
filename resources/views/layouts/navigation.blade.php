@@ -1,5 +1,5 @@
 <nav x-data="{ open: false }"
-    class="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 dark:bg-gray-800 shadow-lg border-b border-gray-100 dark:border-gray-700 p-5">
+    class="bg-primary dark:bg-gray-800 shadow-lg border-b border-gray-100 dark:border-gray-700 p-5">
     <!-- Primary Navigation Menu -->
     <div class="max-w-16xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
