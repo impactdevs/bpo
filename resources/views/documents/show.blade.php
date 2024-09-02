@@ -4,7 +4,8 @@
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ __('Data Manager') }}
             </h2>
-            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasUpload" aria-controls="offcanvasUpload">
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasUpload"
+                aria-controls="offcanvasUpload">
                 <i class="bi bi-upload"></i> Upload Data
             </button>
         </div>
@@ -80,17 +81,16 @@
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 
 <!-- Include DataTables initialization script -->
-    <script>
-        $(document).ready(function() {
-            $('#data-table').DataTable();
-        });
+<script>
+    $(document).ready(function() {
+        $('#data-table').DataTable();
+    });
 
-        $('#data-table').DataTable({
-    "paging": true,
-    "searching": true,
-    "ordering": true,
-    "info": true,
-    "pageLength": 10
-});
-
-    </script>
+    $('#data-table').DataTable({
+        "paging": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "pageLength": 10
+    });
+</script>
