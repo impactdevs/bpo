@@ -14,11 +14,15 @@ td {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    /* center */
+    text-align: center;
+    /* vertical align center */
+    vertical-align: middle;
 }
 
 th.header-cell {
     font-weight: bold;
-    background-color: #1f2937;
+    background-color: blue;
     /* Dark gray */
     color: #ffffff;
     border-bottom: 2px solid #e5e7eb;

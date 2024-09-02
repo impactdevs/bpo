@@ -103,23 +103,25 @@
                     new $.fn.dataTable.Buttons(table, {
                         buttons: [{
                                 extend: 'csv',
-                                className: "btn btn-warning btn-small text-white",
-                                messageTop: "Response Report"
+                                className: "btn btn-primary btn-small text-white",
+                                messageTop: "Response Report",
+                                orientation: "landscape",
                             },
                             {
                                 extend: 'excel',
-                                className: "btn btn-warning btn-small text-white",
-                                messageTop: "Response Report"
+                                className: "btn btn-primary btn-small text-white",
+                                messageTop: "Response Report",
+                                orientation: "landscape",
                             },
                             {
                                 extend: 'pdf',
-                                className: "btn btn-warning btn-small text-white",
+                                className: "btn btn-primary btn-small text-white",
                                 messageTop: "Response Report",
                                 orientation: "landscape",
                             },
                             {
                                 extend: 'print',
-                                className: "btn btn-warning btn-small text-white",
+                                className: "btn btn-primary btn-small text-white",
                                 messageTop: "Response Report"
                             }
                         ]

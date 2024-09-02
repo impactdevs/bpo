@@ -24,6 +24,8 @@
 
     <link href="{{ asset('assets/css/print.css') }}" media="print" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css">
+
 
 
     <!-- Scripts -->

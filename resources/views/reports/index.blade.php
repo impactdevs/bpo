@@ -2,14 +2,14 @@
     <x-slot name="header">
         <div class="d-flex justify-content-between">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Reports') }}
+                {{ __('Response Reports') }}
             </h2>
         </div>
 
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-10xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <table class="table table-striped">
@@ -33,12 +33,6 @@
                                         <td>
                                             <a href="{{ route('forms.reports', $form->uuid) }}" class="">
                                                 <i class="bi bi-eye"></i>
-                                            </a>
-                                            <a href="#" class="">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-                                            <a href="#" class="">
-                                                <i class="bi bi-pencil"></i>
                                             </a>
                                         </td>
                                     </tr>
