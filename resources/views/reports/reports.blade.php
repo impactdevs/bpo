@@ -38,46 +38,6 @@
 
 
         @push('script')
-            <style>
-                .table-wrapper {
-                    overflow-x: auto;
-                    width: 100%;
-                }
-
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-
-                th,
-                td {
-                    padding: 10px;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                }
-
-                th.header-cell {
-                    font-weight: bold;
-                    background-color: #1f2937;
-                    /* Dark gray */
-                    color: #ffffff;
-                    border-bottom: 2px solid #e5e7eb;
-                }
-
-                td {
-                    background-color: #f9fafb;
-                }
-
-                table tr:nth-child(even) td {
-                    background-color: #f1f5f9;
-                }
-
-                table tr:hover td {
-                    background-color: #e5e7eb;
-                }
-            </style>
-
             <script>
                 $(document).ready(function() {
                     // Define columns based on headers
@@ -89,8 +49,17 @@
                         if (header.sub_headers) {
                             $.each(header.sub_headers, function(index, sub_header) {
                                 columns.push({
-                                    data: header.label,
+                                    data: function(row) {
+                                        // Extract the data for this particular column (sub_header)
+                                        return row[header.label];
+                                    },
                                     render: function(data, type, row) {
+
+                                        if (sub_header === 'Female' || sub_header === 'Male') {
+                                            // Check if data matches the sub_header (e.g., 'Male' or 'Female')
+                                            return data === sub_header ? sub_header : '';
+                                        }
+
                                         // Check if data is an array (for checkboxes) or simply a value (for radio buttons)
                                         if (Array.isArray(data)) {
                                             return data.includes(sub_header) ? sub_header : '';
@@ -102,9 +71,13 @@
                             });
                         } else {
                             columns.push({
-                                data: header.label,
+                                data: function(row) {
+                                    // Extract data for this single header column
+                                    return row[header.label];
+                                },
                                 render: function(data, type, row) {
-                                    return data !== undefined ? data : ''; // Handle missing data
+                                    // Handle missing data gracefully
+                                    return data !== undefined ? data : '';
                                 }
                             });
                         }
@@ -123,40 +96,32 @@
                             }
                         },
                         columns: columns,
-                        pageLength: 15
+                        lengthMenu: [50, 100, 150, 200, 300, 400, 500],
                     });
-
 
                     new $.fn.dataTable.Buttons(table, {
                         buttons: [{
-                            extend: 'collection', // Use a collection button
-                            text: 'Export', // Button text
-
-                            buttons: [{
-                                    extend: 'csv',
-                                    className: "btn btn-warning btn-small text-white",
-                                    messageTop: "Response Report"
-                                },
-                                {
-                                    extend: 'excel',
-                                    className: "btn btn-warning btn-small text-white",
-                                    messageTop: "Response Report"
-                                },
-                                {
-                                    extend: 'pdf',
-                                    className: "btn btn-warning btn-small text-white",
-                                    messageTop: "Response Report",
-                                    orientation: "landscape",
-                                },
-                                {
-                                    extend: 'print',
-                                    className: "btn btn-warning btn-small text-white",
-                                    messageTop: "Response Report"
-                                }
-                            ], // List of buttons in the dropdown
-                            className: 'btn btn-warning dropdown-toggle btn-lg text-white' // Bootstrap button classes
-                        }]
-
+                                extend: 'csv',
+                                className: "btn btn-warning btn-small text-white",
+                                messageTop: "Response Report"
+                            },
+                            {
+                                extend: 'excel',
+                                className: "btn btn-warning btn-small text-white",
+                                messageTop: "Response Report"
+                            },
+                            {
+                                extend: 'pdf',
+                                className: "btn btn-warning btn-small text-white",
+                                messageTop: "Response Report",
+                                orientation: "landscape",
+                            },
+                            {
+                                extend: 'print',
+                                className: "btn btn-warning btn-small text-white",
+                                messageTop: "Response Report"
+                            }
+                        ]
                     });
 
                     // Add the export buttons to the container

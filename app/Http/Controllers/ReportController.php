@@ -116,7 +116,7 @@ class ReportController extends Controller
     {
         // Retrieve headers for the form
         $headers = $this->headers($uuid);
-        
+
         // Create a map of headers by their label for quick lookup
         $headerLabels = [];
         foreach ($headers as $headerId => $headerData) {
