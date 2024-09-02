@@ -19,27 +19,17 @@
                     <table id="data-table" class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Company</th>
-                                <th>Email</th>
-                                <th>Contact</th>
-                                <th>Location</th>
-                                <th>Position</th>
-                                <th>Employer</th>
-                                <th>Office Number</th>
+                                @foreach ($columnsToShow as $column)
+                                    <th>{{ ucfirst($column) }}</th>
+                                @endforeach
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($documentData as $data)
                                 <tr>
-                                    <td>{{ $data->name ?? 'N/A' }}</td>
-                                    <td>{{ $data->company ?? 'N/A' }}</td>
-                                    <td>{{ $data->email ?? 'N/A' }}</td>
-                                    <td>{{ $data->contact ?? 'N/A' }}</td>
-                                    <td>{{ $data->location ?? 'N/A' }}</td>
-                                    <td>{{ $data->position ?? 'N/A' }}</td>
-                                    <td>{{ $data->employer ?? 'N/A' }}</td>
-                                    <td>{{ $data->office_number ?? 'N/A' }}</td>
+                                    @foreach ($columnsToShow as $column)
+                                        <td>{{ $data->$column ?? 'N/A' }}</td>
+                                    @endforeach
                                 </tr>
                             @endforeach
                         </tbody>
@@ -66,10 +56,7 @@
             </form>
         </div>
     </div>
-
-
 </x-app-layout>
-
 
 <!-- Include DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
@@ -83,14 +70,12 @@
 <!-- Include DataTables initialization script -->
 <script>
     $(document).ready(function() {
-        $('#data-table').DataTable();
-    });
-
-    $('#data-table').DataTable({
-        "paging": true,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "pageLength": 10
+        $('#data-table').DataTable({
+            "paging": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "pageLength": 10
+        });
     });
 </script>

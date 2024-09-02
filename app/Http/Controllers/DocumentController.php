@@ -52,14 +52,33 @@ class DocumentController extends Controller
         return Storage::download($document->file_path);
     }
 
-    public function show($id)
-{
-    $document = Document::findOrFail($id);
+//     public function show($id)
+// {
+//     $document = Document::findOrFail($id);
 
-    $documentData = DocumentData::where('document_id', $id)->get();
+//     $documentData = DocumentData::where('document_id', $id)->get();
 
    
-    return view('documents.show', compact('document', 'documentData'));
+//     return view('documents.show', compact('document', 'documentData'));
+// }
+
+public function show($id)
+{
+    $document = Document::findOrFail($id);
+    $documentData = DocumentData::where('document_id', $id)->get();
+
+    // Define all potential columns
+    $allColumns = ['name', 'company', 'email', 'contact', 'location', 'position', 'employer', 'office_number'];
+
+    // Determine which columns have at least one non-empty value
+    $columnsToShow = collect($allColumns)->filter(function ($column) use ($documentData) {
+        return $documentData->contains(function ($data) use ($column) {
+            // Check if the column is not empty, null, or 'N/A'
+            return !empty($data->$column) && $data->$column !== 'N/A';
+        });
+    });
+
+    return view('documents.show', compact('document', 'documentData', 'columnsToShow'));
 }
 
 
