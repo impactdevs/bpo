@@ -5,7 +5,11 @@
                 <h2 class="text-2xl font-bold text-center mb-6">Report Overview</h2>
                 <div id="export-buttons"></div>
             </div>
-            <div class="table-wrapper shadow-lg border border-gray-300 rounded-lg overflow-x-auto">
+            <div id="spinner" class="flex justify-center items-center h-48">
+                <!-- You can use any spinner animation you prefer -->
+                <div class="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
+            </div>
+            <div class="table-wrapper shadow-lg border border-gray-300 rounded-lg overflow-x-auto" style="display:none;" id="table-wrapper">
                 <table id="example" class="display table table-striped table-bordered order-column" style="width:100%;">
                     <thead class="bg-gray-200 text-gray-800 text-sm">
                         <tr>
@@ -61,8 +65,7 @@
                                             return data === sub_header ? sub_header : '';
                                         }
                                     },
-                                    orderable: sub_header !==
-                                        '', // Disable sorting for empty subheaders
+                                    orderable: sub_header !== ''
                                 });
                             });
                         } else {
@@ -73,7 +76,7 @@
                                 render: function(data, type, row) {
                                     return data !== undefined ? data : '';
                                 },
-                                orderable: true, // Enable sorting for regular headers
+                                orderable: true,
                             });
                         }
                     });
@@ -93,6 +96,14 @@
                             type: 'POST',
                             data: {
                                 _token: '{{ csrf_token() }}'
+                            },
+                            beforeSend: function() {
+                                $('#spinner').show();
+                                $('#table-wrapper').hide();
+                            },
+                            complete: function() {
+                                $('#spinner').hide();
+                                $('#table-wrapper').show();
                             }
                         },
                         columns: columns,
@@ -132,4 +143,5 @@
                 });
             </script>
         @endpush
+    </div>
 </x-app-layout>
