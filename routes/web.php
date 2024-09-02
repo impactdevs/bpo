@@ -11,6 +11,9 @@ use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 
 
+Route::post('/documents/{document}/import', [DocumentController::class, 'import'])->name('documents.import');
+
+
 Route::get('/', function () {
     $email = auth()->user()->email;
     if ($email =="admin@bpo.com") {

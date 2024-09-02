@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\DocumentImport;
 use App\Models\Document;
+use App\Models\DocumentData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DocumentController extends Controller
 {
@@ -53,16 +56,10 @@ class DocumentController extends Controller
 {
     $document = Document::findOrFail($id);
 
-    $filePath = storage_path('app/' . $document->file_path);
+    $documentData = DocumentData::where('document_id', $id)->get();
 
-    if (file_exists($filePath)) {
-        $fileType = mime_content_type($filePath);
-        return response()->file($filePath, [
-            'Content-Type' => $fileType,
-        ]);
-    } else {
-        return redirect()->back()->with('error', 'Document not found.');
-    }
+   
+    return view('documents.show', compact('document', 'documentData'));
 }
 
 
@@ -78,5 +75,20 @@ class DocumentController extends Controller
         return response()->json(['error' => 'Failed to delete document.'], 500);
     }
 }
+
+public function import(Request $request, Document $document)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls,csv',
+    ]);
+
+   // dd($request->file('file'));
+
+    // Pass document ID and name to the importer
+    Excel::import(new DocumentImport($document->id, $document->description), $request->file('file'));
+
+    return back()->with('success', 'Document data imported successfully.');
+}
+
 
 }
