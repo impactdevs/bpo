@@ -11,6 +11,11 @@ class Entry extends Model
 
     protected $fillable = ['form_id', 'responses', 'user_id'];
 
+    protected $casts = [
+        'responses' => 'json',
+
+    ];
+
     // an entry belongs to a user
     public function user()
     {

@@ -17,6 +17,15 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-2">
+                        <div class="card h-100 text-center bg-light shadow-sm">
+                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                <h1 class="h1">{{ $registered }}</h1>
+                                <p class="mb-0">Registered Entities</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
