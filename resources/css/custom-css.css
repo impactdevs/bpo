@@ -39,3 +39,9 @@ table tr:nth-child(even) td {
 table tr:hover td {
     background-color: #e5e7eb;
 }
+
+.dash_card{
+    background-color:white;
+    border-radius:25px;
+    box-shadow: -3px 3px 1px#C2C2C2
+  }

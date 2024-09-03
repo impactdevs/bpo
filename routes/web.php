@@ -8,6 +8,7 @@ use App\Http\Controllers\FormSettingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SectionController;
+use App\Models\Entry;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,8 +17,10 @@ Route::post('/documents/{document}/import', [DocumentController::class, 'import'
 
 Route::get('/', function () {
     $email = auth()->user()->email;
+    // count the number of entries
+    $entries = Entry::count();
     if ($email == "admin@bpo.com") {
-        return view('dashboard');
+        return view('dashboard', compact('entries'));
     }
     return redirect()->route('entries.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
