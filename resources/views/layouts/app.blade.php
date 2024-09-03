@@ -71,6 +71,8 @@
     <!-- JSZip (required for Excel button) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
     @stack('script')
 </body>

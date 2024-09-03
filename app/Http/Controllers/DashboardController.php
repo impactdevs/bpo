@@ -16,7 +16,15 @@ class DashboardController extends Controller
             // get all entries
             $entries = $this->entries();
             $registered = $this->registered_entities();
-            return view('dashboard', compact('entries', 'registered'));
+            $office_locations = $this->office_locations();
+            $home_based_locations = $this->home_based_locations();
+            $male_ceos = $this->ceo_male();
+            $female_ceos = $this->ceo_female();
+            $by_industry_segment = $this->entities_by_industry_segment();
+            // Separate the keys and values for the chart
+            $labels = $by_industry_segment->keys()->toArray();
+            $data = $by_industry_segment->values()->toArray();
+            return view('dashboard', compact('entries', 'registered', 'office_locations', 'home_based_locations', 'male_ceos', 'female_ceos', 'labels', 'data'));
         }
         return redirect()->route('entries.index');
     }
@@ -36,29 +44,61 @@ class DashboardController extends Controller
         return $registered;
     }
 
-    public function headers($uuid)
+    public function office_locations()
     {
-        //get table headers from form fields where section.form_id = $uuid, get only label, type, options
-        $labels = FormField::whereHas('section', function ($query) use ($uuid) {
-            $query->where('form_id', $uuid);
-        })->select('id', 'label', 'type', 'options')->get();
-        $headers = [];
-        foreach ($labels as $label) {
-            // Initialize the array with the label only
-            $headers[$label->id] = [
-                'label' => $label->label
-            ];
+        // get all entries
+        $office_locations = Entry::whereJsonContains('responses->28', 'Office')->count();
 
-            // Only add sub_headers for checkbox and radio types
-            if (in_array($label->type, ['radio', 'checkbox'])) {
-                // Split options by comma and trim white spaces
-                $options = array_map('trim', explode(',', $label->options));
+        return $office_locations;
+    }
 
-                // Assign the options as sub_headers under the label
-                $headers[$label->id]['sub_headers'] = $options;
+    public function home_based_locations()
+    {
+        // get all entries
+        $home_based_locations = Entry::whereJsonContains('responses->28', 'Home based')->count();
+
+        return $home_based_locations;
+    }
+
+    public function ceo_male()
+    {
+        $cem = Entry::whereJsonContains('responses->13', 'Male')->count();
+
+        return $cem;
+    }
+
+    public function ceo_female()
+    {
+        $cef = Entry::whereJsonContains('responses->13', 'Female')->count();
+
+        return $cef;
+    }
+
+    public function entities_by_industry_segment()
+    {
+        // Get the responses and decode the JSON
+        $entries = Entry::select('responses->25 as industry_segment')->get();
+
+        // Initialize an empty array to hold the individual segments
+        $segments = [];
+
+        // Loop through the entries and extract individual segments
+        foreach ($entries as $entry) {
+            // Decode the JSON string into an array
+            $industrySegments = json_decode($entry->industry_segment);
+
+            // Add each segment to the segments array
+            if (is_array($industrySegments)) {
+                foreach ($industrySegments as $segment) {
+                    $segments[] = $segment;
+                }
             }
         }
 
-        return $headers;
+        // Count occurrences of each segment
+        $by_industry_segment = collect($segments)->countBy();
+
+        return $by_industry_segment;
     }
+
 }
