@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ChartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EntryController;
@@ -10,24 +9,14 @@ use App\Http\Controllers\FormSettingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SectionController;
+use App\Models\Entry;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Row;
 
 Route::post('/documents/{document}/import', [DocumentController::class, 'import'])->name('documents.import');
+Route::get('registered_entities', [DashboardController::class, 'registered_entities'])->name('registered_entities');
 
-
-Route::get('/', function () {
-    $email = auth()?->user()?->email;
-    if ($email == "admin@bpo.com") {
-        return redirect()->route('dashboard');
-    }
-    return redirect()->route('entries.index');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-//Route::get('/dashboard', [ChartController::class, 'dashboard'])->name('dashboard');
-
+Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::resource('form-builder', FormController::class);
 Route::resource('fields', FormFieldController::class);
 Route::post('add-condition', [FormFieldController::class, 'addConditionalVisibilityField'])->name('fields.add-condition');

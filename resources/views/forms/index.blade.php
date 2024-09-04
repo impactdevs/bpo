@@ -6,6 +6,9 @@
                 <div class="text-center">
                     <h2 class="text-2xl font-bold text-center mb-6">Click on the <i class="bi bi-eye"></i> to see the
                         form details</h2>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom"><i
+                            class="bi bi-plus"></i>Create</button>
                 </div>
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -42,7 +45,7 @@
                                         <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 text-left">
                                             {{ $form->created_at->format('M d, Y') }}</td>
                                         <td class="px-6 py-4 text-sm font-medium text-left">
-                                            <a href="{{ route('forms.reports', $form->uuid) }}"
+                                            <a href="{{ route('form-builder.show', $form->uuid) }}"
                                                 class="text-blue-600 dark:text-blue-400 hover:underline">
                                                 <i class="bi bi-eye"></i>
                                             </a>
