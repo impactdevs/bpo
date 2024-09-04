@@ -75,25 +75,46 @@
                         </div>
                     </div>
 
+                    {{-- size of the company --}}
+                        <div class="col-12 pt-4">
+                        <div class="card h-100 text-center bg-light shadow-sm">
+                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                <div style="width: 50%; margin: auto;">
+                                    <canvas id="sizeOfTheCompany" width="300" height="550"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- size of the company --}}
+
+                    {{-- adoption of technology --}}
+                     <div class="col-12 pt-4">
+                        <div class="card h-100 text-center bg-light shadow-sm">
+                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                <div style="width: 50%; margin: auto;">
+                                    <canvas id="adoptionOfTechnology" width="300" height="550"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- adoption of technology --}}
+
+                    {{-- trends over time --}}
+                    <div class="col-12 pt-4">
+                        <div class="card h-100 text-center bg-light shadow-sm">
+                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                <div style="width: 50%; margin: auto;">
+                                    <canvas id="trendsOverTime" width="300" height="550"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- trends over time --}}
+
 
                 </div>
             </div>
 
-            <!-- Charts Section -->
-            <div class="bg-white dark:bg-gray-800 mt-8 p-6 rounded-lg shadow-sm">
-                <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200 mb-4">Size of Companies</h3>
-                {!! $sizeOfCompaniesChart->container() !!}
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 mt-8 p-6 rounded-lg shadow-sm">
-                <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200 mb-4">Adoption of Technologies</h3>
-                {!! $adoptionOfTechnologiesChart->container() !!}
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 mt-8 p-6 rounded-lg shadow-sm">
-                <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200 mb-4">Trends Over Time</h3>
-                {!! $trendsOverTimeChart->container() !!}
-            </div>
         </div>
     </div>
 
@@ -157,6 +178,75 @@
             plugins: [ChartDataLabels]
         });
     });
+
+    $(document).ready(function() {
+    // Stop the spinner and show the content
+    $('#spinner').hide();
+    $('.content-wrapper').show();
+
+    // Make an AJAX request to fetch data
+    $.ajax({
+        url: "{{ route('size_of_the_company') }}", // Use the named route for URL
+        method: 'GET',
+        success: function(response) {
+            // Get the labels and data from the response
+            var labels = response.labels;
+            var data = response.data;
+
+            // Create the chart
+            var ctx = document.getElementById('sizeOfTheCompany').getContext('2d');
+            var myPieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56',
+                            '#4BC0C0',
+                            '#9966FF',
+                            '#FF9F40',
+                            '#FFCD56',
+                            '#4DC0B5'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            color: '#fff',
+                            anchor: 'end',
+                            align: 'start',
+                            offset: -10,
+                            borderWidth: 2,
+                            borderColor: '#fff',
+                            borderRadius: 25,
+                            backgroundColor: (context) => context.dataset.backgroundColor,
+                            font: {
+                                weight: 'bold',
+                                size: 16,
+                            },
+                            formatter: (value, context) => {
+                                let total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = ((value / total) * 100).toFixed(2);
+                                return `${percentage}%`;
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels]
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+});
+
         </script>
     @endpush
     </div>

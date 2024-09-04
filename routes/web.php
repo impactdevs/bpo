@@ -16,6 +16,10 @@ use Maatwebsite\Excel\Row;
 Route::post('/documents/{document}/import', [DocumentController::class, 'import'])->name('documents.import');
 Route::get('registered_entities', [DashboardController::class, 'registered_entities'])->name('registered_entities');
 
+Route::get("size_of_the_company",[DashboardController::class, 'sizeOfTheCompany'])->name('size_of_the_company');
+Route::get("trends_over_time", [DashboardController::class, 'TrendsOverTime'])->name('trends_over_time');   
+Route::get("technology_adoption", [DashboardController::class, 'TechnologyAdoption'])->name('technology_adoption'); 
+
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::resource('form-builder', FormController::class);
 Route::resource('fields', FormFieldController::class);

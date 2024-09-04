@@ -103,4 +103,49 @@ class DashboardController extends Controller
         return $by_industry_segment;
     }
 
+    public function sizeOfTheCompany()
+    {
+        // Define thresholds for company sizes
+        $smallThreshold = 10; // Companies with 10 or fewer employees are considered 'Small'
+        $mediumThreshold = 20; // Companies with more than 10 but up to 20 employees are 'Medium'
+        
+        // Initialize counters for each company size category
+        $smallCount = 0;
+        $mediumCount = 0;
+        $largeCount = 0;
+    
+        // Get entries with the number of male and female employees
+        $entries = Entry::select('responses->32 as male_staff', 'responses->33 as female_staff')->get();
+    
+        foreach ($entries as $entry) {
+            // Convert JSON strings to integers, default to 0 if they are null or not set
+            $maleStaffCount = (int) ($entry->male_staff ?? 0);
+            $femaleStaffCount = (int) ($entry->female_staff ?? 0);
+    
+            // Calculate the total number of employees
+            $totalEmployees = $maleStaffCount + $femaleStaffCount;
+    
+            // Classify the company based on the total number of employees
+            if ($totalEmployees <= $smallThreshold) {
+                $smallCount++;
+            } elseif ($totalEmployees <= $mediumThreshold) {
+                $mediumCount++;
+            } else {
+                $largeCount++;
+            }
+        }
+    
+        // Prepare data for the pie chart
+        $labels = ['Small', 'Medium', 'Large'];
+        $data = [$smallCount, $mediumCount, $largeCount];
+    
+        // Return data as a JSON response
+        return response()->json([
+            'labels' => $labels,
+            'data' => $data
+        ]);
+    }
+    
+
+
 }
