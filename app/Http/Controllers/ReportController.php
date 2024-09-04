@@ -51,7 +51,7 @@ class ReportController extends Controller
 
         // Process each entry to decode responses and map to labels
         foreach ($entries as $entry) {
-            $decodedResponses = json_decode($entry->responses, true); // Decode JSON to associative array
+            $decodedResponses = $entry->responses; // Decode JSON to associative array
 
             $formattedResponses = [];
 
