@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Charts\MonthlyUsersChart; // Include the generated chart class
-use ArielMejiaDev\LarapexCharts\Facades\LarapexChart; // Include LarapexChart facade
 use App\Models\Entry;
-use App\Models\FormField;
-use Illuminate\Http\Request;
+
 
 class DashboardController extends Controller
 {
