@@ -175,6 +175,14 @@ class ReportController extends Controller
 
     public function aggregate($uuid)
     {
+        //join processed_entries and form_fields table and return only those missing in the processed_entries table
+        $missing = DB::table('form_fields')
+            //where form_fields.id is 18
+            ->where('form_fields.id', 18)
+            ->rightJoin('processed_entries', 'form_fields.id', '=', 'processed_entries.question_id')
+            ->select('form_fields.id', 'form_fields.label')
+            ->get();
+        dd($missing->toArray());
         // Retrieve headers for the form
         $headers = $this->headers($uuid);
 
@@ -188,7 +196,6 @@ class ReportController extends Controller
 
         // Retrieve and process entries
         $entries = Entry::query()->latest()->get();
-
         foreach ($entries as $entry) {
             $decodedResponses = json_decode($entry->responses, true);
 
@@ -228,14 +235,14 @@ class ReportController extends Controller
                     }
 
                     //if key is 18, aggregate the data too using cleaning options
-                    if ($key == 18 ) {
+                    if ($key == 18) {
                         $label = (string) $formField->label;
 
                         //get the cleaning options
                         $cleaning_options = DB::table('processed_entries')
-                        ->where('question_id', $key)
-                        ->pluck('value')
-                        ->toArray();
+                            ->where('question_id', $key)
+                            ->pluck('value')
+                            ->toArray();
 
                         // Initialize the label array if it doesn't exist
                         if (!isset($aggregatedData[$formField->label])) {
@@ -250,13 +257,14 @@ class ReportController extends Controller
 
                         //get all the cleaning options where 18
                         $cleaning_options_18 = DB::table('processed_entries')
-                        ->where('question_id', 18)
-                        ->where('entry_id', $entry->id)
-                        ->get();
+                            ->where('question_id', 18)
+                            ->where('entry_id', $entry->id)
+                            ->get();
+
+
 
                         // Increment counts based on the value
-                        foreach ($cleaning_options_18 as $cleaning_option)
-                        {
+                        foreach ($cleaning_options_18 as $cleaning_option) {
                             //increment the value of current $cleaning_option->name
                             if (isset($aggregatedData[$formField->label][$cleaning_option->value])) {
                                 $aggregatedData[$formField->label][$cleaning_option->value]++;
@@ -264,10 +272,13 @@ class ReportController extends Controller
                         }
                     }
                 }
+
             }
 
 
         }
+
+
 
         return view('reports.aggregations', compact('uuid', 'aggregatedData'));
     }
