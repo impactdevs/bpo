@@ -226,6 +226,31 @@ class ReportController extends Controller
                             }
                         }
                     }
+
+                    //if key is 18, aggregate the data too using cleaning options
+                    if ($key == 18) {
+                        $label = (string) $formField->label;
+
+                        //get the cleaning options
+                        // $cleaning_options = DB::table('cleaning_options')->where('form_field_id', $key)->pluck('name')->toArray();
+                        $cleaning_options = DB::table('cleaning_options')
+                            ->select('name', DB::raw('count(*) as count'))
+                            ->where('form_field_id', $key)
+                            ->groupBy('name')
+                            ->pluck('count', 'name');
+
+
+                        // Initialize the label array if it doesn't exist
+                        if (!isset($aggregatedData[$formField->label])) {
+                            $aggregatedData[$formField->label] = [];
+
+                            // Initialize the cleaning options with 0
+                            foreach ($cleaning_options as $cleaning_option => $count) {
+                                $aggregatedData[$formField->label][$cleaning_option] = $count;
+                            }
+
+                        }
+                    }
                 }
             }
         }
@@ -258,6 +283,7 @@ class ReportController extends Controller
                     if (isset($formFields[$key])) {
                         $formField = $formFields[$key];
 
+                        //aggregate radio button and checkbox responses with professional bodies cleaned options
                         if ($formField->type === 'radio' || $formField->type === 'checkbox') {
                             $label = (string) $formField->label;
 
@@ -289,6 +315,7 @@ class ReportController extends Controller
                             }
                         }
                     }
+
                 }
             }
 
