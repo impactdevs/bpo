@@ -27,9 +27,12 @@
                                     <td>
                                         <a href="{{ route('settings.edit', $setting->id) }}"
                                             class="btn btn-primary">Edit</a>
-                                        <a href="{{ route('settings.destroy', $setting->id) }}"
-                                            class="btn btn-danger">Delete</a>
-                                    </td>
+                                        {{-- delete form --}}
+                                        <form method="POST" action="{{ route('settings.destroy', $setting->id) }}" accept-charset="UTF-8" style="display:inline">
+                                            {{ method_field('DELETE') }}
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm(&quot;Confirm delete?&quot;)">Delete</button>
+                                        </form>                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

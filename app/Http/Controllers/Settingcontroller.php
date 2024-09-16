@@ -13,7 +13,8 @@ class Settingcontroller extends Controller
     public function index()
     {
         $settings = DB::table('cleaning_options')
-        ->join('form_fields', 'cleaning_options.form_field_id', '=', 'form_fields.id')->get();
+        ->join('form_fields', 'cleaning_options.form_field_id', '=', 'form_fields.id')
+        ->select('cleaning_options.*', 'form_fields.label')->get();
         return view('settings.index', compact('settings'));
     }
 
@@ -53,9 +54,14 @@ class Settingcontroller extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($setting)
     {
-        //
+        $currentItem = DB::table('cleaning_options')->where('id', $setting)->first();
+
+        $form_fields = DB::table('form_fields')->where('type', 'textarea')->get();
+
+
+        return view('settings.edit', compact('currentItem', 'form_fields'));
     }
 
     /**
@@ -63,7 +69,14 @@ class Settingcontroller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // update where $id
+        $update = DB::table('cleaning_options')->where('id', $id)->update([
+            'form_field_id' => $request->form_field_id,
+            'name' => $request->name,
+            'updated_at' => now()
+        ]);
+
+        return redirect()->route('settings.index');
     }
 
     /**
@@ -71,6 +84,9 @@ class Settingcontroller extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //delete where $id
+        $delete = DB::table('cleaning_options')->where('id', $id)->delete();
+
+        return redirect()->route('settings.index');
     }
 }
