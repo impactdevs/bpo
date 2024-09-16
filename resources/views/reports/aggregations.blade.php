@@ -6,7 +6,7 @@
 
             </div>
             <div class="table-wrapper shadow-lg border border-gray-300 rounded-lg overflow-x-auto" id="table-wrapper">
-                <table id="aggregation-table" class="display table table-striped table-bordered order-column" style="width:100%;">
+                <table data-toggle="table" data-search="true" data-show-export="true" class="display table table-striped table-bordered order-column" style="width:100%;">
                     <thead>
                         <tr>
                             <th>Question</th>
