@@ -8,7 +8,7 @@
             <div class="table-wrapper shadow-lg border border-gray-300 rounded-lg overflow-x-auto" id="table-wrapper">
                 <table id="aggregation-table" data-toggle="table" class="" data-pagination="true" data-search="true"
                     data-show-export="true" data-show-columns-toggle-all="true"   data-show-columns="true"  data-click-to-select="true" data-detail-formatter="detailFormatter"
-                    style="width:100%;">
+                    data-page-list="[10, 25, 50, 100, 200, 500, all]" style="width:100%;">
                     <thead>
                         <tr>
                             <th data-sortable="true" data-field="organization" class="bg-primary text-light">Respondent's Organization</th>
