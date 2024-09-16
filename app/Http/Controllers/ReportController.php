@@ -228,41 +228,39 @@ class ReportController extends Controller
                     }
 
                     //if key is 18, aggregate the data too using cleaning options
-                    if ($key == 18 ) {
+                    if ($key == 18) {
                         $label = (string) $formField->label;
 
-                        //get the cleaning options
+                        // Get the cleaning options
                         $cleaning_options = DB::table('processed_entries')
-                        ->where('question_id', $key)
-                        ->pluck('value')
-                        ->toArray();
+                            ->where('question_id', $key)
+                            ->pluck('value')
+                            ->toArray();
 
                         // Initialize the label array if it doesn't exist
                         if (!isset($aggregatedData[$formField->label])) {
                             $aggregatedData[$formField->label] = [];
 
                             // Initialize the cleaning options with 0
-                            foreach ($cleaning_options as $cleaning_option) {
+                            foreach (array_merge($cleaning_options, ['9']) as $cleaning_option) {
                                 $aggregatedData[$formField->label][$cleaning_option] = 0;
                             }
-
                         }
 
-                        //get all the cleaning options where 18
+                        // Get all the cleaning options where question_id is 18
                         $cleaning_options_18 = DB::table('processed_entries')
-                        ->where('question_id', 18)
-                        ->where('entry_id', $entry->id)
-                        ->get();
+                            ->where('question_id', 18)
+                            ->where('entry_id', $entry->id)
+                            ->pluck('value');
 
                         // Increment counts based on the value
-                        foreach ($cleaning_options_18 as $cleaning_option)
-                        {
-                            //increment the value of current $cleaning_option->name
-                            if (isset($aggregatedData[$formField->label][$cleaning_option->value])) {
-                                $aggregatedData[$formField->label][$cleaning_option->value]++;
+                        foreach ($cleaning_options_18 as $cleaning_option) {
+                            if (isset($aggregatedData[$formField->label][$cleaning_option])) {
+                                $aggregatedData[$formField->label][$cleaning_option]++;
                             }
                         }
                     }
+
                 }
             }
 
