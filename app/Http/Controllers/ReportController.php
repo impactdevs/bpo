@@ -175,14 +175,6 @@ class ReportController extends Controller
 
     public function aggregate($uuid)
     {
-        //join processed_entries and form_fields table and return only those missing in the processed_entries table
-        $missing = DB::table('form_fields')
-            //where form_fields.id is 18
-            ->where('form_fields.id', 18)
-            ->rightJoin('processed_entries', 'form_fields.id', '=', 'processed_entries.question_id')
-            ->select('form_fields.id', 'form_fields.label')
-            ->get();
-        dd($missing->toArray());
         // Retrieve headers for the form
         $headers = $this->headers($uuid);
 
