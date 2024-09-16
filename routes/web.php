@@ -42,6 +42,9 @@ Route::get('get-entries/{uuid}', [ReportController::class, 'getEntries'])->name(
 Route::post('/reports/data/{uuid}', [ReportController::class, 'getReportsData'])->name('reports.data');
 Route::get('/aggregations/{uuid}', [ReportController::class, 'aggregate'])->name('aggregations');
 Route::get('/aggregations-data/{uuid}', [ReportController::class, 'aggregateData'])->name('aggregations.data');
+Route::get('/rankings/{uuid}', [ReportController::class, 'rank'])->name('rankings');
+Route::get('/ranking/{uuid}', [ReportController::class, 'rank'])->name('ranking');
+
 
 
 //document routes

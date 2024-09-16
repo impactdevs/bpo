@@ -46,8 +46,15 @@
                                             </a>
 
                                             <a href="{{ route('aggregations', $form->uuid) }}"
-                                                class="text-blue-600 dark:text-blue-400 hover:underline">
+                                                class="text-blue-600 dark:text-blue-400 hover:underline ms-2">
                                                 <i class="bi bi-align-center"></i>
+                                            </a>
+
+                                            {{-- ranking --}}
+
+                                            <a href="{{ route('ranking', $form->uuid) }}"
+                                                class="text-blue-600 dark:text-blue-400 hover:underline ms-2">
+                                                <i class="bi bi-bar-chart-line"></i>
                                             </a>
                                         </td>
                                     </tr>

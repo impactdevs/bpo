@@ -300,6 +300,202 @@ class ReportController extends Controller
         }
     }
 
+    /*
+     * Ranking
+     */
+
+    /*
+     * IT Enabled-6.15, 62
+     * Specialised software->6.11, 58
+     * Specialised software->6.12, 59
+     * work practices->6.16, 63
+     * services are broken down->6.17, 64
+     * services are broken down->6.18, 65
+     * online businesses->6.19, 66
+     * online businesses->6.20, 67,
+     * Involvement in staff capacity building->6.23, 70
+     * Involvement in staff capacity building->6.24, 71
+     */
+
+    public function rank(Request $request, $uuid)
+    {
+        try {
+            // Retrieve headers for the form
+            $headers = $this->headers($uuid);
+
+            // Fetch form fields for the given UUID, indexed by ID
+            $formFields = FormField::whereIn('id', array_keys($headers))
+                ->get()
+                ->keyBy('id');
+
+            // Initialize aggregated data array
+            $rankingData = [];
+
+            // Retrieve and process entries
+            $entries = Entry::query()->latest()->get();
+
+            foreach ($entries as $entry) {
+                $total_score = 0;
+                $decodedResponses = json_decode($entry->responses, true);
+
+
+                foreach ($decodedResponses as $key => $value) {
+                    //get question ids 62, 58, 59, 63, 64, 65, 66, 67, 70, 71
+                    if (in_array($key, [62, 58, 59, 63, 64, 65, 66, 67, 70, 71,12])) {
+                        if (isset($formFields[$key])) {
+                            $formField = $formFields[$key];
+                            if ($formField) {
+                                $responses[$formField->label] = $value;
+
+                                //claculate scores
+                                // IT Enabled-6.15, 62
+                                if ($key == 62) {
+                                    $score = count($value);
+
+                                    //add the score to the responses and name it 'it_enabled'
+                                    $responses['it_enabled_score'] = $score;
+                                    $total_score += $score;
+
+                                }
+
+                                // Specialised software->6.11, 58
+                                if ($key == 58) {
+                                    //check if the value is 'Yes'
+                                    if ($value=='Yes') {
+                                        $score = 1;
+                                    } else {
+                                        $score = 0;
+                                    }
+
+                                    //add the score to the responses and name it 'uses_specialised_software_score'
+                                    $responses['uses_specialised_software_score'] = $score;
+                                    $total_score += $score;
+
+                                }
+
+                                // Specialised software->6.12, 59
+                                if ($key == 59) {
+                                    //if $value is not null
+                                    if ($value) {
+                                        $score = 1;
+                                    } else {
+                                        $score = 0;
+                                    }
+                                    //add the score to the responses and name it 'uses_specialised_software_score'
+                                    $responses['specialised_software_score'] = $score;
+                                    $total_score += $score;
+
+                                }
+
+                                // work practices->6.16, 63
+                                if ($key == 63) {
+                                   //score
+                                    $score = count($value);
+                                    //add the score to the responses and name it 'work_practices_score'
+                                    $responses['work_practices_score'] = $score;
+                                    $total_score += $score;
+
+                                }
+
+                                // services are broken down->6.17, 64
+                                if ($key == 64) {
+                                    //if $value is yes
+                                    if ($value=='Yes') {
+                                        $score = 1;
+                                    } else {
+                                        $score = 0;
+                                    }
+
+                                    //add the score to the responses and name it 'services_broken_down_score'
+                                    $responses['are_services_broken_down_score'] = $score;
+                                    $total_score += $score;
+
+                                }
+
+                                // services are broken down->6.18, 65
+                                if ($key == 65) {
+                                    //if $value is not null
+                                    if ($value) {
+                                        $score = 1;
+                                    } else {
+                                        $score = 0;
+                                    }
+
+                                    //add the score to the responses and name it 'services_broken_down_score'
+                                    $responses['services_broken_down_score'] = $score;
+                                    $total_score += $score;
+
+                                }
+
+                                // online businesses->6.19, 66
+                                if ($key == 66) {
+                                    //if $value is yes
+                                    if ($value=='Yes') {
+                                        $score = 1;
+                                    } else {
+                                        $score = 0;
+                                    }
+
+                                    //add the score to the responses and name it 'online_businesses_score'
+                                    $responses['is_online_businesses_score'] = $score;
+                                    $total_score += $score;
+
+                                }
+
+                                // online businesses->6.20, 67
+                                if ($key == 67) {
+                                  $score = count($value);
+
+                                    //add the score to the responses and name it 'online_businesses_score'
+                                    $responses['online_businesses_score'] = $score;
+                                    $total_score += $score;
+
+                                }
+
+                                // Involvement in staff capacity building->6.23, 70
+                                if ($key == 70) {
+                                    //if $value is yes
+                                    if ($value=='Yes') {
+                                        $score = 1;
+                                    } else {
+                                        $score = 0;
+                                    }
+
+                                    //add the score to the responses and name it 'staff_capacity_building_score'
+                                    $responses['do_staff_capacity_building_score'] = $score;
+                                    $total_score += $score;
+
+                                }
+
+                                // Involvement in staff capacity building->6.24, 71
+                                if ($key == 71) {
+                                    //if $value is not null
+                                    if ($value) {
+                                        $score = 1;
+                                    } else {
+                                        $score = 0;
+                                    }
+
+                                    //add the score to the responses and name it 'staff_capacity_building_score'
+                                    $responses['staff_capacity_building_score'] = $score;
+                                    $total_score += $score;
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                $rankingData[] = $responses;
+            }
+            // Return the aggregated data
+            return view('reports.rankings', compact('uuid', 'rankingData'));
+
+        } catch (\Exception $e) {
+            // Return a more readable error message
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
 
 }
