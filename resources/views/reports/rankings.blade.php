@@ -11,39 +11,39 @@
                     style="width:100%;">
                     <thead>
                         <tr>
-                            <th data-sortable="true" data-field="organization">Respondent's Organization</th>
-                            <th data-sortable="true">Do you use specialized software to provide your services</th>
-                            <th data-sortable="true">Score</th>
-                            <th data-sortable="true">If yes, What software platforms and tools are essential for your
+                            <th data-sortable="true" data-field="organization" class="bg-primary text-light">Respondent's Organization</th>
+                            <th data-sortable="true" class="bg-primary text-light">Do you use specialized software to provide your services</th>
+                            <th data-sortable="true" class="bg-primary text-light">Score</th>
+                            <th data-sortable="true" class="bg-primary text-light">If yes, What software platforms and tools are essential for your
                                 business operations?
                                 (e.g., CRM, ERP, Project Management Tools):</th>
-                            <th data-sortable="true">Score</th>
-                            <th data-sortable="true">Do you do any of the following as part of your business
+                            <th data-sortable="true" class="bg-primary text-light">Score</th>
+                            <th data-sortable="true" class="bg-primary text-light">Do you do any of the following as part of your business
                                 processes(Tick)</th>
+                            <th data-sortable="true" class="bg-primary text-light">Score</th>
+                            <th data-sortable="true" class="bg-primary text-light">Do You have any of the following work practices?</th>
                             <th data-sortable="true">Score</th>
-                            <th data-sortable="true">Do You have any of the following work practices?</th>
-                            <th data-sortable="true">Score</th>
-                            <th data-sortable="true">Are any of your services , processes, data, and platforms broken
+                            <th data-sortable="true" class="bg-primary text-light">Are any of your services , processes, data, and platforms broken
                                 down into smaller,
                                 often disjointed parts.</th>
                             <th data-sortable="true">Score</th>
-                            <th data-sortable="true">If yes outline examples of how they are broken down (i.e
+                            <th data-sortable="true" class="bg-primary text-light">If yes outline examples of how they are broken down (i.e
                                 accounting, training, IT
                                 Section)</th>
-                            <th data-sortable="true">Score</th>
-                            <th data-sortable="true">Are you registered on any online platform to facilitate trade and
+                            <th data-sortable="true" class="bg-primary text-light">Score</th>
+                            <th data-sortable="true" class="bg-primary text-light">Are you registered on any online platform to facilitate trade and
                                 enable you provide
                                 your services</th>
-                            <th data-sortable="true">Score</th>
-                            <th data-sortable="true">If yes, which ones(check):</th>
-                            <th data-sortable="true">Score</th>
-                            <th data-sortable="true">In the last 4 years, has your staff attended any training aimed at
+                            <th data-sortable="true" class="bg-primary text-light">Score</th>
+                            <th data-sortable="true" class="bg-primary text-light">If yes, which ones(check):</th>
+                            <th data-sortable="true" class="bg-primary text-light">Score</th>
+                            <th data-sortable="true" class="bg-primary text-light">In the last 4 years, has your staff attended any training aimed at
                                 improving skills in
                                 outsourcing IT-Enabled Services?</th>
-                            <th data-sortable="true">Score</th>
-                            <th data-sortable="true">If YES, outline the main areas of training attended</th>
-                            <th data-sortable="true">Score</th>
-                            <th data-sortable="true">Total Score</th>
+                            <th data-sortable="true" class="bg-primary text-light">Score</th>
+                            <th data-sortable="true" class="bg-primary text-light">If YES, outline the main areas of training attended</th>
+                            <th data-sortable="true" class="bg-primary text-light">Score</th>
+                            <th data-sortable="true" class="bg-primary text-light">Total Score</th>
                         </tr>
                     </thead>
                     <tbody>
