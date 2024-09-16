@@ -9,6 +9,7 @@ use App\Http\Controllers\FormSettingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\Settingcontroller;
 use App\Models\Entry;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Row;
@@ -39,10 +40,14 @@ Route::post('/save-draft', [EntryController::class, 'store'])->middleware('auth'
 Route::get('/forms/survey/{form}/{user}', [EntryController::class, 'survey'])->name('form.survey');
 Route::get('get-entries/{uuid}', [ReportController::class, 'getEntries'])->name('get-entries');
 Route::post('/reports/data/{uuid}', [ReportController::class, 'getReportsData'])->name('reports.data');
+Route::get('/aggregations/{uuid}', [ReportController::class, 'aggregate'])->name('aggregations');
+Route::get('/aggregations-data/{uuid}', [ReportController::class, 'aggregateData'])->name('aggregations.data');
 
 
 //document routes
 Route::resource('documents', DocumentController::class)->only(['index', 'store', 'destroy', 'show']);
+Route::resource('settings', Settingcontroller::class);
+
 Route::get('documents/{id}/download', [DocumentController::class, 'download'])->name('documents.download');
 //document routes
 

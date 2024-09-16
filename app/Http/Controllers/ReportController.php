@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Form;
-use App\Models\Report;
 use Illuminate\Http\Request;
 use App\Models\Entry;
 use App\Models\FormField;
@@ -21,62 +20,10 @@ class ReportController extends Controller
         return view('reports.index', compact('forms'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Report $report)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Report $report)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Report $report)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Report $report)
-    {
-        //
-    }
     public function reports($uuid)
     {
         // Retrieve headers for the form
         $headers = $this->headers($uuid);
-        // Create a map of headers by their label for quick lookup
-        $headerLabels = [];
-        foreach ($headers as $headerId => $headerData) {
-            $headerLabels[$headerData['label']] = $headerData;
-        }
         // Pass headers and entries to the view
         return view('reports.reports', compact('headers', 'uuid'));
     }
@@ -156,11 +103,6 @@ class ReportController extends Controller
         ]);
     }
 
-
-
-
-
-
     public function headers($uuid)
     {
         //get table headers from form fields where section.form_id = $uuid, get only label, type, options
@@ -190,6 +132,12 @@ class ReportController extends Controller
 
             //add the type to the headers
             $headers[$label->id]['type'] = $label->type;
+
+            //check in cleaning options table if for question_id exists
+            $cleaning_options = DB::table('cleaning_options')->where('form_field_id', $label->id)->pluck('name')->toArray();
+
+            //add the cleaning options to the headers
+            $headers[$label->id]['cleaning_options'] = $cleaning_options;
         }
 
         return $headers;
@@ -222,5 +170,136 @@ class ReportController extends Controller
             return response()->json(['error' => 'An error occurred while cleaning data']);
         }
     }
+
+
+    public function aggregate($uuid)
+    {
+        // Retrieve headers for the form
+        $headers = $this->headers($uuid);
+
+        // Fetch form fields for the given UUID, indexed by ID
+        $formFields = FormField::whereIn('id', array_keys($headers))
+            ->get()
+            ->keyBy('id');
+
+        // Initialize aggregated data array
+        $aggregatedData = [];
+
+        // Retrieve and process entries
+        $entries = Entry::query()->latest()->get();
+
+        foreach ($entries as $entry) {
+            $decodedResponses = json_decode($entry->responses, true);
+
+            foreach ($decodedResponses as $key => $value) {
+                if (isset($formFields[$key])) {
+                    $formField = $formFields[$key];
+
+                    if ($formField->type === 'radio' || $formField->type === 'checkbox') {
+                        $label = (string) $formField->label;
+
+                        // Initialize the label array if it doesn't exist
+                        if (!isset($aggregatedData[$label])) {
+                            $aggregatedData[$label] = [];
+
+                            // Get the sub_headers for the label
+                            $subHeaders = $headers[$formField->id]['sub_headers'];
+                            // Initialize the sub_headers with 0
+                            foreach ($subHeaders as $subHeader) {
+                                $aggregatedData[$label][$subHeader] = 0;
+                            }
+                        }
+
+                        // Increment counts based on the value
+                        if (is_array($value)) {
+                            foreach ($value as $v) {
+                                $trimmedValue = trim($v);
+                                if (isset($aggregatedData[$label][$trimmedValue])) {
+                                    $aggregatedData[$label][$trimmedValue]++;
+                                }
+                            }
+                        } else {
+                            $trimmedValue = trim($value);
+                            if (isset($aggregatedData[$label][$trimmedValue])) {
+                                $aggregatedData[$label][$trimmedValue]++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        return view('reports.aggregations', compact('uuid', 'aggregatedData'));
+    }
+
+    public function aggregateData(Request $request, $uuid)
+    {
+        try {
+            // Retrieve headers for the form
+            $headers = $this->headers($uuid);
+
+            // Fetch form fields for the given UUID, indexed by ID
+            $formFields = FormField::whereIn('id', array_keys($headers))
+                ->get()
+                ->keyBy('id');
+
+            // Initialize aggregated data array
+            $aggregatedData = [];
+
+            // Retrieve and process entries
+            $entries = Entry::query()->latest()->get();
+
+            foreach ($entries as $entry) {
+                $decodedResponses = json_decode($entry->responses, true);
+
+                foreach ($decodedResponses as $key => $value) {
+                    if (isset($formFields[$key])) {
+                        $formField = $formFields[$key];
+
+                        if ($formField->type === 'radio' || $formField->type === 'checkbox') {
+                            $label = (string) $formField->label;
+
+                            // Initialize the label array if it doesn't exist
+                            if (!isset($aggregatedData[$label])) {
+                                $aggregatedData[$label] = [];
+
+                                // Get the sub_headers for the label
+                                $subHeaders = $headers[$formField->id]['sub_headers'];
+                                // Initialize the sub_headers with 0
+                                foreach ($subHeaders as $subHeader) {
+                                    $aggregatedData[$label][$subHeader] = 0;
+                                }
+                            }
+
+                            // Increment counts based on the value
+                            if (is_array($value)) {
+                                foreach ($value as $v) {
+                                    $trimmedValue = trim($v);
+                                    if (isset($aggregatedData[$label][$trimmedValue])) {
+                                        $aggregatedData[$label][$trimmedValue]++;
+                                    }
+                                }
+                            } else {
+                                $trimmedValue = trim($value);
+                                if (isset($aggregatedData[$label][$trimmedValue])) {
+                                    $aggregatedData[$label][$trimmedValue]++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Return the aggregated data
+            return response()->json(['data' => $aggregatedData]);
+
+        } catch (\Exception $e) {
+            // Return a more readable error message
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+
 
 }

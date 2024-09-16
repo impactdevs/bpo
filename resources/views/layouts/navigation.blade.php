@@ -38,6 +38,11 @@
                             class="text-lg font-semibold text-white hover:text-gray-300">
                             {{ __('Documents') }}
                         </x-nav-link>
+
+                        <x-nav-link :href="route('settings.index')" :active="request()->routeIs('settings.index')"
+                            class="text-lg font-semibold text-white hover:text-gray-300">
+                            {{ __('Settings') }}
+                        </x-nav-link>
                     @else
                         <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries.index')"
                             class="text-lg font-semibold text-white hover:text-gray-300">

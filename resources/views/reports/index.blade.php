@@ -44,6 +44,11 @@
                                                 class="text-blue-600 dark:text-blue-400 hover:underline">
                                                 <i class="bi bi-eye"></i>
                                             </a>
+
+                                            <a href="{{ route('aggregations', $form->uuid) }}"
+                                                class="text-blue-600 dark:text-blue-400 hover:underline">
+                                                <i class="bi bi-align-center"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

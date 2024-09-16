@@ -3,7 +3,11 @@
         <div class="p-2 text-gray-900 dark:text-gray-100">
             <div class="d-flex justify-content-between">
                 <h2 class="text-2xl font-bold text-center mb-6">Report Overview</h2>
-                <div id="export-buttons"></div>
+
+                <div class="d-flex flex-row justify-between">
+                    <div id="export-buttons"></div>
+                </div>
+
             </div>
             <div id="spinner" class="flex justify-center items-center h-48">
                 <!-- You can use any spinner animation you prefer -->
@@ -69,201 +73,194 @@
 
             <script>
                 $(document).ready(function() {
-                            var headers = @json($headers);
-                            var columns = [];
+                    var headers = @json($headers);
+                    var columns = [];
 
-                            // Define columns based on headers
-                            $.each(headers, function(key, header) {
-                                    if (header.sub_headers) {
-                                        $.each(header.sub_headers, function(index, sub_header) {
-                                            columns.push({
-                                                data: function(row) {
-                                                    return row[header.label];
-                                                },
-                                                render: function(data, type, row) {
-                                                    if (sub_header === 'Female' || sub_header === 'Male') {
-                                                        return data === sub_header ? sub_header : '';
-                                                    }
-
-                                                    if (Array.isArray(data)) {
-                                                        return data.includes(sub_header) ? sub_header : '';
-                                                    } else {
-                                                        return data === sub_header ? sub_header : '';
-                                                    }
-                                                },
-                                                orderable: sub_header !== ''
-                                            });
-                                        });
-                                    } else if (header.type === 'textarea') {
-                                        columns.push({
-                                            data: function(row) {
-                                                return row[header.label];
-                                            },
-                                            render: function(data, type, row) {
-                                                let newValue;
-                                                if (data !== undefined) {
-                                                    newValue = '';
-                                                }
-
-                                                // Check if data is an object and not null
-                                                if (typeof data === 'object' && data !== null) {
-                                                    console.log(data);
-
-                                                    // Assign newValue with the value of the 'value' key in the data object
-                                                    // If data.value is null, assign an empty string
-                                                    newValue = data.value === null ? '' : data.value;
-                                                } else {
-                                                    // If data is not an object, handle it appropriately
-                                                    newValue = data !== null ? data : '';
-                                                }
-
-
-                                                return newValue;
-                                            },
-                                            orderable: true,
-                                        });
-
-                                        columns.push({
-                                                data: function(row) {
-                                                    return row[header.label];
-                                                },
-                                                render: function(data, type, row) {
-                                                    // Check if data is an object and not null
-                                                    if (typeof data === 'object' && data !== null) {
-                                                        // Generate the select input with unique ID attached as a data attribute
-                                                        return '<select class="cleaned-select"' + 'data-row-id="' + row
-                                                            .entry_id + '"' + 'data-question-id="' + header
-                                                            .question_id +
-                                                            '"' + '>' +
-                                                            '<option value="ULS" ' + (data.processed === 'ULS' ? 'selected' :
-                                                            '') +
-                                                            '>ULS</option>' +
-                                                            '<option value="Uganda Law Society" ' + (data.processed ===
-                                                                'Uganda Law Society' ? 'selected' : '') +
-                                                            '>Uganda Law Society</option>' +
-                                                            '<option value="URSB" ' + (data.processed === 'URSB' ? 'selected' :
-                                                                '') +
-                                                            '>URSB</option>' +
-                                                            '</select>';
-                                                    } else {
-                                                        // If data is not an object, handle it appropriately
-                                                        return '<select class="cleaned-select"' + 'data-row-id="' + row
-                                                            .entry_id + '"' + 'data-question-id="' + header
-                                                            .question_id +
-                                                            '"' + '>' +
-                                                            '<option value="" ' +
-                                                            '></option>' +
-                                                            '<option value="Uganda Law Society" '+
-                                                            '>Uganda Law Society</option>' +
-                                                            '<option value="URSB" ' +
-                                                            '>URSB</option>' +
-                                                            '</select>';
-                                                    }
-                                                    },
-                                                    orderable: true,
-                                                });
+                    // Define columns based on headers
+                    $.each(headers, function(key, header) {
+                        if (header.sub_headers) {
+                            $.each(header.sub_headers, function(index, sub_header) {
+                                columns.push({
+                                    data: function(row) {
+                                        return row[header.label];
+                                    },
+                                    render: function(data, type, row) {
+                                        if (sub_header === 'Female' || sub_header === 'Male') {
+                                            return data === sub_header ? sub_header : '';
                                         }
-                                        else {
-                                            columns.push({
-                                                data: function(row) {
-                                                    return row[header.label];
-                                                },
-                                                render: function(data, type, row) {
-                                                    return data !== undefined ? data : '';
-                                                },
-                                                orderable: true,
-                                            });
-                                        }
-                                    });
 
-                                var table = $('#example').DataTable({
-                                    columnDefs: [{
-                                        targets: -1,
-                                        visible: false
-                                    }],
-                                    processing: true,
-                                    serverSide: true,
-                                    ajax: {
-                                        url: '{{ route('reports.data', ['uuid' => $uuid]) }}',
-                                        type: 'POST',
-                                        data: {
-                                            _token: '{{ csrf_token() }}'
-                                        },
-                                        beforeSend: function() {
-                                            $('#spinner').show();
-                                            $('#table-wrapper').hide();
-                                        },
-                                        complete: function() {
-                                            $('#spinner').hide();
-                                            $('#table-wrapper').show();
+                                        if (Array.isArray(data)) {
+                                            return data.includes(sub_header) ? sub_header : '';
+                                        } else {
+                                            return data === sub_header ? sub_header : '';
                                         }
                                     },
-                                    columns: columns,
-                                    lengthMenu: [50, 100, 150, 200, 300, 400, 500],
-                                    createdRow: function(row, data, dataIndex) {
-                                        // Attach the unique ID to the row element
-                                        $(row).attr('data-row-id', data.entry_id);
-                                    }
-                                });
-
-                                // Export buttons
-                                new $.fn.dataTable.Buttons(table, {
-                                    buttons: [{
-                                            extend: 'csv',
-                                            className: "btn btn-primary btn-small text-white",
-                                            messageTop: "Response Report",
-                                            orientation: "landscape",
-                                        },
-                                        {
-                                            extend: 'excel',
-                                            className: "btn btn-primary btn-small text-white",
-                                            messageTop: "Response Report",
-                                            orientation: "landscape",
-                                        },
-                                        {
-                                            extend: 'pdf',
-                                            className: "btn btn-primary btn-small text-white",
-                                            messageTop: "Response Report",
-                                            orientation: "landscape",
-                                        },
-                                        {
-                                            extend: 'print',
-                                            className: "btn btn-primary btn-small text-white",
-                                            messageTop: "Response Report"
-                                        }
-                                    ]
-                                });
-
-                                table.buttons().container().appendTo($('#export-buttons'));
-
-                                // Change action for select inputs
-                                $('#example').on('change', '.cleaned-select', function() {
-                                    var select = $(this);
-                                    var rowId = select.data('row-id'); // Get the unique row ID
-                                    var questionId = select.data('question-id'); // Get the unique question ID
-                                    var newValue = select.val();
-                                    $.ajax({
-                                        url: '/update-cleaned-data',
-                                        type: 'POST',
-                                        data: {
-                                            _token: '{{ csrf_token() }}',
-                                            entry_id: rowId,
-                                            question_id: questionId,
-                                            value: newValue
-                                        },
-                                        success: function(response) {
-                                            if (response.success) {
-                                                console.log('Update successful');
-                                            } else {
-                                                console.error('Update failed:', response.message);
-                                            }
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error('Update failed:', error);
-                                        }
-                                    });
+                                    orderable: sub_header !== ''
                                 });
                             });
+                        } else if (header.type === 'textarea') {
+                            columns.push({
+                                data: function(row) {
+                                    return row[header.label];
+                                },
+                                render: function(data, type, row) {
+                                    let newValue;
+                                    if (data !== undefined) {
+                                        newValue = '';
+                                    }
+
+                                    // Check if data is an object and not null
+                                    if (typeof data === 'object' && data !== null) {
+                                        console.log(data);
+
+                                        // Assign newValue with the value of the 'value' key in the data object
+                                        // If data.value is null, assign an empty string
+                                        newValue = data.value === null ? '' : data.value;
+                                    } else {
+                                        // If data is not an object, handle it appropriately
+                                        newValue = data !== null ? data : '';
+                                    }
+
+
+                                    return newValue;
+                                },
+                                orderable: true,
+                            });
+
+                            columns.push({
+                                data: function(row) {
+                                    return row[header.label];
+                                },
+                                render: function(data, type, row) {
+                                    // Ensure header.cleaning_options is an array, defaulting to an empty array if not
+                                    var cleaningOptions = header.cleaning_options ?? [];
+
+                                    // Check if data is an object and not null
+                                    var isObject = typeof data === 'object' && data !== null;
+
+                                    // Generate the select input with unique ID attached as a data attribute
+                                    var select = '<select class="cleaned-select" ' +
+                                        'data-row-id="' + row.entry_id + '" ' +
+                                        'data-question-id="' + header.question_id + '">';
+
+                                    for (var i = 0; i < cleaningOptions.length; i++) {
+                                        // Determine if the current option should be selected
+                                        var isSelected = (isObject && data.processed ===
+                                            cleaningOptions[
+                                                i]) || (!isObject && data === cleaningOptions[i]);
+
+                                        select += '<option value="' + cleaningOptions[i] + '" ' +
+                                            (isSelected ? 'selected' : '') +
+                                            '>' + cleaningOptions[i] + '</option>';
+                                    }
+
+                                    select += '</select>';
+                                    return select;
+                                },
+                                orderable: true,
+                            });
+                        } else {
+                            columns.push({
+                                data: function(row) {
+                                    return row[header.label];
+                                },
+                                render: function(data, type, row) {
+                                    return data !== undefined ? data : '';
+                                },
+                                orderable: true,
+                            });
+                        }
+                    });
+
+                    var table = $('#example').DataTable({
+                        columnDefs: [{
+                            targets: -1,
+                            visible: false
+                        }],
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: '{{ route('reports.data', ['uuid' => $uuid]) }}',
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            beforeSend: function() {
+                                $('#spinner').show();
+                                $('#table-wrapper').hide();
+                            },
+                            complete: function() {
+                                $('#spinner').hide();
+                                $('#table-wrapper').show();
+                            }
+                        },
+                        columns: columns,
+                        lengthMenu: [50, 100, 150, 200, 300, 400, 500],
+                        createdRow: function(row, data, dataIndex) {
+                            // Attach the unique ID to the row element
+                            $(row).attr('data-row-id', data.entry_id);
+                        }
+                    });
+
+                    // Export buttons
+                    new $.fn.dataTable.Buttons(table, {
+                        buttons: [{
+                                extend: 'csv',
+                                className: "btn btn-primary btn-small text-white",
+                                messageTop: "Response Report",
+                                orientation: "landscape",
+                            },
+                            {
+                                extend: 'excel',
+                                className: "btn btn-primary btn-small text-white",
+                                messageTop: "Response Report",
+                                orientation: "landscape",
+                            },
+                            {
+                                extend: 'pdf',
+                                className: "btn btn-primary btn-small text-white",
+                                messageTop: "Response Report",
+                                orientation: "landscape",
+                            },
+                            {
+                                extend: 'print',
+                                className: "btn btn-primary btn-small text-white",
+                                messageTop: "Response Report"
+                            }
+
+                        ]
+                    });
+
+                    table.buttons().container().appendTo($('#export-buttons'));
+
+                    // Change action for select inputs
+                    $('#example').on('change', '.cleaned-select', function() {
+                        var select = $(this);
+                        var rowId = select.data('row-id'); // Get the unique row ID
+                        var questionId = select.data('question-id'); // Get the unique question ID
+                        var newValue = select.val();
+                        $.ajax({
+                            url: '/update-cleaned-data',
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                entry_id: rowId,
+                                question_id: questionId,
+                                value: newValue
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    console.log('Update successful');
+                                } else {
+                                    console.error('Update failed:', response.message);
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Update failed:', error);
+                            }
+                        });
+                    });
+                });
             </script>
         @endpush
     </div>
