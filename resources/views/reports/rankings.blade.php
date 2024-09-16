@@ -6,7 +6,8 @@
 
             </div>
             <div class="table-wrapper shadow-lg border border-gray-300 rounded-lg overflow-x-auto" id="table-wrapper">
-                <table id="aggregation-table" class="display table table-striped table-bordered order-column"
+                <table id="aggregation-table" data-toggle="table" class=""   data-pagination="true" data-search="true" data-sortable="true"
+
                     style="width:100%;">
                     <thead>
                         <tr>
@@ -78,8 +79,6 @@
                     table-layout: fixed;
                 }
             </style>
-
-            <script></script>
         @endpush
     </div>
 </x-app-layout>

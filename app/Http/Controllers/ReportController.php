@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Entry;
 use App\Models\FormField;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 
 class ReportController extends Controller
 {
@@ -335,13 +336,11 @@ class ReportController extends Controller
             $entries = Entry::query()->latest()->get();
 
             foreach ($entries as $entry) {
-                $total_score = 0;
                 $decodedResponses = json_decode($entry->responses, true);
-
 
                 foreach ($decodedResponses as $key => $value) {
                     //get question ids 62, 58, 59, 63, 64, 65, 66, 67, 70, 71
-                    if (in_array($key, [62, 58, 59, 63, 64, 65, 66, 67, 70, 71,12])) {
+                    if (in_array($key, [62, 58, 59, 63, 64, 65, 66, 67, 70, 71, 12])) {
                         if (isset($formFields[$key])) {
                             $formField = $formFields[$key];
                             if ($formField) {
@@ -354,14 +353,12 @@ class ReportController extends Controller
 
                                     //add the score to the responses and name it 'it_enabled'
                                     $responses['it_enabled_score'] = $score;
-                                    $total_score += $score;
-
                                 }
 
                                 // Specialised software->6.11, 58
                                 if ($key == 58) {
                                     //check if the value is 'Yes'
-                                    if ($value=='Yes') {
+                                    if ($value == 'Yes') {
                                         $score = 1;
                                     } else {
                                         $score = 0;
@@ -369,7 +366,6 @@ class ReportController extends Controller
 
                                     //add the score to the responses and name it 'uses_specialised_software_score'
                                     $responses['uses_specialised_software_score'] = $score;
-                                    $total_score += $score;
 
                                 }
 
@@ -383,24 +379,20 @@ class ReportController extends Controller
                                     }
                                     //add the score to the responses and name it 'uses_specialised_software_score'
                                     $responses['specialised_software_score'] = $score;
-                                    $total_score += $score;
-
                                 }
 
                                 // work practices->6.16, 63
                                 if ($key == 63) {
-                                   //score
+                                    //score
                                     $score = count($value);
                                     //add the score to the responses and name it 'work_practices_score'
                                     $responses['work_practices_score'] = $score;
-                                    $total_score += $score;
-
                                 }
 
                                 // services are broken down->6.17, 64
                                 if ($key == 64) {
                                     //if $value is yes
-                                    if ($value=='Yes') {
+                                    if ($value == 'Yes') {
                                         $score = 1;
                                     } else {
                                         $score = 0;
@@ -408,8 +400,6 @@ class ReportController extends Controller
 
                                     //add the score to the responses and name it 'services_broken_down_score'
                                     $responses['are_services_broken_down_score'] = $score;
-                                    $total_score += $score;
-
                                 }
 
                                 // services are broken down->6.18, 65
@@ -423,14 +413,12 @@ class ReportController extends Controller
 
                                     //add the score to the responses and name it 'services_broken_down_score'
                                     $responses['services_broken_down_score'] = $score;
-                                    $total_score += $score;
-
                                 }
 
                                 // online businesses->6.19, 66
                                 if ($key == 66) {
                                     //if $value is yes
-                                    if ($value=='Yes') {
+                                    if ($value == 'Yes') {
                                         $score = 1;
                                     } else {
                                         $score = 0;
@@ -438,24 +426,21 @@ class ReportController extends Controller
 
                                     //add the score to the responses and name it 'online_businesses_score'
                                     $responses['is_online_businesses_score'] = $score;
-                                    $total_score += $score;
-
                                 }
 
                                 // online businesses->6.20, 67
                                 if ($key == 67) {
-                                  $score = count($value);
+                                    $score = count($value);
 
                                     //add the score to the responses and name it 'online_businesses_score'
                                     $responses['online_businesses_score'] = $score;
-                                    $total_score += $score;
 
                                 }
 
                                 // Involvement in staff capacity building->6.23, 70
                                 if ($key == 70) {
                                     //if $value is yes
-                                    if ($value=='Yes') {
+                                    if ($value == 'Yes') {
                                         $score = 1;
                                     } else {
                                         $score = 0;
@@ -463,7 +448,6 @@ class ReportController extends Controller
 
                                     //add the score to the responses and name it 'staff_capacity_building_score'
                                     $responses['do_staff_capacity_building_score'] = $score;
-                                    $total_score += $score;
 
                                 }
 
@@ -478,7 +462,6 @@ class ReportController extends Controller
 
                                     //add the score to the responses and name it 'staff_capacity_building_score'
                                     $responses['staff_capacity_building_score'] = $score;
-                                    $total_score += $score;
                                 }
                             }
 
@@ -486,8 +469,16 @@ class ReportController extends Controller
                     }
                 }
 
+                //total score
+                $responses['total_score'] = $responses['it_enabled_score'] + $responses['uses_specialised_software_score'] + $responses['specialised_software_score'] + $responses['work_practices_score'] + $responses['are_services_broken_down_score'] + $responses['services_broken_down_score'] + $responses['is_online_businesses_score'] + $responses['online_businesses_score'] + $responses['do_staff_capacity_building_score'] + $responses['staff_capacity_building_score'];
+
                 $rankingData[] = $responses;
             }
+
+            // Sort the ranking data by total score in descending order
+            usort($rankingData, function ($a, $b) {
+                return $b['total_score'] <=> $a['total_score'];
+            });
             // Return the aggregated data
             return view('reports.rankings', compact('uuid', 'rankingData'));
 
