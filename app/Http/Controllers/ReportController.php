@@ -123,7 +123,7 @@ class ReportController extends Controller
             ];
 
             // Only add sub_headers for checkbox and radio types
-            if (in_array($label->type, ['radio', 'checkbox'])) {
+            if (in_array($label->type, ['radio', 'checkbox', 'select'])) {
                 // Split options by comma and trim white spaces
                 $options = array_map('trim', explode(',', $label->options));
 
@@ -260,6 +260,38 @@ class ReportController extends Controller
                             //increment the value of current $cleaning_option->name
                             if (isset($aggregatedData[$formField->label][$cleaning_option->value])) {
                                 $aggregatedData[$formField->label][$cleaning_option->value]++;
+                            }
+                        }
+                    }
+
+                    //Education skill levels
+                    if ($key == 18 || ($key <= 43 && $key >= 34)) {
+                        $label = (string) $formField->label;
+
+                        // Initialize the label array if it doesn't exist
+                        if (!isset($aggregatedData[$label])) {
+                            $aggregatedData[$label] = [];
+
+                            // Get the sub_headers for the label
+                            $subHeaders = $headers[$formField->id]['sub_headers'];
+                            // Initialize the sub_headers with 0
+                            foreach ($subHeaders as $subHeader) {
+                                $aggregatedData[$label][$subHeader] = 0;
+                            }
+                        }
+
+                        // Increment counts based on the value
+                        if (is_array($value)) {
+                            foreach ($value as $v) {
+                                $trimmedValue = trim($v);
+                                if (isset($aggregatedData[$label][$trimmedValue])) {
+                                    $aggregatedData[$label][$trimmedValue]++;
+                                }
+                            }
+                        } else {
+                            $trimmedValue = trim($value);
+                            if (isset($aggregatedData[$label][$trimmedValue])) {
+                                $aggregatedData[$label][$trimmedValue]++;
                             }
                         }
                     }

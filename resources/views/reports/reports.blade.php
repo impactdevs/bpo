@@ -143,15 +143,16 @@
                                         'data-row-id="' + row.entry_id + '" ' +
                                         'data-question-id="' + header.question_id + '">';
 
-                                        // add an option for empty value
-                                        select += '<option value="" ' + (!isObject ? 'selected' : '') + '>Select</option>';
+                                    // add an option for empty value
+                                    select += '<option value="" ' + (!isObject ? 'selected' : '') +
+                                        '>Select</option>';
 
                                     for (var i = 0; i < cleaningOptions.length; i++) {
                                         // Determine if the current option should be selected
                                         var isSelected = (isObject && data.processed ===
                                             cleaningOptions[
                                                 i]) || (!isObject && data === cleaningOptions[i]);
-                                                // set the first option to select value... and select it if the value is empty
+                                        // set the first option to select value... and select it if the value is empty
 
 
 
@@ -188,8 +189,8 @@
                         ajax: {
                             url: '{{ route('reports.data', ['uuid' => $uuid]) }}',
                             type: 'POST',
-                            data: {
-                                _token: '{{ csrf_token() }}'
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
                             beforeSend: function() {
                                 $('#spinner').show();
@@ -248,8 +249,10 @@
                         $.ajax({
                             url: '/update-cleaned-data',
                             type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
                             data: {
-                                _token: '{{ csrf_token() }}',
                                 entry_id: rowId,
                                 question_id: questionId,
                                 value: newValue
