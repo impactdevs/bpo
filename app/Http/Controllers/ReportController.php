@@ -31,6 +31,8 @@ class ReportController extends Controller
 
     public function getReportsData(Request $request, $uuid)
     {
+        dd($request->get('length'), $request->get('start'), $request->get('draw'));
+
         // Retrieve headers for the form
         $headers = $this->headers($uuid);
 
@@ -39,6 +41,7 @@ class ReportController extends Controller
         foreach ($headers as $headerId => $headerData) {
             $headerLabels[$headerData['label']] = $headerData;
         }
+
 
         // Initialize query for entries
         $query = Entry::query();
