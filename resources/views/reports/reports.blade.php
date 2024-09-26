@@ -112,7 +112,6 @@
 
                                     // Check if data is an object and not null
                                     if (typeof data === 'object' && data !== null) {
-                                        console.log(data);
 
                                         // Assign newValue with the value of the 'value' key in the data object
                                         // If data.value is null, assign an empty string
@@ -188,7 +187,7 @@
                         processing: true,
                         serverSide: true,
                         paging: true,
-                        
+
                         ajax: {
                             url: '{{ route('reports.data', ['uuid' => $uuid]) }}',
                             type: 'POST',
@@ -261,14 +260,8 @@
                                 value: newValue
                             },
                             success: function(response) {
-                                if (response.success) {
-                                    console.log('Update successful');
-                                } else {
-                                    console.error('Update failed:', response.message);
-                                }
                             },
                             error: function(xhr, status, error) {
-                                console.error('Update failed:', error);
                             }
                         });
                     });
