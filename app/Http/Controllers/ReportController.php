@@ -23,8 +23,6 @@ class ReportController extends Controller
 
     public function reports($uuid)
     {
-        DB::listen(fn ($e): mixed => dump($e->toRawSql()));
-
         // Retrieve headers for the form
         $headers = $this->headers($uuid);
         // Pass headers and entries to the view
