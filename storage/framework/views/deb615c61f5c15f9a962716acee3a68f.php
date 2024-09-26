@@ -97,7 +97,7 @@
                                     },
                                     render: function(data, type, row) {
                                         if (sub_header === 'Female' || sub_header === 'Male') {
-                                            return data === sub_header ? sub_header : '';
+                                            console.log("female or male");
                                         }
 
                                         if (Array.isArray(data)) {
