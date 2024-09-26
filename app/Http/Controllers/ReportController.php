@@ -31,7 +31,7 @@ class ReportController extends Controller
 
     public function getReportsData(Request $request, $uuid)
     {
-        dd($request->length);
+        dd($request->all());
 
         // Retrieve headers for the form
         $headers = $this->headers($uuid);
