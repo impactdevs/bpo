@@ -186,11 +186,6 @@
                         }],
                         processing: true,
                         serverSide: true,
-                        paging: true,
-                        search: {
-                            return: true
-                        },
-
                         ajax: {
                             url: '{{ route('reports.data', ['uuid' => $uuid]) }}',
                             type: 'POST',

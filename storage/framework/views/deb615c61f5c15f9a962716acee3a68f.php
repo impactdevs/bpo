@@ -84,7 +84,6 @@
 
             <script>
                 $(document).ready(function() {
-                    console.log("reports script loaded");
                     var headers = <?php echo json_encode($headers, 15, 512) ?>;
                     var columns = [];
 
@@ -107,6 +106,7 @@
                                             return data === sub_header ? sub_header : '';
                                         }
                                     },
+                                    orderable: sub_header !== ''
                                 });
                             });
                         } else if (header.type === 'textarea') {
@@ -122,6 +122,7 @@
 
                                     // Check if data is an object and not null
                                     if (typeof data === 'object' && data !== null) {
+                                        console.log(data);
 
                                         // Assign newValue with the value of the 'value' key in the data object
                                         // If data.value is null, assign an empty string
@@ -134,6 +135,7 @@
 
                                     return newValue;
                                 },
+                                orderable: true,
                             });
 
                             columns.push({
@@ -173,6 +175,7 @@
                                     select += '</select>';
                                     return select;
                                 },
+                                orderable: true,
                             });
                         } else {
                             columns.push({
@@ -182,6 +185,7 @@
                                 render: function(data, type, row) {
                                     return data !== undefined ? data : '';
                                 },
+                                orderable: true,
                             });
                         }
                     });
@@ -193,7 +197,6 @@
                         }],
                         processing: true,
                         serverSide: true,
-                        paging: true,
                         ajax: {
                             url: '<?php echo e(route('reports.data', ['uuid' => $uuid])); ?>',
                             type: 'POST',
@@ -266,8 +269,14 @@
                                 value: newValue
                             },
                             success: function(response) {
+                                if (response.success) {
+                                    console.log('Update successful');
+                                } else {
+                                    console.error('Update failed:', response.message);
+                                }
                             },
                             error: function(xhr, status, error) {
+                                console.error('Update failed:', error);
                             }
                         });
                     });
