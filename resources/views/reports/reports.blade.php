@@ -85,10 +85,6 @@
                                         return row[header.label];
                                     },
                                     render: function(data, type, row) {
-                                        if (sub_header === 'Female' || sub_header === 'Male') {
-                                            console.log("female or male");
-                                        }
-
                                         if (Array.isArray(data)) {
                                             return data.includes(sub_header) ? sub_header : '';
                                         } else {
