@@ -54,7 +54,7 @@ class ReportController extends Controller
         }
 
         // Paginate results
-        $entries = $query->latest()->paginate($request->get('length'), ['*'], 'page', $request->get('start', 1) / $request->get('length', 10) + 1);
+        $entries = $query->latest()->paginate($request->get('length'), ['*'], 'page', $request->get('start') / $request->get('length') + 1);
 
         // Process entries for DataTables
         $data = $entries->map(function ($entry) use ($headerLabels) {
