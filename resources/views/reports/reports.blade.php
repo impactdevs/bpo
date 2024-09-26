@@ -187,10 +187,8 @@
                         processing: true,
                         serverSide: true,
                         paging: true,
-                        // enter key to search
                         search: {
-                            search: "",
-                            regex: true
+                            return: true
                         },
 
                         ajax: {
