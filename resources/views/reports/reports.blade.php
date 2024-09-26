@@ -73,6 +73,7 @@
 
             <script>
                 $(document).ready(function() {
+                    console.log("reports script loaded");
                     var headers = @json($headers);
                     var columns = [];
 
