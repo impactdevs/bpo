@@ -198,7 +198,6 @@
                         processing: true,
                         serverSide: true,
                         paging: true,
-
                         ajax: {
                             url: '<?php echo e(route('reports.data', ['uuid' => $uuid])); ?>',
                             type: 'POST',

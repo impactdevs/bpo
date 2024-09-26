@@ -96,7 +96,6 @@
                                             return data === sub_header ? sub_header : '';
                                         }
                                     },
-                                    orderable: sub_header !== ''
                                 });
                             });
                         } else if (header.type === 'textarea') {
@@ -124,7 +123,6 @@
 
                                     return newValue;
                                 },
-                                orderable: true,
                             });
 
                             columns.push({
@@ -164,7 +162,6 @@
                                     select += '</select>';
                                     return select;
                                 },
-                                orderable: true,
                             });
                         } else {
                             columns.push({
@@ -174,7 +171,6 @@
                                 render: function(data, type, row) {
                                     return data !== undefined ? data : '';
                                 },
-                                orderable: true,
                             });
                         }
                     });
@@ -187,7 +183,6 @@
                         processing: true,
                         serverSide: true,
                         paging: true,
-
                         ajax: {
                             url: '{{ route('reports.data', ['uuid' => $uuid]) }}',
                             type: 'POST',
