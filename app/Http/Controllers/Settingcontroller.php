@@ -58,8 +58,8 @@ class Settingcontroller extends Controller
     {
         $currentItem = DB::table('cleaning_options')->where('id', $setting)->first();
 
-        $form_fields = DB::table('form_fields')->where('type', 'textarea')->get();
-
+        $form_fields = DB::table('form_fields')->where('type', 'textarea')
+        ->orWhere('type', 'text')->get();
 
         return view('settings.edit', compact('currentItem', 'form_fields'));
     }

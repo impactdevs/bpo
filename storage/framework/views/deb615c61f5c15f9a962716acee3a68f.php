@@ -193,6 +193,7 @@
                         }],
                         processing: true,
                         serverSide: true,
+                        searching: true,
                         ajax: {
                             url: '<?php echo e(route('reports.data', ['uuid' => $uuid])); ?>',
                             type: 'POST',
@@ -200,8 +201,8 @@
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
                             beforeSend: function() {
-                                $('#spinner').show();
-                                $('#table-wrapper').hide();
+                                // $('#spinner').show();
+                                // $('#table-wrapper').hide();
                             },
                             complete: function() {
                                 $('#spinner').hide();
@@ -276,6 +277,7 @@
                             }
                         });
                     });
+
                 });
             </script>
         <?php $__env->stopPush(); ?>

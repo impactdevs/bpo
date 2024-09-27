@@ -40,7 +40,7 @@ class ReportController extends Controller
         }
 
 
-        // Initialize query for entries
+        // Initialize query for entriesi
         $query = Entry::query();
 
         // Apply search filter if provided
