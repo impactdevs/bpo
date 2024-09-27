@@ -1,0 +1,1 @@
+<?php /**PATH D:\bpo\resources\views\forms\fields\index.blade.php ENDPATH**/ ?>

@@ -1,0 +1,1 @@
+<?php /**PATH D:\bpo\resources\views\settings\show.blade.php ENDPATH**/ ?>

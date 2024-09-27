@@ -1,0 +1,1 @@
+<?php /**PATH D:\bpo\resources\views\entries\view-entry.blade.php ENDPATH**/ ?>

@@ -61,7 +61,13 @@ class FormFieldController extends Controller
     public function update(Request $request, string $id)
     {
         // use update method except _token and _method
-        FormField::where('id', $id)->update($request->except(['_token', '_method']));
+        $form_field  = FormField::find($id);
+
+        //update the label, options and type in case they are changed
+        $form_field->label = $request->input('label');
+        $form_field->options = $request->input('options');
+        $form_field->type = $request->input('type');
+        $form_field->save();
 
         return redirect()->back();
     }
