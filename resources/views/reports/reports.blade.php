@@ -94,7 +94,7 @@
                                     orderable: sub_header !== ''
                                 });
                             });
-                        } else if (header.type === 'textarea') {
+                        } else if (header.type === 'textarea' || header.type === 'text') {
                             columns.push({
                                 data: function(row) {
                                     return row[header.label];
