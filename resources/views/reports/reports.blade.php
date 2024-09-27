@@ -94,7 +94,7 @@
                                     orderable: sub_header !== ''
                                 });
                             });
-                        } else if (header.type === 'textarea' || header.type === 'text') {
+                        } else if (header.type === 'textarea') {
                             columns.push({
                                 data: function(row) {
                                     return row[header.label];
@@ -182,7 +182,6 @@
                         }],
                         processing: true,
                         serverSide: true,
-                        searching: true,
                         ajax: {
                             url: '{{ route('reports.data', ['uuid' => $uuid]) }}',
                             type: 'POST',
@@ -190,8 +189,8 @@
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
                             beforeSend: function() {
-                                // $('#spinner').show();
-                                // $('#table-wrapper').hide();
+                                $('#spinner').show();
+                                $('#table-wrapper').hide();
                             },
                             complete: function() {
                                 $('#spinner').hide();
@@ -266,7 +265,6 @@
                             }
                         });
                     });
-
                 });
             </script>
         @endpush

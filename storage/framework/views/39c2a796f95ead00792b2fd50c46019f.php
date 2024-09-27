@@ -31,9 +31,6 @@
         integrity="sha512-6sSYJqDreZRZGkJ3b+YfdhB3MzmuP9R7X1QZ6g5aIXhRvR1Y/N/P47jmnkENm7YL3oqsmI6AK+V6AD99uWDnIw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.23.2/dist/bootstrap-table.min.css">
-
-
-
     <!-- Scripts -->
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/css/custom-css.css', 'resources/js/app.js', 'resources/js/custom-js.js']); ?>
 </head>
