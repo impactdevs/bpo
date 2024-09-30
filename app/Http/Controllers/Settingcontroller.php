@@ -24,7 +24,9 @@ class Settingcontroller extends Controller
     public function create()
     {
         //get all the form fields with type textarea
-        $form_fields = DB::table('form_fields')->where('type', 'textarea')->get();
+        $form_fields = DB::table('form_fields')
+        ->where('type', 'textarea')
+        ->orWhere('type', 'text')->get();
 
         return view('settings.create', compact('form_fields'));
     }

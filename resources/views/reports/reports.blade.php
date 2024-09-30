@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="py-6">
-        <div class="p-2 text-gray-900 dark:text-gray-100">
+        <div class="text-gray-900 dark:text-gray-100">
             <div class="d-flex justify-content-between">
                 <h2 class="text-2xl font-bold text-center mb-6">Report Overview</h2>
 
@@ -66,8 +66,9 @@
                     /* Ensure padding and border are included in width */
                 }
 
-                .table-wrapper {
-                    table-layout: fixed;
+                .selected {
+                    background-color: #e0f7fa;
+                    /* Light cyan background for selected rows */
                 }
             </style>
 
@@ -182,19 +183,20 @@
                         }],
                         processing: true,
                         serverSide: true,
+                        scrollY: 'calc(100vh - 447px)',
+                        scrollCollapse: true,
+                        scrollX: true,
+                        search: {
+                            return: true
+                        },
+                        fixedColumns: {
+                            leftColumns: 6
+                        },
                         ajax: {
                             url: '{{ route('reports.data', ['uuid' => $uuid]) }}',
                             type: 'POST',
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            beforeSend: function() {
-                                $('#spinner').show();
-                                $('#table-wrapper').hide();
-                            },
-                            complete: function() {
-                                $('#spinner').hide();
-                                $('#table-wrapper').show();
                             }
                         },
                         columns: columns,
@@ -204,6 +206,9 @@
                             $(row).attr('data-row-id', data.entry_id);
                         }
                     });
+
+                    table.columns.adjust().draw();
+
 
                     // Export buttons
                     new $.fn.dataTable.Buttons(table, {
@@ -236,6 +241,22 @@
 
                     table.buttons().container().appendTo($('#export-buttons'));
 
+                    // Move the spinner hiding logic here
+                    table.on('draw', function() {
+                        $('#spinner').hide();
+                        $('#table-wrapper').show();
+                    });
+
+                    // Row selection logic
+                    $('#example tbody').on('click', 'tr', function() {
+                        $(this).toggleClass('selected'); // Toggle the 'selected' class on row click
+                    });
+
+                    // Optional: Capture selected row data
+                    $('#example tbody').on('dblclick', 'tr', function() {
+                        var data = table.row(this).data(); // Get data for the clicked row
+                        console.log(data); // You can process the data as needed
+                    });
                     // Change action for select inputs
                     $('#example').on('change', '.cleaned-select', function() {
                         var select = $(this);

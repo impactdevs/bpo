@@ -55,33 +55,29 @@ class ReportController extends Controller
 
         // Paginate results
         $entries = $query->latest()->paginate($request->get('length', 10), ['*'], 'page', $request->get('start', 1) / $request->get('length', 10) + 1);
-
+        // Eager load form fields and processed entries
+        $formFieldIds = FormField::pluck('id')->toArray();
+        $processedEntries = DB::table('processed_entries')
+            ->whereIn('entry_id', $entries->pluck('id'))
+            ->whereIn('question_id', $formFieldIds)
+            ->get()
+            ->groupBy('entry_id');
         // Process entries for DataTables
-        $data = $entries->map(function ($entry) use ($headerLabels) {
+        $data = $entries->map(function ($entry) use ($headerLabels, $processedEntries) {
             $decodedResponses = json_decode($entry->responses, true);
-            $formattedResponses = [];
-
-            // Add the entry id
-            $formattedResponses['entry_id'] = $entry->id;
+            $formattedResponses = ['entry_id' => $entry->id];
 
             foreach ($decodedResponses as $key => $value) {
                 $formField = FormField::find($key);
                 if ($formField) {
-                    $formattedResponses[$formField->label] = $value;
+                    // Safely get the processed entry for this specific entry and question
+                    $processedEntry = optional($processedEntries[$entry->id])->firstWhere('question_id', $key);
+                    $processedValue = $processedEntry ? $processedEntry->value : null;
 
-                    // Check if the entry_id and question_id exists in the processed_entries
-                    $store_processed_value = DB::table('processed_entries')
-                        ->where('entry_id', $entry->id)
-                        ->where('question_id', $key)
-                        ->first();
-
-                    if ($store_processed_value) {
-                        // Create a new key 'processed' in the $formattedResponses array
-                        $formattedResponses[$formField->label] = [
-                            'value' => $value,
-                            'processed' => $store_processed_value->value
-                        ];
-                    }
+                    $formattedResponses[$formField->label] = $processedValue ? [
+                        'value' => $value,
+                        'processed' => $processedValue
+                    ] : $value;
                 }
             }
 
@@ -94,6 +90,7 @@ class ReportController extends Controller
 
             return $formattedResponses;
         });
+
 
         // Return data in DataTables format
         return response()->json([
@@ -226,8 +223,14 @@ class ReportController extends Controller
                         }
                     }
 
-                    //if key is 18, aggregate the data too using cleaning options
-                    if ($key == 18) {
+                    /**
+                     * key 18 -> Professional bodies
+                     * key 53 -> Primary sources of power
+                     * key 78 -> Key business challenges
+                     * key 59 -> essential software platforms
+                     * key 52 -> internet challenges
+                     */
+                    if ($key == 18 || $key == 53 || $key == 78 || $key == 59 || $key == 52) {
                         $label = (string) $formField->label;
 
                         //get the cleaning options
@@ -249,7 +252,7 @@ class ReportController extends Controller
 
                         //get all the cleaning options where 18
                         $cleaning_options_18 = DB::table('processed_entries')
-                            ->where('question_id', 18)
+                            ->where('question_id', $key)
                             ->where('entry_id', $entry->id)
                             ->get();
 

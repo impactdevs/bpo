@@ -18,8 +18,8 @@
                                     class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />
                         <br />
-                        <form method="POST" action="{{ route('settings.store') }}" accept-charset="UTF-8" class="form-horizontal"
-                            enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('settings.store') }}" accept-charset="UTF-8"
+                            class="form-horizontal" enctype="multipart/form-data">
                             {{ csrf_field() }}
 
                             @include ('settings.form', ['formMode' => 'create'])
