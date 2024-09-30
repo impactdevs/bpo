@@ -24,7 +24,7 @@
                                     <th colspan="{{ count($header['sub_headers']) }}" class="header-cell text-center">
                                         {{ $header['label'] }}
                                     </th>
-                                @elseif ($header['type'] === 'textarea')
+                                @elseif ($header['type'] === 'textarea' || $header['type'] === 'text')
                                     <th colspan="2" class="header-cell text-center">
                                         {{ $header['label'] }}
                                         <i class="fas fa-info-circle header-icon"
@@ -43,7 +43,7 @@
                                     @endforeach
                                 @endif
 
-                                @if ($header['type'] === 'textarea')
+                                @if ($header['type'] === 'textarea' || $header['type'] === 'text')
                                     <th class="text-center">Raw</th>
                                     <th class="text-center">Cleaned</th>
                                 @endif
@@ -95,7 +95,7 @@
                                     orderable: sub_header !== ''
                                 });
                             });
-                        } else if (header.type === 'textarea') {
+                        } else if (header.type === 'textarea' || header.type === 'text') {
                             columns.push({
                                 data: function(row) {
                                     return row[header.label];
@@ -244,10 +244,10 @@
                         $('#table-wrapper').show();
                     });
 
-                    // Row selection logic
-                    $('#example tbody').on('click', 'tr', function() {
-                        $(this).toggleClass('selected'); // Toggle the 'selected' class on row click
-                    });
+                    // // Row selection logic
+                    // $('#example tbody').on('click', 'tr', function() {
+                    //     $(this).toggleClass('selected'); // Toggle the 'selected' class on row click
+                    // });
 
                     // Optional: Capture selected row data
                     $('#example tbody').on('dblclick', 'tr', function() {

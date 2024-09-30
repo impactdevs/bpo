@@ -34,7 +34,7 @@
                                         <?php echo e($header['label']); ?>
 
                                     </th>
-                                <?php elseif($header['type'] === 'textarea'): ?>
+                                <?php elseif($header['type'] === 'textarea' || $header['type'] === 'text'): ?>
                                     <th colspan="2" class="header-cell text-center">
                                         <?php echo e($header['label']); ?>
 
@@ -54,7 +54,7 @@
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 <?php endif; ?>
 
-                                <?php if($header['type'] === 'textarea'): ?>
+                                <?php if($header['type'] === 'textarea' || $header['type'] === 'text'): ?>
                                     <th class="text-center">Raw</th>
                                     <th class="text-center">Cleaned</th>
                                 <?php endif; ?>
@@ -106,7 +106,7 @@
                                     orderable: sub_header !== ''
                                 });
                             });
-                        } else if (header.type === 'textarea') {
+                        } else if (header.type === 'textarea' || header.type === 'text') {
                             columns.push({
                                 data: function(row) {
                                     return row[header.label];
@@ -200,9 +200,6 @@
                         search: {
                             return: true
                         },
-                        fixedColumns: {
-                            leftColumns: 
-                        },
                         ajax: {
                             url: '<?php echo e(route('reports.data', ['uuid' => $uuid])); ?>',
                             type: 'POST',
@@ -258,10 +255,10 @@
                         $('#table-wrapper').show();
                     });
 
-                    // Row selection logic
-                    $('#example tbody').on('click', 'tr', function() {
-                        $(this).toggleClass('selected'); // Toggle the 'selected' class on row click
-                    });
+                    // // Row selection logic
+                    // $('#example tbody').on('click', 'tr', function() {
+                    //     $(this).toggleClass('selected'); // Toggle the 'selected' class on row click
+                    // });
 
                     // Optional: Capture selected row data
                     $('#example tbody').on('dblclick', 'tr', function() {

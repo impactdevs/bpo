@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Entry;
 use App\Models\FormField;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Arr;
 
 class ReportController extends Controller
 {
