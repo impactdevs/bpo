@@ -189,9 +189,6 @@
                         search: {
                             return: true
                         },
-                        fixedColumns: {
-                            leftColumns: 6
-                        },
                         ajax: {
                             url: '{{ route('reports.data', ['uuid' => $uuid]) }}',
                             type: 'POST',

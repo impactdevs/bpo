@@ -201,7 +201,7 @@
                             return: true
                         },
                         fixedColumns: {
-                            leftColumns: 6
+                            leftColumns: 
                         },
                         ajax: {
                             url: '<?php echo e(route('reports.data', ['uuid' => $uuid])); ?>',
