@@ -40,11 +40,13 @@
                                 <figure class="highcharts-figure">
                                     <div id="container3"></div>
                                 </figure>
-                                <div class="col-md-6 mb-4">
-                                    <figure class="highcharts-figure">
-                                        <div id="container4"></div>
-                                    </figure>
-                                </div>
+
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <figure class="highcharts-figure">
+                                    <div id="container4"></div>
+                                </figure>
+
                             </div>
                         </div>
                     </div>
@@ -75,6 +77,8 @@
                 var data2 = @json($data2);
                 var labels3 = @json($labels3);
                 var data3 = @json($data3);
+                var data4 = @json($data4);
+                var labels4 = @json($labels4);
 
 
                 Highcharts.chart('container', {
@@ -147,7 +151,7 @@
                     },
                     series: [{
                         type: 'pie',
-                        name: 'Share',
+                        name: 'Processes',
                         data: labels2.map((label, index) => [label, data2[index]])
                     }]
                 });
@@ -188,7 +192,56 @@
                     },
                     series: [{
                         name: 'Work Practice',
-                        data:labels3.map((label, index) => [label, data3[index]])
+                        data: labels3.map((label, index) => [label, data3[index]])
+                    }]
+                });
+
+                // Set up the chart
+                Highcharts.chart('container4', {
+                    chart: {
+                        type: 'cylinder',
+                        options3d: {
+                            enabled: true,
+                            alpha: 15,
+                            beta: 15,
+                            depth: 50,
+                            viewDistance: 25
+                        }
+                    },
+                    title: {
+                        text: 'Categorization By Main Clients'
+                    },
+                    xAxis: {
+                        categories: labels4,
+                        title: {
+                            text: 'Number of Clients'
+                        },
+                        labels: {
+                            skew3d: true
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            margin: 20,
+                            text: 'Clients'
+                        },
+                        labels: {
+                            skew3d: true
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<b>Clients: {point.x}</b><br>'
+                    },
+                    plotOptions: {
+                        series: {
+                            depth: 25,
+                            colorByPoint: true
+                        }
+                    },
+                    series: [{
+                        data: data4,
+                        name: 'Clients',
+                        showInLegend: false
                     }]
                 });
 

@@ -36,7 +36,14 @@ class DashboardController extends Controller
             $broken = $this->broken_process();
             //registered online
             $registered_online = $this->registered_online();
-            return view('dashboard', compact('entries', 'registered', 'office_locations', 'home_based_locations', 'male_ceos', 'female_ceos', 'labels', 'data', 'labels2', 'data2', 'labels3', 'data3', 'broken', 'registered_online'));
+
+            //main clients
+            $main_clients = $this->main_clients();
+
+            //prepare data for the pie chart
+            $labels4 = $main_clients->keys()->toArray();
+            $data4 = $main_clients->values()->toArray();
+            return view('dashboard', compact('entries', 'registered', 'office_locations', 'home_based_locations', 'male_ceos', 'female_ceos', 'labels', 'data', 'labels2', 'data2', 'labels3', 'data3', 'broken', 'registered_online', 'labels4', 'data4'));
         }
         return redirect()->route('entries.index');
     }
@@ -179,6 +186,33 @@ class DashboardController extends Controller
 
         // Count occurrences of each segment
         $by_work_practice = collect($practice)->countBy();
+
+        return $by_work_practice;
+    }
+
+    public function main_clients()
+    {
+        // Get the responses and decode the JSON
+        $entries = Entry::select('responses->27 as main_clients')->get();
+
+        // Initialize an empty array to hold the individual segments
+        $client = [];
+
+        // Loop through the entries and extract individual segments
+        foreach ($entries as $entry) {
+            // Decode the JSON string into an array
+            $mainClients = json_decode($entry->main_clients);
+
+            // Add each segment to the segments array
+            if (is_array($mainClients)) {
+                foreach ($mainClients as $clientele) {
+                    $client[] = $clientele;
+                }
+            }
+        }
+
+        // Count occurrences of each segment
+        $by_work_practice = collect($client)->countBy();
 
         return $by_work_practice;
     }
