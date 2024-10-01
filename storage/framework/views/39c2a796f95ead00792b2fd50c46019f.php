@@ -37,7 +37,7 @@
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/css/custom-css.css', 'resources/js/app.js', 'resources/js/custom-js.js']); ?>
 </head>
 
-<body class="font-sans antialiased">
+<body>
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         <?php echo $__env->make('layouts.navigation', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 

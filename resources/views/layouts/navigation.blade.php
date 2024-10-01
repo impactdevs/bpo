@@ -2,8 +2,8 @@
     class="bg-primary dark:bg-gray-800 shadow-lg border-b border-gray-100 dark:border-gray-700 p-5">
     <!-- Primary Navigation Menu -->
     <div class="max-w-16xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-            <div class="flex items-center space-x-4">
+        <div class="flex justify-between items-center h-16 flex-1">
+            <div class="flex flex-1 items-center space-x-16 justify-content-between">
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="{{ route('dashboard') }}">
@@ -15,37 +15,44 @@
                 <div class="hidden space-x-6 sm:-my-px sm:ms-10 sm:flex items-center">
                     @if (auth()->user()->email == 'admin@bpo.com')
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                            class="text-lg font-semibold text-white hover:text-gray-300">
+                            class="text-lg font-semibold text-white hover:text-gray-300 fs-5">
+                            <i class="bi bi-house fs-4 pe-1"></i>
                             {{ __('Dashboard') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')"
-                            class="text-lg font-semibold text-white hover:text-gray-300">
+                            class="text-lg font-semibold text-white hover:text-gray-300 fs-5">
+                            <i class="bi bi-file-earmark-text fs-4 pe-1"></i>
                             {{ __('Reports') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('form-builder.index')" :active="request()->routeIs('form-builder.index')"
-                            class="text-lg font-semibold text-white hover:text-gray-300">
+                            class="text-lg font-semibold text-white hover:text-gray-300 fs-5">
+                            <i class="bi bi-plus-square fs-4 pe-1"></i>
                             {{ __('Forms') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries.index')"
-                            class="text-lg font-semibold text-white hover:text-gray-300">
+                            class="text-lg font-semibold text-white hover:text-gray-300 fs-5">
+                            <i class="bi bi-journal-text fs-4 pe-1"></i>
                             {{ __('Entries') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('documents.index')" :active="request()->routeIs('documents.index')"
-                            class="text-lg font-semibold text-white hover:text-gray-300">
+                            class="text-lg font-semibold text-white hover:text-gray-300 fs-5">
+                            <i class="bi bi-file-earmark-arrow-up fs-4 pe-1"></i>
                             {{ __('Documents') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('settings.index')" :active="request()->routeIs('settings.index')"
-                            class="text-lg font-semibold text-white hover:text-gray-300">
+                            class="text-lg font-semibold text-white hover:text-gray-300 fs-5">
+                            <i class="bi bi-gear fs-4 pe-1"></i>
                             {{ __('Settings') }}
                         </x-nav-link>
                     @else
                         <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries.index')"
-                            class="text-lg font-semibold text-white hover:text-gray-300">
+                            class="text-lg font-semibold text-white hover:text-gray-300 fs-5">
+                            <i class="bi bi-journal-text fs-4 pe-1"></i>
                             {{ __('Entries') }}
                         </x-nav-link>
                     @endif

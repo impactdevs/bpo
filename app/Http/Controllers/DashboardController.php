@@ -43,7 +43,37 @@ class DashboardController extends Controller
             //prepare data for the pie chart
             $labels4 = $main_clients->keys()->toArray();
             $data4 = $main_clients->values()->toArray();
-            return view('dashboard', compact('entries', 'registered', 'office_locations', 'home_based_locations', 'male_ceos', 'female_ceos', 'labels', 'data', 'labels2', 'data2', 'labels3', 'data3', 'broken', 'registered_online', 'labels4', 'data4'));
+
+            //academic qualifications
+            $academicQualifications = $this->academicQualifications();
+
+            //prepared the dat for plotting in order of management and support staff
+            $labels5 = array_keys($academicQualifications['management']);
+            $data5 = array_values($academicQualifications['management']);
+            $labels6 = array_keys($academicQualifications['support']);
+            $data6 = array_values($academicQualifications['support']);
+            return view('dashboard', compact(
+                'entries',
+                'registered',
+                'office_locations',
+                'home_based_locations',
+                'male_ceos',
+                'female_ceos',
+                'labels',
+                'data',
+                'labels2',
+                'data2',
+                'labels3',
+                'data3',
+                'broken',
+                'registered_online',
+                'labels4',
+                'data4',
+                'labels5',
+                'data5',
+                'labels6',
+                'data6'
+            ));
         }
         return redirect()->route('entries.index');
     }
@@ -259,5 +289,50 @@ class DashboardController extends Controller
             'data' => $data
         ]);
     }
+
+    public function academicQualifications()
+    {
+        // Initialize arrays to hold qualifications for management and support staff
+        $managementQualifications = [];
+        $supportQualifications = [];
+
+        // Get entries for management staff qualifications (keys 34 to 38)
+        for ($i = 34; $i <= 38; $i++) {
+            $managementEntries = Entry::select("responses->$i as qualification", "id")->get();
+
+            // Group qualifications for management staff
+            foreach ($managementEntries as $entry) {
+                $qualification = $entry->qualification;
+                if ($qualification) {
+                    $managementQualifications[] = $qualification;
+                }
+            }
+        }
+
+        // Get entries for support staff qualifications (keys 39 to 43)
+        for ($i = 39; $i <= 43; $i++) {
+            $supportEntries = Entry::select("responses->$i as qualification", "id")->get();
+
+            // Group qualifications for support staff
+            foreach ($supportEntries as $entry) {
+                $qualification = $entry->qualification;
+                if ($qualification) {
+                    $supportQualifications[] = $qualification;
+                }
+            }
+        }
+
+        // Count occurrences of qualifications
+        $managementQualificationsCount = array_count_values($managementQualifications);
+        $supportQualificationsCount = array_count_values($supportQualifications);
+
+        // Return the results
+        return [
+            'management' => $managementQualificationsCount,
+            'support' => $supportQualificationsCount,
+        ];
+    }
+
+
 
 }

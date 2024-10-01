@@ -1,3 +1,9 @@
+/*
+* font family to roboto
+ */
+body {
+    font-family: 'Roboto', sans-serif;
+}
 .table-wrapper {
     overflow-x: auto;
     width: 100%;

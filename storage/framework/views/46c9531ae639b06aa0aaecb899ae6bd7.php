@@ -1,5 +1,5 @@
 
-<img src="<?php echo e(asset('images/logo_bigger_white-1.png')); ?>" class="rounded-lg img-fluid" width="400">
+<img src="<?php echo e(asset('images/logo.jpeg')); ?>" class="rounded-lg img-fluid" width="400">
 
 
 
