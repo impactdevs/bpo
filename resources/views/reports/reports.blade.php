@@ -24,7 +24,7 @@
                                     <th colspan="{{ count($header['sub_headers']) }}" class="header-cell text-center">
                                         {{ $header['label'] }}
                                     </th>
-                                @elseif ($header['type'] === 'textarea' || $header['type'] === 'text')
+                                @elseif ($header['type'] === 'textarea' || $header['type'] === 'text' || $header['type'] === 'number')
                                     <th colspan="2" class="header-cell text-center">
                                         {{ $header['label'] }}
                                         <i class="fas fa-info-circle header-icon"
@@ -43,7 +43,7 @@
                                     @endforeach
                                 @endif
 
-                                @if ($header['type'] === 'textarea' || $header['type'] === 'text')
+                                @if ($header['type'] === 'textarea' || $header['type'] === 'text' || $header['type'] === 'number')
                                     <th class="text-center">Raw</th>
                                     <th class="text-center">Cleaned</th>
                                 @endif
@@ -95,7 +95,7 @@
                                     orderable: sub_header !== ''
                                 });
                             });
-                        } else if (header.type === 'textarea' || header.type === 'text') {
+                        } else if (header.type === 'textarea' || header.type === 'text' || header.type === 'number') {
                             columns.push({
                                 data: function(row) {
                                     return row[header.label];

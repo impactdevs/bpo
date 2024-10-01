@@ -34,7 +34,7 @@
                                         <?php echo e($header['label']); ?>
 
                                     </th>
-                                <?php elseif($header['type'] === 'textarea' || $header['type'] === 'text'): ?>
+                                <?php elseif($header['type'] === 'textarea' || $header['type'] === 'text' || $header['type'] === 'number'): ?>
                                     <th colspan="2" class="header-cell text-center">
                                         <?php echo e($header['label']); ?>
 
@@ -54,7 +54,7 @@
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 <?php endif; ?>
 
-                                <?php if($header['type'] === 'textarea' || $header['type'] === 'text'): ?>
+                                <?php if($header['type'] === 'textarea' || $header['type'] === 'text' || $header['type'] === 'number'): ?>
                                     <th class="text-center">Raw</th>
                                     <th class="text-center">Cleaned</th>
                                 <?php endif; ?>
@@ -106,7 +106,7 @@
                                     orderable: sub_header !== ''
                                 });
                             });
-                        } else if (header.type === 'textarea' || header.type === 'text') {
+                        } else if (header.type === 'textarea' || header.type === 'text' || header.type === 'number') {
                             columns.push({
                                 data: function(row) {
                                     return row[header.label];

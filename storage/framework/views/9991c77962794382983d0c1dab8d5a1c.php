@@ -223,7 +223,7 @@
                     xAxis: {
                         categories: labels4,
                         title: {
-                            text: 'Number of Clients'
+                            text: 'Clients'
                         },
                         labels: {
                             skew3d: true
@@ -232,7 +232,7 @@
                     yAxis: {
                         title: {
                             margin: 20,
-                            text: 'Clients'
+                            text: 'Number of Clients'
                         },
                         labels: {
                             skew3d: true
