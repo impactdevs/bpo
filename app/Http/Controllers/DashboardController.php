@@ -71,8 +71,6 @@ class DashboardController extends Controller
             'labels6',
             'data6'
         ));
-
-        return redirect()->route('entries.index');
     }
 
     public function entries()

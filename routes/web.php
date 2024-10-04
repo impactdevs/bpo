@@ -44,6 +44,7 @@ Route::get('/aggregations/{uuid}', [ReportController::class, 'aggregate'])->name
 Route::get('/aggregations-data/{uuid}', [ReportController::class, 'aggregateData'])->name('aggregations.data');
 Route::get('/rankings/{uuid}', [ReportController::class, 'rank'])->name('rankings');
 Route::get('/ranking/{uuid}', [ReportController::class, 'rank'])->name('ranking');
+Route::post('update-minimum-points', [ReportController::class, 'updateMinimumPoints'])->name('update-minimum-points');
 
 
 

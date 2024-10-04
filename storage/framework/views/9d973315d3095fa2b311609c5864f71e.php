@@ -8,394 +8,335 @@
 <?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
-    <div class="py-6">
+    <div class="py-4">
         <div id="spinner" class="flex justify-center items-center h-48">
-            <!-- You can use any spinner animation you prefer -->
             <div class="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500"></div>
         </div>
-
-        
         <div class="content-wrapper" style="display: none;">
             <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
-                <div class="row">
-                    <div class="col-2">
-                        <div class="card h-100 text-center bg-light shadow-sm">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h1 class="h1"><?php echo e($entries); ?></h1>
-                                <p class="mb-0">Entries</p>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex flex-row">
+                        <!-- Card Section -->
+                        <div class="flex flex-col w-1/3 p-4 space-y-4">
+                            <!-- Insights Card -->
+                            <div
+                                class="insights-card w-full p-6 border rounded-lg shadow-lg bg-blue-100 hover:shadow-2xl transition duration-300">
+                                <h2 class="text-2xl font-bold text-gray-800 mb-2">Insights</h2>
+                                <p class="text-lg text-gray-600">Some important insights and statistics.</p>
                             </div>
+                            <?php $__currentLoopData = [['count' => $entries, 'label' => 'Entries', 'icon' => 'fa-folder'], ['count' => $registered, 'label' => 'Registered Entities', 'icon' => 'fa-users'], ['count' => $office_locations, 'label' => 'Own Offices', 'icon' => 'fa-building'], ['count' => $home_based_locations, 'label' => 'Home Based', 'icon' => 'fa-home'], ['count' => $broken, 'label' => 'Companies Disjoint Processes', 'icon' => 'fa-exclamation-triangle'], ['count' => $registered_online, 'label' => 'Registered Online', 'icon' => 'fa-globe'], ['count' => $male_ceos, 'label' => 'Male CEOs', 'icon' => 'fa-male'], ['count' => $female_ceos, 'label' => 'Female CEOs', 'icon' => 'fa-female']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <div
+                                    class="card w-full p-4 border rounded-lg shadow-lg bg-gray-100 hover:shadow-2xl transition duration-300 flex items-center">
+                                    <i class="fas <?php echo e($card['icon']); ?> fa-2x mr-4 text-blue-500"></i>
+                                    <div>
+                                        <p class="text-3xl font-bold text-gray-800"><?php echo e($card['count']); ?></p>
+                                        <p class="text-lg text-gray-600"><?php echo e($card['label']); ?></p>
+                                    </div>
+                                </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
-                    </div>
 
-                    <div class="col-2">
-                        <div class="card h-100 text-center bg-light shadow-sm">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h1 class="h1"><?php echo e($registered); ?></h1>
-                                <p class="mb-0">Registered Entities</p>
+                        <!-- Graph Section -->
+                        <div class="flex flex-col w-2/3 p-4">
+                            <div class="row mb-4">
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <figure class="highcharts-figure">
+                                            <div id="container6"></div>
+                                        </figure>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <figure class="highcharts-figure">
+                                        <div id="container"></div>
+                                    </figure>
+                                </div>
+                                <div class="col-md-6">
+                                    <figure class="highcharts-figure">
+                                        <div id="container2"></div>
+                                    </figure>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-2">
-                        <div class="card h-100 text-center bg-light shadow-sm">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h1 class="h1"><?php echo e($office_locations); ?></h1>
-                                <p class="mb-0">Own Offices</p>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <figure class="highcharts-figure">
+                                        <div id="container3"></div>
+                                    </figure>
+                                </div>
+                                <div class="col-md-6">
+                                    <figure class="highcharts-figure">
+                                        <div id="container4"></div>
+                                    </figure>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="col-2">
-                        <div class="card h-100 text-center bg-light shadow-sm">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h1 class="h1"><?php echo e($home_based_locations); ?></h1>
-                                <p class="mb-0">Home Based</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-2">
-                        <div class="card h-100 text-center bg-light shadow-sm">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h1 class="h1"><?php echo e($broken); ?></h1>
-                                <p class="mb-0">Companies Disjoint processes</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-2">
-                        <div class="card h-100 text-center bg-light shadow-sm">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h1 class="h1"><?php echo e($registered_online); ?></h1>
-                                <p class="mb-0">Registered Online</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-2 pt-4">
-                        <div class="card h-100 text-center bg-light shadow-sm">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h1 class="h1"><?php echo e($male_ceos); ?></h1>
-                                <p class="mb-0">Male CEOs</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-2 pt-4">
-                        <div class="card h-100 text-center bg-light shadow-sm">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h1 class="h1"><?php echo e($female_ceos); ?></h1>
-                                <p class="mb-0">Female CEOs</p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-12 pt-4">
-                        <div class="card h-100 text-center bg-light shadow-sm">
-                            <p>Categorization By Industry Segment</p>
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <div style="width: 50%; margin: auto;">
-                                    <canvas id="industrySegmentChart" width="300" height="550"></canvas>
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <figure class="highcharts-figure">
+                                        <div id="container5"></div>
+                                    </figure>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    
-                    <div class="col-12 pt-4">
-                        <div class="card h-100 text-center bg-light shadow-sm">
-                            <p>Categorization By Size Of the Company</p>
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <div style="width: 50%; margin: auto;">
-                                    <canvas id="sizeOfTheCompany" width="300" height="550"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-
-                    
-                    <div class="col-12 pt-4">
-                        <div class="card h-100 text-center bg-light shadow-sm">
-                            <p>Categorization By Business Processes</p>
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <div style="width: 50%; margin: auto;">
-                                    <canvas id="businessProcessChart" width="300" height="550"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-
-                    
-                    <div class="col-12 pt-4">
-                        <div class="card h-100 text-center bg-light shadow-sm">
-                            <p>Categorization By Work Practices</p>
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <div style="width: 50%; margin: auto;">
-                                    <canvas id="workPracticeChart" width="300" height="550"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-
-
                 </div>
             </div>
-
         </div>
     </div>
 
     <?php $__env->startPush('script'); ?>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+        <script src="https://code.highcharts.com/modules/cylinder.js"></script>
+        <script src="https://code.highcharts.com/modules/funnel3d.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+        <script src="https://code.highcharts.com/modules/accessibility.js"></script>
         <script>
             $(document).ready(function() {
-                // stop the spinner and shw the content
                 $('#spinner').hide();
                 $('.content-wrapper').show();
 
-
-                // Get the labels and data from Laravel
                 var labels = <?php echo json_encode($labels, 15, 512) ?>;
                 var data = <?php echo json_encode($data, 15, 512) ?>;
                 var labels2 = <?php echo json_encode($labels2, 15, 512) ?>;
                 var data2 = <?php echo json_encode($data2, 15, 512) ?>;
                 var labels3 = <?php echo json_encode($labels3, 15, 512) ?>;
                 var data3 = <?php echo json_encode($data3, 15, 512) ?>;
+                var data4 = <?php echo json_encode($data4, 15, 512) ?>;
+                var labels4 = <?php echo json_encode($labels4, 15, 512) ?>;
+                var data5 = <?php echo json_encode($data5, 15, 512) ?>;
+                var labels5 = <?php echo json_encode($labels5, 15, 512) ?>;
+                var data6 = <?php echo json_encode($data6, 15, 512) ?>;
+                var labels6 = <?php echo json_encode($labels6, 15, 512) ?>;
 
-                // Create the chart
-                var ctx = document.getElementById('industrySegmentChart').getContext('2d');
-                var myPieChart = new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            data: data,
-                            backgroundColor: [
-                                '#FF6384',
-                                '#36A2EB',
-                                '#FFCE56',
-                                '#4BC0C0',
-                                '#9966FF',
-                                '#FF9F40',
-                                '#FFCD56',
-                                '#4DC0B5'
-                            ]
-                        }]
+                Highcharts.chart('container', {
+                    chart: {
+                        type: 'pie',
+                        options3d: {
+                            enabled: true,
+                            alpha: 45,
+                            beta: 0
+                        }
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        title: {
-                            display: true,
-                            text: 'Industry Segment'
-                        },
-                        plugins: {
-                            datalabels: {
-                                color: '#fff',
-                                anchor: 'end',
-                                align: 'start',
-                                offset: -10,
-                                borderWidth: 2,
-                                borderColor: '#fff',
-                                borderRadius: 25,
-                                backgroundColor: (context) => context.dataset.backgroundColor,
-                                font: {
-                                    weight: 'bold',
-                                    size: 16,
-                                },
-                                formatter: (value, context) => {
-                                    let total = context.chart.data.datasets[0].data.reduce((a, b) => a + b,
-                                        0);
-                                    let percentage = ((value / total) * 100).toFixed(2);
-                                    return `${percentage}`;
-                                }
+                    title: {
+                        text: 'Categorization By Industry Segment',
+                        align: 'center'
+                    },
+                    accessibility: {
+                        point: {
+                            valueSuffix: '%'
+                        }
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            depth: 35,
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.name}'
                             }
                         }
                     },
-                    plugins: [ChartDataLabels]
+                    series: [{
+                        type: 'pie',
+                        name: 'Share',
+                        data: labels.map((label, index) => [label, data[index]])
+                    }]
                 });
 
-
-                // Create the chart
-                var ctx = document.getElementById('businessProcessChart').getContext('2d');
-                var myPieChart = new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: labels2,
-                        datasets: [{
-                            data: data2,
-                            backgroundColor: [
-                                '#FF6384',
-                                '#36A2EB',
-                                '#FFCE56',
-                                '#4BC0C0',
-                                '#9966FF',
-                                '#FF9F40',
-                                '#FFCD56',
-                                '#4DC0B5'
-                            ]
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        title: {
-                            display: true,
-                            text: 'Business Process'
-                        },
-                        plugins: {
-                            datalabels: {
-                                color: '#fff',
-                                anchor: 'end',
-                                align: 'start',
-                                offset: -10,
-                                borderWidth: 2,
-                                borderColor: '#fff',
-                                borderRadius: 25,
-                                backgroundColor: (context) => context.dataset.backgroundColor,
-                                font: {
-                                    weight: 'bold',
-                                    size: 16,
-                                },
-                                formatter: (value, context) => {
-                                    let total = context.chart.data.datasets[0].data.reduce((a, b) => a + b,
-                                        0);
-                                    let percentage = ((value / total) * 100).toFixed(2);
-                                    return `${percentage}`;
-                                }
-                            }
+                Highcharts.chart('container2', {
+                    chart: {
+                        type: 'cylinder',
+                        options3d: {
+                            enabled: true,
+                            alpha: 45,
+                            beta: 0
                         }
                     },
-                    plugins: [ChartDataLabels]
-                });
-
-                // work practice
-                var ctx = document.getElementById('workPracticeChart').getContext('2d');
-                var myPieChart = new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: labels3,
-                        datasets: [{
-                            data: data3,
-                            backgroundColor: [
-                                '#FF6384',
-                                '#36A2EB',
-                                '#FFCE56',
-                                '#4BC0C0',
-                                '#9966FF',
-                                '#FF9F40',
-                                '#FFCD56',
-                                '#4DC0B5'
-                            ]
-                        }]
+                    title: {
+                        text: 'Categorization By Business Process',
+                        align: 'center'
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        title: {
-                            display: true,
-                            text: 'Work Practice'
-                        },
-                        plugins: {
-                            datalabels: {
-                                color: '#fff',
-                                anchor: 'end',
-                                align: 'start',
-                                offset: -10,
-                                borderWidth: 2,
-                                borderColor: '#fff',
-                                borderRadius: 25,
-                                backgroundColor: (context) => context.dataset.backgroundColor,
-                                font: {
-                                    weight: 'bold',
-                                    size: 16,
-                                },
-                                formatter: (value, context) => {
-                                    let total = context.chart.data.datasets[0].data.reduce((a, b) => a + b,
-                                        0);
-                                    let percentage = ((value / total) * 100).toFixed(2);
-                                    return `${percentage}`;
-                                }
-                            }
+                    accessibility: {
+                        point: {
+                            valueSuffix: '%'
                         }
                     },
-                    plugins: [ChartDataLabels]
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            innerSize: 100,
+                            depth: 45
+                        }
+                    },
+                    series: [{
+                        type: 'pie',
+                        name: 'Processes',
+                        data: labels2.map((label, index) => [label, data2[index]])
+                    }]
                 });
 
-
-
-
-
-                // Make an AJAX request to fetch data
-                $.ajax({
-                    url: "<?php echo e(route('size_of_the_company')); ?>", // Use the named route for URL
-                    method: 'GET',
-                    success: function(response) {
-                        // Get the labels and data from the response
-                        var labels = response.labels;
-                        var data = response.data;
-
-                        // Create the chart
-                        var ctx = document.getElementById('sizeOfTheCompany').getContext('2d');
-                        var myPieChart = new Chart(ctx, {
-                            type: 'doughnut',
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    data: data,
-                                    backgroundColor: [
-                                        '#FF6384',
-                                        '#36A2EB',
-                                        '#FFCE56',
-                                        '#4BC0C0',
-                                        '#9966FF',
-                                        '#FF9F40',
-                                        '#FFCD56',
-                                        '#4DC0B5'
-                                    ]
-                                }]
+                Highcharts.chart('container3', {
+                    chart: {
+                        type: 'funnel3d',
+                        options3d: {
+                            enabled: true,
+                            alpha: 10,
+                            depth: 50,
+                            viewDistance: 50
+                        }
+                    },
+                    title: {
+                        text: 'Categorization By Work Practice'
+                    },
+                    accessibility: {
+                        screenReaderSection: {
+                            beforeChartFormat: '<{headingTagName}>' +
+                                '{chartTitle}</{headingTagName}><div>{typeDescription}</div>' +
+                                '<div>{chartSubtitle}</div><div>{chartLongdesc}</div>'
+                        }
+                    },
+                    plotOptions: {
+                        series: {
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b> ({point.y:,.0f})',
+                                allowOverlap: true,
+                                y: 10
                             },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    datalabels: {
-                                        color: '#fff',
-                                        anchor: 'end',
-                                        align: 'start',
-                                        offset: -10,
-                                        borderWidth: 2,
-                                        borderColor: '#fff',
-                                        borderRadius: 25,
-                                        backgroundColor: (context) => context.dataset
-                                            .backgroundColor,
-                                        font: {
-                                            weight: 'bold',
-                                            size: 16,
-                                        },
-                                        formatter: (value, context) => {
-                                            let total = context.chart.data.datasets[0].data
-                                                .reduce((a, b) => a + b, 0);
-                                            let percentage = ((value / total) * 100).toFixed(2);
-                                            return `${percentage}%`;
-                                        }
-                                    }
-                                }
-                            },
-                            plugins: [ChartDataLabels]
-                        });
+                            neckWidth: '3%',
+                            neckHeight: '25%',
+                            width: '20%',
+                            height: '80%'
+                        }
                     },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching data:', error);
-                    }
+                    series: [{
+                        name: 'Work Practice',
+                        data: labels3.map((label, index) => [label, data3[index]])
+                    }]
                 });
+
+                Highcharts.chart('container4', {
+                    chart: {
+                        type: 'cylinder',
+                        options3d: {
+                            enabled: true,
+                            alpha: 15,
+                            beta: 15,
+                            depth: 50,
+                            viewDistance: 25
+                        }
+                    },
+                    title: {
+                        text: 'Categorization By Main Clients'
+                    },
+                    xAxis: {
+                        categories: labels4,
+                        title: {
+                            text: 'Clients'
+                        },
+                        labels: {
+                            skew3d: true
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            margin: 20,
+                            text: 'Number of Clients'
+                        },
+                        labels: {
+                            skew3d: true
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<b>Clients: {point.x}</b><br>'
+                    },
+                    plotOptions: {
+                        series: {
+                            depth: 25,
+                            colorByPoint: true,
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b> ({point.y:,.0f})',
+                                allowOverlap: true,
+                                y: 10
+                            }
+                        }
+                    },
+                    series: [{
+                        data: data4,
+                        name: 'Clients',
+                        showInLegend: false
+                    }]
+                });
+
+                const chart = new Highcharts.Chart({
+                    chart: {
+                        renderTo: 'container5',
+                        type: 'bar',
+                        options3d: {
+                            enabled: true,
+                            alpha: 15,
+                            beta: 15,
+                            depth: 50,
+                            viewDistance: 50
+                        },
+                        height: 600, // Set the desired height here
+                    },
+                    xAxis: {
+                        type: 'category'
+                    },
+                    yAxis: {
+                        title: {
+                            enabled: false
+                        },
+                        max: 1300 // Set a maximum value slightly above your highest data point
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{point.key}</b><br>',
+                        pointFormat: 'Number of Employees: {point.y} in {series.name}'
+                    },
+                    title: {
+                        text: 'Academic Qualification of Employees (Management Vs Support Staff)',
+                        align: 'center'
+                    },
+                    legend: {
+                        enabled: true // Enable legend
+                    },
+                    plotOptions: {
+                        column: {
+                            depth: 15,
+                            dataLabels: {
+                                enabled: true, // Enable data labels
+                                format: '{point.y}' // Display the value
+                            }
+                        }
+                    },
+                    series: [{
+                            name: 'Management',
+                            data: labels5.map((label, index) => [label, data5[index]]),
+                            color: '#007bff', // Custom color for Management
+                            colorByPoint: false // Disable colorByPoint
+                        },
+                        {
+                            name: 'Support Staff',
+                            data: labels6.map((label, index) => [label, data6[index]]),
+                            color: '#28a745', // Custom color for Support Staff
+                            colorByPoint: false // Disable colorByPoint
+                        }
+                    ]
+                });
+
             });
         </script>
     <?php $__env->stopPush(); ?>
-    </div>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>

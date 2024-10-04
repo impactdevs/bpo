@@ -155,6 +155,22 @@
                     $('#max-score').on('input', function() {
                         var maxScore = $(this).val();
                         $('#score-value').text(maxScore); // Update displayed score value
+
+
+                        //update the minimum points with maxScore
+                        $.ajax({
+                            url: "{{ route('update-minimum-points') }}",
+                            type: "POST",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                minimum_points: maxScore,
+                            },
+                            success: function(response) {
+                                console.log(response);
+                            }
+                        });
                         filterByMaxScore(maxScore); // Call filter function
                     });
 

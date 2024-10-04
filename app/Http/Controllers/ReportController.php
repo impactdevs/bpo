@@ -566,5 +566,20 @@ class ReportController extends Controller
         }
     }
 
+    public function updateMinimumPoints(Request $request)
+    {
+        try {
+            //get the minimum points
+            $minimum_points = $request->minimum_points;
+
+            //update the minimum points
+            DB::table('ranking_settings')->update(['minimum_points' => $minimum_points]);
+
+            return response()->json(['success' => 'Minimum points updated successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred while updating minimum points']);
+        }
+    }
+
 
 }
