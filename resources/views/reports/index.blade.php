@@ -41,20 +41,20 @@
                                             {{ $form->created_at->format('M d, Y') }}</td>
                                         <td class="px-6 py-4 text-sm font-medium text-left">
                                             <a href="{{ route('forms.reports', $form->uuid) }}"
-                                                class="text-blue-600 dark:text-blue-400 hover:underline">
-                                                <i class="bi bi-eye"></i>
+                                                class="text-blue-600 dark:text-blue-400 hover:underline btn btn-primary">
+                                                <i class="bi bi-eye"></i>VIEW
                                             </a>
 
                                             <a href="{{ route('aggregations', $form->uuid) }}"
-                                                class="text-blue-600 dark:text-blue-400 hover:underline ms-2">
-                                                <i class="bi bi-align-center"></i>
+                                                class="text-blue-600 dark:text-blue-400 hover:underline ms-2 btn btn-primar">
+                                                <i class="bi bi-align-center"></i>AGGREGATIONS
                                             </a>
 
                                             {{-- ranking --}}
 
                                             <a href="{{ route('ranking', $form->uuid) }}"
-                                                class="text-blue-600 dark:text-blue-400 hover:underline ms-2">
-                                                <i class="bi bi-bar-chart-line"></i>
+                                                class="text-blue-600 dark:text-blue-400 hover:underline ms-2 btn btn-primar">
+                                                <i class="bi bi-bar-chart-line"></i>RANKING
                                             </a>
                                         </td>
                                     </tr>
