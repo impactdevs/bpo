@@ -1,4 +1,13 @@
-<x-app-layout>
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
     <div class="py-6">
         <div class="p-2 text-gray-900 dark:text-gray-100">
             <div class="d-flex justify-content-between">
@@ -12,9 +21,9 @@
             <!-- Max Score Toggle -->
             <div class="mb-4">
                 <label for="max-score" class="block text-sm font-medium text-gray-700">Max Threshold:</label>
-                <input type="range" id="max-score" min="0" max="100" value="{{ $minimum_points }}"
+                <input type="range" id="max-score" min="0" max="100" value="<?php echo e($minimum_points); ?>"
                     class="custom-input" />
-                <span id="score-value" class="ml-2">{{ $minimum_points }}</span>
+                <span id="score-value" class="ml-2"><?php echo e($minimum_points); ?></span>
                 <span id="count" class="ml-2 font-bold text-lg text-blue-600"></span>
                 <!-- Updated styling for count -->
             </div>
@@ -53,27 +62,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($rankingData as $key => $value)
+                        <?php $__currentLoopData = $rankingData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
-                                @foreach ($value as $question => $response)
+                                <?php $__currentLoopData = $value; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $question => $response): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <td class="text-start">
-                                        @if (is_array($response))
-                                            @foreach ($response as $res)
-                                                {{ $res }},
-                                            @endforeach
-                                        @else
-                                            {{ $response }}
-                                        @endif
+                                        <?php if(is_array($response)): ?>
+                                            <?php $__currentLoopData = $response; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $res): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php echo e($res); ?>,
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php else: ?>
+                                            <?php echo e($response); ?>
+
+                                        <?php endif; ?>
                                     </td>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        @push('script')
+        <?php $__env->startPush('script'); ?>
             <style>
                 /* Custom class to control input width */
                 .custom-input {
@@ -192,6 +202,16 @@
                     filterByMaxScore($('#max-score').val());
                 });
             </script>
-        @endpush
+        <?php $__env->stopPush(); ?>
     </div>
-</x-app-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php /**PATH D:\bpo\resources\views/reports/rankings.blade.php ENDPATH**/ ?>

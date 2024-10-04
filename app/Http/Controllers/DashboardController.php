@@ -9,72 +9,69 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $email = auth()->user()->email;
-        // count the number of entries
-        if ($email == "admin@bpo.com") {
-            // get all entries
-            $entries = $this->entries();
-            $registered = $this->registered_entities();
-            $office_locations = $this->office_locations();
-            $home_based_locations = $this->home_based_locations();
-            $male_ceos = $this->ceo_male();
-            $female_ceos = $this->ceo_female();
-            $by_industry_segment = $this->entities_by_industry_segment();
-            // Separate the keys and values for the chart
-            $labels = $by_industry_segment->keys()->toArray();
-            $data = $by_industry_segment->values()->toArray();
-            $by_business_process = $this->entities_by_business_processes();
-            $labels2 = $by_business_process->keys()->toArray();
-            $data2 = $by_business_process->values()->toArray();
-            // work practices
-            $by_work_practice = $this->work_practices();
-            // Prepare data for the pie chart
-            $labels3 = $by_work_practice->keys()->toArray();
-            $data3 = $by_work_practice->values()->toArray();
+        // get all entries
+        $entries = $this->entries();
+        $registered = $this->registered_entities();
+        $office_locations = $this->office_locations();
+        $home_based_locations = $this->home_based_locations();
+        $male_ceos = $this->ceo_male();
+        $female_ceos = $this->ceo_female();
+        $by_industry_segment = $this->entities_by_industry_segment();
+        // Separate the keys and values for the chart
+        $labels = $by_industry_segment->keys()->toArray();
+        $data = $by_industry_segment->values()->toArray();
+        $by_business_process = $this->entities_by_business_processes();
+        $labels2 = $by_business_process->keys()->toArray();
+        $data2 = $by_business_process->values()->toArray();
+        // work practices
+        $by_work_practice = $this->work_practices();
+        // Prepare data for the pie chart
+        $labels3 = $by_work_practice->keys()->toArray();
+        $data3 = $by_work_practice->values()->toArray();
 
-            //broken process
-            $broken = $this->broken_process();
-            //registered online
-            $registered_online = $this->registered_online();
+        //broken process
+        $broken = $this->broken_process();
+        //registered online
+        $registered_online = $this->registered_online();
 
-            //main clients
-            $main_clients = $this->main_clients();
+        //main clients
+        $main_clients = $this->main_clients();
 
-            //prepare data for the pie chart
-            $labels4 = $main_clients->keys()->toArray();
-            $data4 = $main_clients->values()->toArray();
+        //prepare data for the pie chart
+        $labels4 = $main_clients->keys()->toArray();
+        $data4 = $main_clients->values()->toArray();
 
-            //academic qualifications
-            $academicQualifications = $this->academicQualifications();
+        //academic qualifications
+        $academicQualifications = $this->academicQualifications();
 
-            //prepared the dat for plotting in order of management and support staff
-            $labels5 = array_keys($academicQualifications['management']);
-            $data5 = array_values($academicQualifications['management']);
-            $labels6 = array_keys($academicQualifications['support']);
-            $data6 = array_values($academicQualifications['support']);
-            return view('dashboard', compact(
-                'entries',
-                'registered',
-                'office_locations',
-                'home_based_locations',
-                'male_ceos',
-                'female_ceos',
-                'labels',
-                'data',
-                'labels2',
-                'data2',
-                'labels3',
-                'data3',
-                'broken',
-                'registered_online',
-                'labels4',
-                'data4',
-                'labels5',
-                'data5',
-                'labels6',
-                'data6'
-            ));
-        }
+        //prepared the dat for plotting in order of management and support staff
+        $labels5 = array_keys($academicQualifications['management']);
+        $data5 = array_values($academicQualifications['management']);
+        $labels6 = array_keys($academicQualifications['support']);
+        $data6 = array_values($academicQualifications['support']);
+        return view('dashboard', compact(
+            'entries',
+            'registered',
+            'office_locations',
+            'home_based_locations',
+            'male_ceos',
+            'female_ceos',
+            'labels',
+            'data',
+            'labels2',
+            'data2',
+            'labels3',
+            'data3',
+            'broken',
+            'registered_online',
+            'labels4',
+            'data4',
+            'labels5',
+            'data5',
+            'labels6',
+            'data6'
+        ));
+
         return redirect()->route('entries.index');
     }
 

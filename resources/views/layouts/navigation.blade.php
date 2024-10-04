@@ -13,7 +13,6 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-6 sm:-my-px sm:ms-10 sm:flex items-center">
-                    @if (auth()->user()->email == 'admin@bpo.com')
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
                             class="text-lg font-semibold text-white hover:text-gray-300 fs-5">
                             <i class="bi bi-house fs-4 pe-1"></i>
@@ -49,13 +48,6 @@
                             <i class="bi bi-gear fs-4 pe-1"></i>
                             {{ __('Settings') }}
                         </x-nav-link>
-                    @else
-                        <x-nav-link :href="route('entries.index')" :active="request()->routeIs('entries.index')"
-                            class="text-lg font-semibold text-white hover:text-gray-300 fs-5">
-                            <i class="bi bi-journal-text fs-4 pe-1"></i>
-                            {{ __('Entries') }}
-                        </x-nav-link>
-                    @endif
                 </div>
             </div>
 

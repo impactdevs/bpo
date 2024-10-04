@@ -39,6 +39,13 @@
                         <!-- Graph Section -->
                         <div class="flex flex-col w-2/3 p-4">
                             <div class="row mb-4">
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <figure class="highcharts-figure">
+                                            <div id="container6"></div>
+                                        </figure>
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <figure class="highcharts-figure">
                                         <div id="container"></div>
@@ -63,7 +70,7 @@
                                 </div>
                             </div>
                             <div class="row mb-4">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <figure class="highcharts-figure">
                                         <div id="container5"></div>
                                     </figure>
@@ -204,9 +211,9 @@
                                 allowOverlap: true,
                                 y: 10
                             },
-                            neckWidth: '15%',
+                            neckWidth: '3%',
                             neckHeight: '25%',
-                            width: '45%',
+                            width: '20%',
                             height: '80%'
                         }
                     },
@@ -273,14 +280,15 @@
                 const chart = new Highcharts.Chart({
                     chart: {
                         renderTo: 'container5',
-                        type: 'column',
+                        type: 'bar',
                         options3d: {
                             enabled: true,
                             alpha: 15,
                             beta: 15,
                             depth: 50,
-                            viewDistance: 25
-                        }
+                            viewDistance: 50
+                        },
+                        height: 600, // Set the desired height here
                     },
                     xAxis: {
                         type: 'category'
@@ -288,7 +296,8 @@
                     yAxis: {
                         title: {
                             enabled: false
-                        }
+                        },
+                        max: 1300 // Set a maximum value slightly above your highest data point
                     },
                     tooltip: {
                         headerFormat: '<b>{point.key}</b><br>',
@@ -324,6 +333,7 @@
                         }
                     ]
                 });
+
             });
         </script>
     <?php $__env->stopPush(); ?>

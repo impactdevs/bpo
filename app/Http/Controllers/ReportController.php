@@ -398,6 +398,8 @@ class ReportController extends Controller
     public function rank(Request $request, $uuid)
     {
         try {
+            //minimum points
+            $minimum_points = DB::table('ranking_settings')->pluck('minimum_points')->first();
             // Retrieve headers for the form
             $headers = $this->headers($uuid);
 
@@ -548,7 +550,6 @@ class ReportController extends Controller
 
                 //total score
                 $responses['total_score'] = $responses['it_enabled_score'] + $responses['uses_specialised_software_score'] + $responses['specialised_software_score'] + $responses['work_practices_score'] + $responses['are_services_broken_down_score'] + $responses['services_broken_down_score'] + $responses['is_online_businesses_score'] + $responses['online_businesses_score'] + $responses['do_staff_capacity_building_score'] + $responses['staff_capacity_building_score'];
-
                 $rankingData[] = $responses;
             }
 
@@ -557,7 +558,7 @@ class ReportController extends Controller
                 return $b['total_score'] <=> $a['total_score'];
             });
             // Return the aggregated data
-            return view('reports.rankings', compact('uuid', 'rankingData'));
+            return view('reports.rankings', compact('uuid', 'rankingData', 'minimum_points'));
 
         } catch (\Exception $e) {
             // Return a more readable error message
