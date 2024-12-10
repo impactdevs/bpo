@@ -9,7 +9,7 @@ Our **Business Process Outsourcing (BPO) System** is an online database develope
 1. **Clone the Repository**
    - Open your terminal and run the following command:
      ```bash
-     git clone <repository-url>
+     git https://github.com/impactdevs/bpo.git
      ```
    - Navigate into the project directory:
      ```bash
