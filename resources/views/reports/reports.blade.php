@@ -97,11 +97,14 @@
                             });
                         } else if (header.type === 'textarea' || header.type === 'text' || header.type ===
                             'number') {
+
                             columns.push({
                                 data: function(row) {
                                     return row[header.label];
                                 },
                                 render: function(data, type, row) {
+                                    console.log("data", data);
+                                    //if data is null return empty string
                                     let newValue;
                                     if (data !== undefined) {
                                         newValue = '';
@@ -109,8 +112,6 @@
 
                                     // Check if data is an object and not null
                                     if (typeof data === 'object' && data !== null) {
-                                        console.log(data);
-
                                         // Assign newValue with the value of the 'value' key in the data object
                                         // If data.value is null, assign an empty string
                                         newValue = data.value === null ? '' : data.value;
@@ -118,8 +119,6 @@
                                         // If data is not an object, handle it appropriately
                                         newValue = data !== null ? data : '';
                                     }
-
-
                                     return newValue;
                                 },
                                 orderable: true,
@@ -130,11 +129,18 @@
                                     return row[header.label];
                                 },
                                 render: function(data, type, row) {
+
                                     // Ensure header.cleaning_options is an array, defaulting to an empty array if not
                                     var cleaningOptions = header.cleaning_options ?? [];
 
                                     // Check if data is an object and not null
                                     var isObject = typeof data === 'object' && data !== null;
+
+                                    //check if label is  email and dump the value
+                                    if (header.label === 'Email') {
+                                        //dd data
+                                        console.log("EMAIL", isObject);
+                                    }
 
                                     // Generate the select input with unique ID attached as a data attribute
                                     var select = '<select class="cleaned-select" ' +

@@ -2,8 +2,6 @@ import "./bootstrap";
 
 import Alpine from "alpinejs";
 
-
-
 Alpine.start();
 
 // DARK MODE TOGGLE BUTTON

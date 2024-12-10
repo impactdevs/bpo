@@ -1,4 +1,13 @@
-<x-app-layout>
+<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
+<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('app-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
 
     <div class="py-12 bg-gray-50 dark:bg-gray-900">
         <div class="max-w-10xl mx-auto sm:px-6 lg:px-8">
@@ -29,41 +38,51 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                            @if (filled($forms))
-                                @foreach ($forms as $form)
+                            <?php if(filled($forms)): ?>
+                                <?php $__currentLoopData = $forms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $form): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
                                         <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100 text-left">
-                                            {{ $form->uuid }}</td>
+                                            <?php echo e($form->uuid); ?></td>
                                         <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 text-left">
-                                            {{ $form->name }}</td>
+                                            <?php echo e($form->name); ?></td>
                                         <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 text-left">Active</td>
                                         <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300 text-left">
-                                            {{ $form->created_at->format('M d, Y') }}</td>
+                                            <?php echo e($form->created_at->format('M d, Y')); ?></td>
                                         <td class="px-6 py-4 text-sm font-medium text-left">
-                                            <a href="{{ route('forms.reports', $form->uuid) }}"
+                                            <a href="<?php echo e(route('forms.reports', $form->uuid)); ?>"
                                                 class="text-light dark:text-blue-400 hover:underline btn btn-primary">
                                                 <i class="bi bi-eye"></i>VIEW
                                             </a>
 
-                                            <a href="{{ route('aggregations', $form->uuid) }}"
+                                            <a href="<?php echo e(route('aggregations', $form->uuid)); ?>"
                                                 class="text-light dark:text-blue-400 hover:underline btn btn-primary">
                                                 <i class="bi bi-align-center"></i>AGGREGATIONS
                                             </a>
 
-                                            {{-- ranking --}}
+                                            
 
-                                            <a href="{{ route('ranking', $form->uuid) }}"
+                                            <a href="<?php echo e(route('ranking', $form->uuid)); ?>"
                                                 class="text-light dark:text-blue-400 hover:underline btn btn-primary">
                                                 <i class="bi bi-bar-chart-line"></i>RANKING
                                             </a>
                                         </td>
                                     </tr>
-                                @endforeach
-                            @endif
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
+<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
+<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
+<?php endif; ?>
+<?php /**PATH D:\bpo\resources\views/reports/index.blade.php ENDPATH**/ ?>
