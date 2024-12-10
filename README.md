@@ -1,6 +1,6 @@
 # BPO System Installation Guide
 
-Our **Business Process Outsourcing (BPO) System** is a robust platform developed using Laravel. It is designed to streamline and optimize outsourcing operations. The system offers secure and scalable database management, ensuring efficient handling of client data, workflows, and reporting needs. With its user-friendly interface and advanced functionality, the system empowers businesses to focus on growth while simplifying operational processes.
+Our **Business Process Outsourcing (BPO) System** is an online database developed using Laravel. It serves as a centralized platform for listing all BPO companies in Uganda, providing easy access to their details for businesses and individuals. The system ensures a user-friendly experience with secure and scalable database management to support efficient data retrieval and reporting.
 
 ---
 
@@ -9,7 +9,7 @@ Our **Business Process Outsourcing (BPO) System** is a robust platform developed
 1. **Clone the Repository**
    - Open your terminal and run the following command:
      ```bash
-     git clone https://github.com/impactdevs/bpo.git
+     git clone <repository-url>
      ```
    - Navigate into the project directory:
      ```bash
@@ -55,4 +55,5 @@ Our **Business Process Outsourcing (BPO) System** is a robust platform developed
      http://localhost:8000
      ```
 
-Your BPO system is now up and running!
+Your online database for BPO companies in Uganda is now up and running!
+```
