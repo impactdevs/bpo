@@ -177,22 +177,21 @@ class EntryController extends Controller
             })
             ->filter(function ($query) use ($request, $titleKey, $subtitleKey) {
                 if (!empty($request->search['value'])) {
-                    $searchTerm = strtolower($request->search['value']); // Convert search term to lowercase
+                    $searchTerm = $request->search['value'];
             
                     $query->where(function($q) use ($searchTerm, $titleKey, $subtitleKey) {
                         if (!empty($titleKey)) {
-                            $q->orWhereRaw("LOWER(responses->'$.{$titleKey}') LIKE ?", ["%{$searchTerm}%"]);
+                            $q->orWhere("responses->{$titleKey}", 'LIKE', "%{$searchTerm}%");
                         }
                         if (!empty($subtitleKey)) {
-                            $q->orWhereRaw("LOWER(responses->'$.{$subtitleKey}') LIKE ?", ["%{$searchTerm}%"]);
+                            $q->orWhere("responses->{$subtitleKey}", 'LIKE', "%{$searchTerm}%");
                         }
                         $q->orWhereHas('user', function($userQuery) use ($searchTerm) {
-                            $userQuery->whereRaw("LOWER(name) LIKE ?", ["%{$searchTerm}%"]);
+                            $userQuery->where('name', 'like', "%{$searchTerm}%");
                         });
                     });
                 }
             })
-            
             ->rawColumns(['actions'])
             ->make(true);
     }
