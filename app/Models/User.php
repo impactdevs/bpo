@@ -44,4 +44,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isAdmin()
+{
+    return $this->email === "admin@bpo.com"; // Consider using roles table for production
+}
 }

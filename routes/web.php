@@ -45,8 +45,7 @@ Route::get('/aggregations-data/{uuid}', [ReportController::class, 'aggregateData
 Route::get('/rankings/{uuid}', [ReportController::class, 'rank'])->name('rankings');
 Route::get('/ranking/{uuid}', [ReportController::class, 'rank'])->name('ranking');
 Route::post('update-minimum-points', [ReportController::class, 'updateMinimumPoints'])->name('update-minimum-points');
-
-
+Route::get('/entries/{uuid}/data', [EntryController::class, 'entriesData'])->name('entries.data');
 
 //document routes
 Route::resource('documents', DocumentController::class)->only(['index', 'store', 'destroy', 'show']);

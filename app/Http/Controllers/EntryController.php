@@ -6,6 +6,8 @@ use App\Models\Entry;
 use App\Models\Form;
 use App\Models\FormField;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+
 
 class EntryController extends Controller
 {
@@ -136,62 +138,62 @@ class EntryController extends Controller
      */
     public function destroy(Entry $entry)
     {
-        //
+        $entry->delete();
+
+        return back()->with('success', 'Entry deleted successfully!');
     }
 
-    public function entries($uuid)
+    public function entries(Request $request, $uuid)
     {
-        if (auth()->user()->email == "admin@bpo.com") {
-            // Retrieve entries for the given form_id
-            $entries = Entry::where('form_id', $uuid)->get();
+        // Return initial view for non-AJAX requests
+        if (!$request->ajax()) {
+            return view('entries.entries', compact('uuid'));
+        }
+        //get form with setting
+        $form = Form::with('setting')->where('uuid', $uuid)->firstOrFail();
+
+        if (filled($form->setting)) {
+            if ($form->setting->title)
+            $titleKey=$form->setting->title;
+            if ($form->setting->subtitle)
+            $subtitleKey=$form->setting->subtitle;
         } else {
-            $entries = Entry::where('form_id', $uuid)->where('user_id', auth()->user()->id)->get();
+            $titleKey = '';
+            $subtitleKey = '';
         }
-
-        //load the form with its settings
-        $entries->load('form', 'form.setting');
-
-        // Process each entry to decode responses and map to labels
-        foreach ($entries as $entry) {
-            $decodedResponses = json_decode($entry->responses, true); // Decode JSON to associative array
-
-            $formattedResponses = [];
-
-            // Iterate through each response and map to label
-            foreach ($decodedResponses as $key => $value) {
-                $formField = FormField::find($key); // Assuming $key corresponds to form_fields.id
-                if ($formField) {
-                    $formattedResponses[$formField->label] = $value;
-                } else {
-                    // Handle case where form_field with $key is not found (optional)
-                    // You may choose to skip or handle this case based on your requirements
-                    $formattedResponses["Unknown Field (ID: $key)"] = $value;
-                }
-
-                //set the title and the subtitle
-                if (filled($entry->form->setting)) {
-                    if ($entry->form->setting->title == $key)
-                        $entry['title'] = $value;
-                    if ($entry->form->setting->subtitle == $key)
-                        $entry['subtitle'] = $value;
-                } else {
-                    $formattedResponses['title'] = '';
-                    $formattedResponses['subtitle'] = '';
-
-                }
-
-            }
-
-            //remove responses
-            unset($entry->responses);
-
-            // Replace the original responses with the formatted ones
-            $entry->formatted_responses = $formattedResponses;
-
-
+        $entriesQuery = Entry::with(['form.setting', 'user'])
+            ->where('form_id', $uuid);
+    
+        if (auth()->user()->email !== "admin@bpo.com") {
+            $entriesQuery->where('user_id', auth()->user()->id);
         }
-        // Pass entries to the view
-        return view('entries.entries', compact('entries'));
+    
+        return DataTables::of($entriesQuery)
+            ->addColumn('actions', function($entry) {
+                return view('entries.actions', compact('entry'))->render();
+            })
+            ->editColumn('created_at', function ($entry) {
+                return $entry->created_at ? $entry->created_at->format('d M Y, h:i A') : '';
+            })
+            ->filter(function ($query) use ($request, $titleKey, $subtitleKey) {
+                if (!empty($request->search['value'])) {
+                    $searchTerm = $request->search['value'];
+            
+                    $query->where(function($q) use ($searchTerm, $titleKey, $subtitleKey) {
+                        if (!empty($titleKey)) {
+                            $q->orWhere("responses->{$titleKey}", 'LIKE', "%{$searchTerm}%");
+                        }
+                        if (!empty($subtitleKey)) {
+                            $q->orWhere("responses->{$subtitleKey}", 'LIKE', "%{$searchTerm}%");
+                        }
+                        $q->orWhereHas('user', function($userQuery) use ($searchTerm) {
+                            $userQuery->where('name', 'like', "%{$searchTerm}%");
+                        });
+                    });
+                }
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
     }
 
     //entry update

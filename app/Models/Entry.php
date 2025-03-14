@@ -10,11 +10,8 @@ class Entry extends Model
     use HasFactory;
 
     protected $fillable = ['form_id', 'responses', 'user_id'];
+    protected $appends = ['title', 'subtitle'];
 
-    // protected $casts = [
-    //     'responses' => 'json',
-
-    // ];
 
     // an entry belongs to a user
     public function user()
@@ -27,4 +24,25 @@ class Entry extends Model
     {
         return $this->belongsTo(Form::class, 'form_id', 'uuid');
     }
+
+    // Keep your existing accessors, but add this scope
+
+
+public function getTitleAttribute()
+{
+    if (!$this->form->setting) return '';
+    
+    $titleKey = $this->form->setting->title;
+    $responses = json_decode($this->responses, true);
+    return $responses[$titleKey] ?? '';
+}
+
+public function getSubtitleAttribute()
+{
+    if (!$this->form->setting) return '';
+    
+    $subtitleKey = $this->form->setting->subtitle;
+    $responses = json_decode($this->responses, true);
+    return $responses[$subtitleKey] ?? '';
+}
 }
